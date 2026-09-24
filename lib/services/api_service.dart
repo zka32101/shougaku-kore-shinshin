@@ -5,6 +5,10 @@ import '../models/parent_child_comparison.dart';
 import '../models/kindness_mission.dart';
 import '../models/ai_features.dart';
 import '../models/ranking.dart';
+import '../models/story.dart';
+import '../models/child_profile.dart';
+import '../models/progress.dart';
+import '../models/report.dart';
 import 'logger_service.dart';
 
 /// Custom exception for API errors
@@ -39,6 +43,16 @@ class ApiService {
                 receiveTimeout: const Duration(seconds: 10),
               ),
             );
+
+  /// バックエンド JWT を認証ヘッダーに設定する（Firebase IDトークン交換後に呼ぶ）
+  void setAuthToken(String jwt) {
+    _dio.options.headers['Authorization'] = 'Bearer $jwt';
+  }
+
+  /// 認証ヘッダーをクリアする（ログアウト時・トークン交換失敗時）
+  void clearAuthToken() {
+    _dio.options.headers.remove('Authorization');
+  }
 
   /// Validates that a string parameter is not empty
   String _validateParam(String value, String paramName) {
@@ -578,6 +592,484 @@ class ApiService {
       );
       throw ApiException(
         'Failed to fetch monthly ranking: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // 認証
+  // ========================================================
+
+  /// Firebase IDトークンをバックエンドJWTに交換する
+  /// POST /api/v1/auth/firebase
+  Future<Map<String, dynamic>> loginWithFirebase(String firebaseIdToken) async {
+    try {
+      _validateParam(firebaseIdToken, 'firebaseIdToken');
+
+      final response = await _retryRequest(
+        () => _dio.post(
+          '/auth/firebase',
+          data: {'firebase_token': firebaseIdToken},
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for firebase login');
+      }
+
+      LoggerService.info('Firebase login exchanged for backend JWT');
+      return response.data as Map<String, dynamic>;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to exchange firebase token', error: e);
+      throw ApiException(
+        'Failed to login with firebase: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // ストーリー
+  // ========================================================
+
+  /// GET /api/v1/stories
+  Future<List<Story>> fetchStories({
+    String? theme,
+    int? gradeLevel,
+    bool? isPremium,
+  }) async {
+    try {
+      final params = {
+        if (theme != null) 'theme': theme,
+        if (gradeLevel != null) 'grade': gradeLevel,
+        if (isPremium != null) 'is_premium': isPremium,
+      };
+
+      final response = await _retryRequest(
+        () => _dio.get('/stories', queryParameters: params),
+      );
+
+      final data = response.data;
+      if (data is! List) {
+        throw ApiException('Expected stories to be a list');
+      }
+
+      LoggerService.info('Stories fetched: ${data.length}');
+      return data.map((item) => Story.fromJson(item)).toList();
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch stories', error: e);
+      throw ApiException(
+        'Failed to fetch stories: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// GET /api/v1/stories/weekly/{week_number}
+  Future<List<Story>> fetchWeeklyTheme(int weekNumber) async {
+    try {
+      final response = await _retryRequest(
+        () => _dio.get('/stories/weekly/$weekNumber'),
+      );
+
+      final data = response.data;
+      if (data is! List) {
+        throw ApiException('Expected weekly theme stories to be a list');
+      }
+
+      LoggerService.info('Weekly theme stories fetched for week $weekNumber: ${data.length}');
+      return data.map((item) => Story.fromJson(item)).toList();
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch weekly theme for week $weekNumber', error: e);
+      throw ApiException(
+        'Failed to fetch weekly theme: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// GET /api/v1/stories/{story_id}
+  Future<Story> fetchStoryDetail(String storyId) async {
+    try {
+      _validateParam(storyId, 'storyId');
+
+      final response = await _retryRequest(
+        () => _dio.get('/stories/$storyId'),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for story detail');
+      }
+
+      LoggerService.info('Story detail fetched: $storyId');
+      return Story.fromJson(response.data);
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch story detail: $storyId', error: e);
+      throw ApiException(
+        'Failed to fetch story detail: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // 子どもプロフィール
+  // ========================================================
+
+  /// GET /api/v1/children
+  Future<List<ChildProfile>> fetchChildrenProfiles() async {
+    try {
+      final response = await _retryRequest(() => _dio.get('/children'));
+
+      final data = response.data;
+      if (data is! List) {
+        throw ApiException('Expected children profiles to be a list');
+      }
+
+      LoggerService.info('Children profiles fetched: ${data.length}');
+      return data.map((item) => ChildProfile.fromApiJson(item)).toList();
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch children profiles', error: e);
+      throw ApiException(
+        'Failed to fetch children profiles: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// GET /api/v1/children/{child_id}
+  Future<ChildProfile> fetchChildProfile(String childId) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      final response = await _retryRequest(
+        () => _dio.get('/children/$childId'),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for child profile');
+      }
+
+      LoggerService.info('Child profile fetched: $childId');
+      return ChildProfile.fromApiJson(response.data);
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch child profile: $childId', error: e);
+      throw ApiException(
+        'Failed to fetch child profile: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// POST /api/v1/children
+  Future<ChildProfile> createChild({
+    required String name,
+    required int grade,
+    required String avatarEmoji,
+  }) async {
+    try {
+      _validateParam(name, 'name');
+
+      final response = await _retryRequest(
+        () => _dio.post(
+          '/children',
+          data: {
+            'name': name,
+            'grade': grade,
+            'avatarEmoji': avatarEmoji,
+          },
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for created child');
+      }
+
+      LoggerService.info('Child created: $name');
+      return ChildProfile.fromApiJson(response.data);
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to create child: $name', error: e);
+      throw ApiException(
+        'Failed to create child: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// PUT /api/v1/children/{child_id}
+  Future<void> updateChild(String childId, Map<String, dynamic> updates) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      await _retryRequest(
+        () => _dio.put('/children/$childId', data: updates),
+      );
+
+      LoggerService.info('Child updated: $childId');
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to update child: $childId', error: e);
+      throw ApiException(
+        'Failed to update child: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// DELETE /api/v1/children/{child_id}
+  Future<void> deleteChild(String childId) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      await _retryRequest(() => _dio.delete('/children/$childId'));
+
+      LoggerService.info('Child deleted: $childId');
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to delete child: $childId', error: e);
+      throw ApiException(
+        'Failed to delete child: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // 進捗・レポート
+  // ========================================================
+
+  /// GET /api/v1/progress/{child_id}
+  Future<List<Progress>> fetchProgress(String childId) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      final response = await _retryRequest(
+        () => _dio.get('/progress/$childId'),
+      );
+
+      final data = response.data;
+      if (data is! List) {
+        throw ApiException('Expected progress to be a list');
+      }
+
+      LoggerService.info('Progress fetched for child: $childId (${data.length})');
+      return data.map((item) => Progress.fromJson(item)).toList();
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to fetch progress for child: $childId', error: e);
+      throw ApiException(
+        'Failed to fetch progress: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// GET /api/v1/reports/{child_id}/monthly
+  Future<MonthlyReport?> fetchMonthlyReport({
+    required String childId,
+    required int year,
+    required int month,
+  }) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      final response = await _retryRequest(
+        () => _dio.get(
+          '/reports/$childId/monthly',
+          queryParameters: {'year': year, 'month': month},
+        ),
+      );
+
+      if (response.statusCode == 204 || response.data == null) return null;
+
+      LoggerService.info('Monthly report fetched for child: $childId ($year-$month)');
+      return MonthlyReport.fromJson(response.data);
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        LoggerService.info('Monthly report not found for child: $childId ($year-$month)');
+        return null;
+      }
+      LoggerService.error('Failed to fetch monthly report for child: $childId', error: e);
+      throw ApiException(
+        'Failed to fetch monthly report: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// POST /api/v1/reports/{child_id}/monthly/generate
+  Future<MonthlyReport> generateMonthlyReport({
+    required String childId,
+    required int year,
+    required int month,
+  }) async {
+    try {
+      _validateParam(childId, 'childId');
+
+      final response = await _retryRequest(
+        () => _dio.post(
+          '/reports/$childId/monthly/generate',
+          queryParameters: {'year': year, 'month': month},
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for generated monthly report');
+      }
+
+      LoggerService.info('Monthly report generated for child: $childId ($year-$month)');
+      return MonthlyReport.fromJson(response.data);
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to generate monthly report for child: $childId', error: e);
+      throw ApiException(
+        'Failed to generate monthly report: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // クイズセッション
+  // ========================================================
+
+  /// POST /api/v1/quizzes
+  Future<Map<String, dynamic>> startQuizSession({
+    required String childId,
+    required String storyId,
+  }) async {
+    try {
+      _validateParam(childId, 'childId');
+      _validateParam(storyId, 'storyId');
+
+      final response = await _retryRequest(
+        () => _dio.post(
+          '/quizzes',
+          data: {'childId': childId, 'storyId': storyId},
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for quiz session start');
+      }
+
+      LoggerService.info('Quiz session started for child: $childId, story: $storyId');
+      return response.data as Map<String, dynamic>;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to start quiz session', error: e);
+      throw ApiException(
+        'Failed to start quiz session: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  /// POST /api/v1/quizzes/{session_id}/complete
+  Future<Map<String, dynamic>> completeQuizSession({
+    required String sessionId,
+    required String chosenChoiceId,
+    required int timeSpentSeconds,
+    String? reflectionText,
+  }) async {
+    try {
+      _validateParam(sessionId, 'sessionId');
+      _validateParam(chosenChoiceId, 'chosenChoiceId');
+
+      final response = await _retryRequest(
+        () => _dio.post(
+          '/quizzes/$sessionId/complete',
+          data: {
+            'chosenChoiceId': chosenChoiceId,
+            'timeSpentSeconds': timeSpentSeconds,
+            if (reflectionText != null) 'reflectionText': reflectionText,
+          },
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for quiz completion');
+      }
+
+      LoggerService.info('Quiz session completed: $sessionId');
+      return response.data as Map<String, dynamic>;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to complete quiz session: $sessionId', error: e);
+      throw ApiException(
+        'Failed to complete quiz session: ${e.message}',
+        statusCode: e.response?.statusCode,
+        originalError: e,
+      );
+    }
+  }
+
+  // ========================================================
+  // ユーザー
+  // ========================================================
+
+  /// PUT /api/v1/users/me
+  Future<Map<String, dynamic>> updateUser({String? name, String? fcmToken}) async {
+    try {
+      final response = await _retryRequest(
+        () => _dio.put(
+          '/users/me',
+          data: {
+            if (name != null) 'name': name,
+            if (fcmToken != null) 'fcmToken': fcmToken,
+          },
+        ),
+      );
+
+      if (!_isValidResponse(response.data)) {
+        throw ApiException('Invalid response structure for update user');
+      }
+
+      LoggerService.info('User updated');
+      return response.data as Map<String, dynamic>;
+    } on ApiException {
+      rethrow;
+    } on DioException catch (e) {
+      LoggerService.error('Failed to update user', error: e);
+      throw ApiException(
+        'Failed to update user: ${e.message}',
         statusCode: e.response?.statusCode,
         originalError: e,
       );
