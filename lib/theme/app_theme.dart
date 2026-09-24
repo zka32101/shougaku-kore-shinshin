@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import '../constants/theme_colors.dart';
 
+/// 学習分析ウィジェット等で使うショートハンド定数
+/// (ThemeColors.lightColorScheme.primary / .secondary と同じ値)
+const kPrimaryColor = Color(0xFF6366F1);
+const kSecondaryColor = Color(0xFF8B5CF6);
+
 /// Light theme definition for the app
 ThemeData lightTheme() {
   final colorScheme = ThemeColors.lightColorScheme;
