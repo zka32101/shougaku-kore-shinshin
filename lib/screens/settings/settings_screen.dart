@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_core/shared_core.dart' show AnalyticsDashboardWidget, DailyActivityData, AccuracyTrendData;
+import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, DailyActivityData, AccuracyTrendData;
 import '../../providers/audio_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -331,11 +331,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
           // Tab 2: 学習分析
           SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: AnalyticsDashboardWidget(
+            child: AnalyticsDashboard(
               userName: 'ユーザー',
               totalQuestions: 0,
               averageAccuracy: 0.0,
-              totalTimeSpent: 0,
+              totalTimeSpent: Duration.zero,
               dailyActivity: _generateDailyActivity(),
               accuracyTrend: _generateAccuracyTrend(),
             ),
@@ -346,24 +346,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
   }
 
   List<DailyActivityData> _generateDailyActivity() {
-    return [
-      DailyActivityData(day: '月', count: 0),
-      DailyActivityData(day: '火', count: 0),
-      DailyActivityData(day: '水', count: 0),
-      DailyActivityData(day: '木', count: 0),
-      DailyActivityData(day: '金', count: 0),
-      DailyActivityData(day: '土', count: 0),
-      DailyActivityData(day: '日', count: 0),
-    ];
+    return List.generate(
+      7,
+      (index) => DailyActivityData(day: index + 1, questionsAnswered: 0),
+    );
   }
 
   List<AccuracyTrendData> _generateAccuracyTrend() {
-    return [
-      AccuracyTrendData(week: 'W1', accuracy: 0.0),
-      AccuracyTrendData(week: 'W2', accuracy: 0.0),
-      AccuracyTrendData(week: 'W3', accuracy: 0.0),
-      AccuracyTrendData(week: 'W4', accuracy: 0.0),
-    ];
+    return List.generate(
+      4,
+      (index) => AccuracyTrendData(week: index + 1, accuracy: 0.0),
+    );
   }
 
   Future<void> _pickReminderTime(
@@ -400,7 +393,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
           TextButton(
             onPressed: () async {
               Navigator.pop(ctx);
-              await ref.read(authServiceProvider).signOut();
+              await ref.read(signOutProvider.future);
               // ログアウト後にルートを /login にリセット
               if (context.mounted) {
                 Navigator.of(context).pushNamedAndRemoveUntil(

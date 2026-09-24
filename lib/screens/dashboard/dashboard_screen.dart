@@ -71,7 +71,7 @@ class _DashboardContent extends ConsumerWidget {
           ref.invalidate(currentChildProfileProvider);
           ref.invalidate(userProgressProvider(childId));
           ref.invalidate(earnedBadgesProvider(childId));
-          ref.invalidate(rankingProvider);
+          ref.invalidate(monthlyRankingProvider);
           // リフレッシュ完了待ち
           await Future.delayed(const Duration(milliseconds: 500));
         },

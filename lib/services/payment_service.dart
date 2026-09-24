@@ -1,7 +1,6 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'subscription_service.dart';
 import 'logger_service.dart';
 
@@ -11,22 +10,35 @@ class PaymentService {
   static const String yearlyProductId =
       'jp.petitworks.shougaku_kore_doutoku.yearly';
 
+  /// android/app/build.gradle.kts の applicationId と一致させる
+  static const String _androidPackageName = 'com.yourwish.shougakukore.shinshin';
+
   late final InAppPurchase _iap;
   late final SubscriptionService _subscriptionService;
+  StreamSubscription<List<PurchaseDetails>>? _purchaseSubscription;
 
   bool _isAvailable = false;
+
+  /// 直近で purchaseStream から受け取った購入一覧のキャッシュ
+  /// (in_app_purchase 3.x には queryPastPurchases が無いため、
+  ///  restorePurchases() 実行後にこのキャッシュを参照する)
+  final List<PurchaseDetails> _purchaseCache = [];
 
   PaymentService() {
     _iap = InAppPurchase.instance;
     _subscriptionService = SubscriptionService();
 
-    _initializeInAppPurchase();
+    // pending purchases (Android) は in_app_purchase_android の現行バージョンでは
+    // デフォルトで有効なため明示的な初期化は不要
+    _purchaseSubscription = _iap.purchaseStream.listen((purchases) {
+      _purchaseCache
+        ..removeWhere((p) => purchases.any((np) => np.purchaseID == p.purchaseID))
+        ..addAll(purchases);
+    });
   }
 
-  void _initializeInAppPurchase() {
-    if (Platform.isAndroid) {
-      InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
-    }
+  void dispose() {
+    _purchaseSubscription?.cancel();
   }
 
   /// Check if in-app purchase is available
@@ -129,12 +141,12 @@ class PaymentService {
         if (Platform.isIOS) {
           verified = await _subscriptionService.verifyAppleReceipt(
             userId: userId,
-            receipt: purchaseDetails.serverVerificationData.localVerificationData,
+            receipt: purchaseDetails.verificationData.localVerificationData,
           );
         } else if (Platform.isAndroid) {
           verified = await _subscriptionService.verifyGooglePlayReceipt(
             userId: userId,
-            packageName: purchaseDetails.packageName,
+            packageName: _androidPackageName,
             productId: purchaseDetails.productID,
             purchaseToken: purchaseDetails.verificationData.serverVerificationData,
           );
@@ -145,7 +157,7 @@ class PaymentService {
           await _subscriptionService.activateSubscription(
             userId: userId,
             planType: planType,
-            transactionId: purchaseDetails.purchaseID,
+            transactionId: purchaseDetails.purchaseID ?? purchaseDetails.productID,
           );
 
           LoggerService.info('Purchase completed and verified for user: $userId');
@@ -160,7 +172,7 @@ class PaymentService {
       }
 
       // Mark purchase as processed
-      if (purchaseDetails.pendingCompleteMark) {
+      if (purchaseDetails.pendingCompletePurchase) {
         await _iap.completePurchase(purchaseDetails);
       }
     } catch (e) {
@@ -174,7 +186,7 @@ class PaymentService {
   /// Complete a purchase
   Future<void> completePurchase(PurchaseDetails purchaseDetails) async {
     try {
-      if (purchaseDetails.pendingCompleteMark) {
+      if (purchaseDetails.pendingCompletePurchase) {
         await _iap.completePurchase(purchaseDetails);
         LoggerService.info(
             'Purchase completed: ${purchaseDetails.purchaseID}');
@@ -203,11 +215,15 @@ class PaymentService {
   }
 
   /// Get pending purchases
+  /// in_app_purchase 3.x には queryPastPurchases が無いため、
+  /// restorePurchases() を実行して purchaseStream 経由でキャッシュに反映されるのを待つ
   Future<List<PurchaseDetails>> getPendingPurchases() async {
     try {
-      final purchases = await _iap.queryPastPurchases();
-      LoggerService.info('Found ${purchases.length} past purchases');
-      return purchases;
+      await _iap.restorePurchases();
+      // purchaseStream 経由の反映を少し待つ
+      await Future.delayed(const Duration(seconds: 2));
+      LoggerService.info('Found ${_purchaseCache.length} past purchases');
+      return List.unmodifiable(_purchaseCache);
     } catch (e) {
       LoggerService.error(
         'Failed to get pending purchases',

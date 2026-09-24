@@ -268,19 +268,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final navigator = Navigator.of(context);
     final messenger = ScaffoldMessenger.of(context);
     try {
-      // 1. Google アカウント選択画面を表示
-      final googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) {
-        // ユーザーがキャンセルした
-        return;
+      // 1. Google アカウント選択画面を表示（google_sign_in v7 系: シングルトン + authenticate()）
+      final googleSignIn = GoogleSignIn.instance;
+      await googleSignIn.initialize();
+      final GoogleSignInAccount googleUser;
+      try {
+        googleUser = await googleSignIn.authenticate();
+      } on GoogleSignInException catch (e) {
+        if (e.code == GoogleSignInExceptionCode.canceled) {
+          // ユーザーがキャンセルした
+          return;
+        }
+        rethrow;
       }
 
-      // 2. Google 認証トークンを取得
-      final googleAuth = await googleUser.authentication;
+      // 2. Google 認証トークン(IDトークン)を取得
+      final googleAuth = googleUser.authentication;
 
       // 3. Firebase 認証情報を作成してサインイン
       final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       final userCredential =

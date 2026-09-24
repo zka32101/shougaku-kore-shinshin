@@ -515,11 +515,13 @@ class _BadgeCardState extends ConsumerState<_BadgeCard>
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.badge.emoji,
-                        style: TextStyle(
-                          fontSize: isEarned ? 36 : 28,
-                          opacity: isEarned ? 1.0 : 0.4,
+                      Opacity(
+                        opacity: isEarned ? 1.0 : 0.4,
+                        child: Text(
+                          widget.badge.emoji,
+                          style: TextStyle(
+                            fontSize: isEarned ? 36 : 28,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 6),
