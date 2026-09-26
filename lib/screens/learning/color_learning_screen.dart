@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../widgets/access_guard.dart';
 
 /// 色選び学習画面
 /// 色を学んで認識力を高める
@@ -175,6 +177,12 @@ class _ColorLearningScreenState extends State<ColorLearningScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return AccessGuard(
+      child: Consumer(builder: (context, ref, _) => _buildContent(context)),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('🎨 色選びの勉強'),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../widgets/access_guard.dart';
 
 /// 体育説明学習画面
 /// 運動・身体活動について学ぶ
@@ -70,6 +72,12 @@ class _PhysicalEducationScreenState extends State<PhysicalEducationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return AccessGuard(
+      child: Consumer(builder: (context, ref, _) => _buildContent(context)),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final exercise = _exercises[_selectedExerciseIndex];
 
     return Scaffold(
