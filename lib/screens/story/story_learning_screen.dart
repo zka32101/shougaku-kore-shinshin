@@ -18,6 +18,7 @@ import '../../constants/app_styles.dart';
 import '../../constants/app_constants.dart';
 import 'story_result_screen.dart';
 import '../../widgets/animated_option_card.dart';
+import '../../widgets/access_guard.dart';
 
 /// ストーリー読解画面
 /// 読む → 選択 → 結果の3フェーズ
@@ -276,6 +277,10 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
 
   @override
   Widget build(BuildContext context) {
+    return AccessGuard(child: _buildGuarded(context));
+  }
+
+  Widget _buildGuarded(BuildContext context) {
     final storyAsync = ref.watch(storyDetailProvider(widget.storyId));
 
     return storyAsync.when(

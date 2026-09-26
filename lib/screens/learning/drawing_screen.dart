@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../widgets/access_guard.dart';
 
 /// 絵描き学習画面
 /// 自由に描画して創意表現を学ぶ
@@ -17,6 +19,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return AccessGuard(
+      child: Consumer(builder: (context, ref, _) => _buildContent(context)),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('🎨 お絵かき'),
