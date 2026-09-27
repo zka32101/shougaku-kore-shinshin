@@ -17,6 +17,8 @@ import '../learning/physical_education_screen.dart';
 import '../learning/color_learning_screen.dart';
 import '../badge/badge_showcase_screen.dart';
 import '../dashboard/dashboard_screen.dart';
+import '../checklist/achievement_checklist_screen.dart';
+import '../checklist/daily_record_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,6 +36,8 @@ class HomeScreen extends ConsumerWidget {
       (icon: '🎨', title: 'お絵かき', subtitle: '創意表現', screen: const DrawingScreen()),
       (icon: '⛹️', title: '体育', subtitle: '運動の学習', screen: const PhysicalEducationScreen()),
       (icon: '🎨', title: '色選び', subtitle: '色の学習', screen: const ColorLearningScreen()),
+      (icon: '✅', title: 'できたことチェック', subtitle: '成長を確認', screen: const AchievementChecklistScreen()),
+      (icon: '📝', title: 'きょうのきろく', subtitle: '日々の取り組み', screen: const DailyRecordScreen()),
     ];
 
     return Scaffold(
