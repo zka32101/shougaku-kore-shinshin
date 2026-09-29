@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, DailyActivityData, AccuracyTrendData;
 import '../../providers/audio_provider.dart';
 import '../../providers/locale_provider.dart';
@@ -313,6 +314,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
                 applicationVersion: '0.1.0',
               );
             },
+          ),
+          const Divider(height: 0),
+          ListTile(
+            leading: const Icon(Icons.apps_rounded),
+            title: const Text('他のアプリを見る'),
+            subtitle: const Text('小学コレ！シリーズの他の教科アプリを紹介します'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => launchUrl(
+              Uri.parse('https://sites.google.com/view/yourwishapps'),
+              mode: LaunchMode.externalApplication,
+            ),
           ),
           const Divider(height: 0),
           ListTile(
