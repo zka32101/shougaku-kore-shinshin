@@ -18,25 +18,28 @@ android {
 
     // ========================================
     // リリース署名設定
-    // 環境変数またはlocal.propertiesから読み込み
+    // GitHub Actions では環境変数から、ローカルビルドでは key.properties から読み込み
     // ========================================
+    val keystorePropertiesFile = rootProject.file("key.properties")
+    val keystoreProperties = java.util.Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(java.io.FileInputStream(keystorePropertiesFile))
+    }
+
     signingConfigs {
-        // リリース用署名設定
-        // GitHub Actions では環境変数から読み込み
-        // ローカルビルドでは gradle.properties から読み込み
         create("release") {
-            // キーストアファイルパス
-            // 環境変数: KEYSTORE_PATH (デフォルト: ~/.shougaku-kore-release.jks)
             val keystorePath = System.getenv("KEYSTORE_PATH")
+                ?: keystoreProperties["storeFile"]?.let { file(it.toString()).absolutePath }
                 ?: file("${System.getProperty("user.home")}/.shougaku-kore-release.jks").absolutePath
 
-            // キーストアの詳細情報
             storeFile = file(keystorePath)
-            storePassword = System.getenv("KEYSTORE_PASSWORD") ?: ""
-            keyAlias = System.getenv("KEYSTORE_ALIAS") ?: "shougaku-kore-key"
-            keyPassword = System.getenv("KEYSTORE_KEY_PASSWORD") ?: ""
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
+                ?: keystoreProperties["storePassword"] as String? ?: ""
+            keyAlias = System.getenv("KEYSTORE_ALIAS")
+                ?: keystoreProperties["keyAlias"] as String? ?: "shougaku-kore-key"
+            keyPassword = System.getenv("KEYSTORE_KEY_PASSWORD")
+                ?: keystoreProperties["keyPassword"] as String? ?: ""
 
-            // ストアタイプ
             storeType = "jks"
         }
     }
