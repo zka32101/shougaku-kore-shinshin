@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, DailyActivityData, AccuracyTrendData;
+import 'package:shared_core/shared_core.dart' show AnalyticsDashboard;
 import '../../providers/audio_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -341,33 +341,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             ],
           ),
           // Tab 2: 学習分析
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: AnalyticsDashboard(
-              userName: 'ユーザー',
-              totalQuestions: 0,
-              averageAccuracy: 0.0,
-              totalTimeSpent: Duration.zero,
-              dailyActivity: _generateDailyActivity(),
-              accuracyTrend: _generateAccuracyTrend(),
-            ),
-          ),
+          ref.watch(currentUserProvider).when(
+                data: (user) => user == null
+                    ? const Center(child: Text('ログインすると学習分析が表示されます'))
+                    : AnalyticsDashboard(userId: user.uid),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(child: Text('学習分析を読み込めませんでした')),
+              ),
         ],
       ),
-    );
-  }
-
-  List<DailyActivityData> _generateDailyActivity() {
-    return List.generate(
-      7,
-      (index) => DailyActivityData(day: index + 1, questionsAnswered: 0),
-    );
-  }
-
-  List<AccuracyTrendData> _generateAccuracyTrend() {
-    return List.generate(
-      4,
-      (index) => AccuracyTrendData(week: index + 1, accuracy: 0.0),
     );
   }
 
