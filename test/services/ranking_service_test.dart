@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shinshin/models/ranking.dart';
-import 'package:shinshin/services/ranking_service.dart';
+import 'package:shougaku_kore_doutoku/models/ranking.dart';
+import 'package:shougaku_kore_doutoku/services/ranking_service.dart';
 
 /// Mock Firestore for testing
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}

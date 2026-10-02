@@ -241,7 +241,7 @@ void main() {
   late _MockAuthService auth;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: '');
     PathProviderPlatform.instance = FakePathProvider();
   });
 

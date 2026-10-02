@@ -7,12 +7,6 @@ import '../models/report.dart';
 import 'logger_service.dart';
 
 class HiveService {
-  // 各 provider が HiveService() を直接生成するため、単一インスタンスにしないと
-  // 初期化したインスタンスと使うインスタンスが別物になる。
-  static final HiveService _instance = HiveService._internal();
-  factory HiveService() => _instance;
-  HiveService._internal();
-
   static const String storiesBox = 'stories';
   static const String progressBox = 'progress';
   static const String userBox = 'user';
@@ -20,15 +14,17 @@ class HiveService {
   static const String pendingSyncBox = 'pending_sync';
   static const String settingsBox = 'settings';
 
-  // Cached box instances to prevent race conditions
-  late Box<String> _storiesBoxInstance;
-  late Box<String> _progressBoxInstance;
-  late Box<String> _userBoxInstance;
-  late Box<String> _reportsBoxInstance;
-  late Box<String> _pendingSyncBoxInstance;
-  late Box<dynamic> _settingsBoxInstance;
+  // 各 provider が HiveService() を直接生成するため、状態は static に持つ
+  // （インスタンスごとに持つと、初期化したものと使うものが別物になる）。
+  // コンストラクタは通常のままにして、テストで継承して差し替えられるようにする。
+  static late Box<String> _storiesBoxInstance;
+  static late Box<String> _progressBoxInstance;
+  static late Box<String> _userBoxInstance;
+  static late Box<String> _reportsBoxInstance;
+  static late Box<String> _pendingSyncBoxInstance;
+  static late Box<dynamic> _settingsBoxInstance;
 
-  bool _initialized = false;
+  static bool _initialized = false;
 
   Future<void> initialize() async {
     if (_initialized) return;

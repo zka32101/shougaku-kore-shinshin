@@ -43,7 +43,7 @@ void main() {
 
   setUpAll(() {
     // Initialize dotenv with an empty map so ApiService constructor succeeds.
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: '');
     PathProviderPlatform.instance = FakePathProvider();
   });
 

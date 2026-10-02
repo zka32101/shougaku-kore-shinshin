@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:shinshin/models/ranking.dart';
-import 'package:shinshin/providers/ranking_provider.dart';
+import 'package:shougaku_kore_doutoku/models/ranking.dart';
+import 'package:shougaku_kore_doutoku/providers/ranking_provider.dart';
 
 void main() {
   group('Ranking Providers', () {

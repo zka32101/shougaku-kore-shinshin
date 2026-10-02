@@ -161,7 +161,7 @@ void main() {
   late PerformanceBenchmark benchmark;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: '');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
