@@ -101,6 +101,11 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/avatars/
+    - assets/images/help/
+    - assets/images/icons/
+    - assets/images/illustrations/
+    - assets/images/parental_consent/
     - assets/sounds/
     - assets/taiku/images/
     - assets/taiku/images/characters/
