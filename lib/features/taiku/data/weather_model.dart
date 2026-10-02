@@ -75,7 +75,7 @@ class WeatherInfo {
       return '⚠️ 警報が出ています。防災を学ぼう！';
     }
     if (isOutdoorFriendly) {
-      return '${weatherEmoji}いい天気！外でスポーツをしよう！';
+      return '$weatherEmojiいい天気！外でスポーツをしよう！';
     }
     if (type == WeatherType.rainy) {
       return '🌧️ 雨の日は室内で栄養や防災を学ぼう！';
@@ -86,7 +86,7 @@ class WeatherInfo {
     if (isColdWeather) {
       return '🧊 寒い日は室内でストレッチ！';
     }
-    return '${weatherEmoji}今日はどんな活動をしようかな？';
+    return '$weatherEmoji今日はどんな活動をしようかな？';
   }
 
   /// 天気に合わせた推奨テーマ

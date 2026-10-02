@@ -115,7 +115,7 @@ class _RankingListScreenState extends ConsumerState<RankingListScreen> {
                               delay: Duration(milliseconds: 250 + (e.key * 75)),
                               child: _buildRankingTile(e.value),
                             ))
-                            .toList(),
+                            ,
                       ],
                     );
                   },

@@ -210,10 +210,10 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
     final badgeId = 'art_m${_month}_lv$_level';
     final badgeDefs = {
-      1: ['${_colorName}の探検家', '🔴', '${_colorName}の探検家バッジ'],
-      2: ['${_colorName}の表現者', '🎭', '${_colorName}だけで表現した'],
+      1: ['$_colorNameの探検家', '🔴', '$_colorNameの探検家バッジ'],
+      2: ['$_colorNameの表現者', '🎭', '$_colorNameだけで表現した'],
       3: ['対比の大師', '⚔️', '2色の対比を表現した'],
-      4: ['${_colorName}の哲学者', '🏆', '${_colorName}の世界を完全表現した'],
+      4: ['$_colorNameの哲学者', '🏆', '$_colorNameの世界を完全表現した'],
     };
     final bd = badgeDefs[_level]!;
     await ref.read(badgeProvider.notifier).award(badgeId, bd[0], 'art', bd[1], bd[2]);
@@ -238,7 +238,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lv$_level: ${_colorName}で描こう'),
+        title: Text('Lv$_level: $_colorNameで描こう'),
         backgroundColor: color,
         foregroundColor: Colors.white,
         actions: [
@@ -272,7 +272,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
         children: [
           // コーチングメッセージ
           Container(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
               _getCoachingMessage(),
@@ -322,7 +322,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: _palette.map((c) {
-                      final sel = _selectedColor.value == c.value;
+                      final sel = _selectedColor.toARGB32() == c.toARGB32();
                       return GestureDetector(
                         onTap: () => setState(() => _selectedColor = c),
                         child: AnimatedContainer(
@@ -334,7 +334,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                             color: c,
                             shape: BoxShape.circle,
                             border: sel ? Border.all(color: Colors.black, width: 3) : null,
-                            boxShadow: sel ? [BoxShadow(color: c.withOpacity(0.5), blurRadius: 8)] : null,
+                            boxShadow: sel ? [BoxShadow(color: c.withValues(alpha: 0.5), blurRadius: 8)] : null,
                           ),
                         ),
                       );
@@ -439,7 +439,7 @@ class _CanvasPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (final stroke in [...strokes, if (current != null) current!]) {
+    for (final stroke in [...strokes, ?current]) {
       _drawStroke(canvas, stroke);
     }
   }

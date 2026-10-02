@@ -30,7 +30,7 @@ class ArtMonthScreen extends ConsumerWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [color, color.withOpacity(0.7)],
+                    colors: [color, color.withValues(alpha: 0.7)],
                   ),
                 ),
                 child: SafeArea(
@@ -73,7 +73,7 @@ class ArtMonthScreen extends ConsumerWidget {
                   title: '「$colorName」を見つける・感じる',
                   description: '身の回りから「$colorName」を探して撮影！感情を言葉にしよう。',
                   duration: '5日 / 15分×3日',
-                  badge: '${colorName}の探検家',
+                  badge: '$colorNameの探検家',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 0),
                   onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
@@ -86,7 +86,7 @@ class ArtMonthScreen extends ConsumerWidget {
                   title: '「$colorName」で情感を描く',
                   description: '$colorNameだけで感情を描こう。350×350pxの作品を作る。',
                   duration: '5日 / 20分×2日',
-                  badge: '${colorName}の表現者',
+                  badge: '$colorNameの表現者',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 1),
                   onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
@@ -112,7 +112,7 @@ class ArtMonthScreen extends ConsumerWidget {
                   title: '「$colorName」の世界を完全表現',
                   description: '色相・明度・彩度を全て使いこなして500×500pxの大作を完成！',
                   duration: '8日 / 30分×3日',
-                  badge: '${colorName}の哲学者',
+                  badge: '$colorNameの哲学者',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 3),
                   onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
@@ -181,9 +181,9 @@ class _ColorInfoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +218,7 @@ class _FactRow extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(label, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.bold)),
@@ -257,7 +257,7 @@ class _LevelCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: isCompleted ? Border.all(color: color, width: 2) : null,
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 8)],
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8)],
         ),
         child: Row(
           children: [
@@ -265,7 +265,7 @@ class _LevelCard extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: isCompleted ? color : color.withOpacity(0.15),
+                color: isCompleted ? color : color.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -324,9 +324,9 @@ class _ArtworkTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
+        color: color.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -356,7 +356,7 @@ class _ArtworkTile extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(

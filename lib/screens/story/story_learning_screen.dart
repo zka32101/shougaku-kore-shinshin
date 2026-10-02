@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
@@ -90,7 +89,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
         )).future,
       );
       // setStateの前に再度マウント状態を確認
-      if (mounted && id != null) {
+      if (mounted) {
         setState(() => _sessionId = id);
       }
     } catch (e) {

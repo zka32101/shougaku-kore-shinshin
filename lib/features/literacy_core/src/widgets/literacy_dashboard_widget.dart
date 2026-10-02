@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../enums/grade_level.dart';
 import '../models/literacy_progress.dart';
 import '../theme/literacy_colors.dart';
-import '../theme/literacy_typography.dart';
 
 /// フレームワーク §4: 学年別ダッシュボードウィジェット
 ///
@@ -52,7 +51,7 @@ class _LowGradeDashboard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle,
           ),
           child: Column(
@@ -83,7 +82,7 @@ class _LowGradeDashboard extends StatelessWidget {
               .map((s) => Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: color.withOpacity(0.15),
+                      color: color.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(s.earnedBadgeId ?? '🏅', style: const TextStyle(fontSize: 16)),
@@ -285,9 +284,9 @@ class _StrengthChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

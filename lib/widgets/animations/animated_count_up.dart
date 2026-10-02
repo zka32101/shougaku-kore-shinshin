@@ -2,6 +2,7 @@
 ///
 /// Animates a number from 0 (or start value) to end value smoothly.
 /// Perfect for displaying scores, counts, and achievement revelations.
+library;
 
 import 'package:flutter/material.dart';
 import '../../utils/animation_constants.dart';
@@ -45,7 +46,7 @@ class AnimatedCountUp extends StatefulWidget {
   final String suffix;
 
   const AnimatedCountUp({
-    Key? key,
+    super.key,
     required this.endValue,
     this.startValue = 0,
     this.duration = const Duration(milliseconds: 1000),
@@ -54,7 +55,7 @@ class AnimatedCountUp extends StatefulWidget {
     this.onAnimationComplete,
     this.prefix = '',
     this.suffix = '',
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedCountUp> createState() => _AnimatedCountUpState();

@@ -159,7 +159,7 @@ class _ErrorScreen extends StatelessWidget {
 
 /// Main app widget with theme support
 class ShougakuKoreDoutokuApp extends ConsumerWidget {
-  const ShougakuKoreDoutokuApp({Key? key}) : super(key: key);
+  const ShougakuKoreDoutokuApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

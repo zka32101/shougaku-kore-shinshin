@@ -91,14 +91,14 @@ class AccessibleIconButton extends StatelessWidget {
   final double size;
 
   const AccessibleIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.onPressed,
     required this.semanticLabel,
     this.tooltip,
     this.color,
     this.size = 24.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +126,12 @@ class AccessibleTextButton extends StatelessWidget {
   final bool enabled;
 
   const AccessibleTextButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.onPressed,
     this.hint,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

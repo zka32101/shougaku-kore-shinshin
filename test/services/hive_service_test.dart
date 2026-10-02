@@ -151,7 +151,7 @@ void main() {
 
     // ── 進捗キャッシュ ─────────────────────────────────────────────────
     group('progress cache', () {
-      Progress _makeProgress({
+      Progress makeProgress({
         required String id,
         required String childId,
         String action = 'story_completed',
@@ -166,7 +166,7 @@ void main() {
           );
 
       test('cacheProgress and getCachedProgress round-trip', () async {
-        final p = _makeProgress(id: 'p1', childId: 'child-a');
+        final p = makeProgress(id: 'p1', childId: 'child-a');
         await hiveService.cacheProgress(p);
         final list = await hiveService.getCachedProgress('child-a');
         expect(list.length, 1);
@@ -176,9 +176,9 @@ void main() {
 
       test('cacheProgressList stores all items', () async {
         final items = [
-          _makeProgress(id: 'p1', childId: 'child-a'),
-          _makeProgress(id: 'p2', childId: 'child-a', pointsDelta: 15),
-          _makeProgress(id: 'p3', childId: 'child-b'),
+          makeProgress(id: 'p1', childId: 'child-a'),
+          makeProgress(id: 'p2', childId: 'child-a', pointsDelta: 15),
+          makeProgress(id: 'p3', childId: 'child-b'),
         ];
         await hiveService.cacheProgressList(items);
         final forA = await hiveService.getCachedProgress('child-a');
@@ -195,8 +195,8 @@ void main() {
 
       test('getCachedProgress returns only matching childId', () async {
         await hiveService.cacheProgressList([
-          _makeProgress(id: 'p1', childId: 'child-1'),
-          _makeProgress(id: 'p2', childId: 'child-2'),
+          makeProgress(id: 'p1', childId: 'child-1'),
+          makeProgress(id: 'p2', childId: 'child-2'),
         ]);
         final result = await hiveService.getCachedProgress('child-1');
         expect(result.length, 1);
@@ -210,7 +210,7 @@ void main() {
 
       test('clearProgressCache removes all progress entries', () async {
         await hiveService.cacheProgress(
-          _makeProgress(id: 'p1', childId: 'child-a'),
+          makeProgress(id: 'p1', childId: 'child-a'),
         );
         await hiveService.clearProgressCache();
         final list = await hiveService.getCachedProgress('child-a');
@@ -220,7 +220,7 @@ void main() {
 
     // ── レポートキャッシュ ─────────────────────────────────────────────
     group('report cache', () {
-      MonthlyReport _makeReport({
+      MonthlyReport makeReport({
         required String childId,
         int year = 2024,
         int month = 6,
@@ -236,7 +236,7 @@ void main() {
           );
 
       test('cacheMonthlyReport and getCachedMonthlyReport round-trip', () async {
-        final report = _makeReport(childId: 'child-a');
+        final report = makeReport(childId: 'child-a');
         await hiveService.cacheMonthlyReport(report);
         final fetched = await hiveService.getCachedMonthlyReport('child-a', 2024, 6);
         expect(fetched, isNotNull);
@@ -250,8 +250,8 @@ void main() {
       });
 
       test('cacheMonthlyReport overwrites previous entry for same period', () async {
-        await hiveService.cacheMonthlyReport(_makeReport(childId: 'child-a', storiesCompleted: 1));
-        await hiveService.cacheMonthlyReport(_makeReport(childId: 'child-a', storiesCompleted: 5));
+        await hiveService.cacheMonthlyReport(makeReport(childId: 'child-a', storiesCompleted: 1));
+        await hiveService.cacheMonthlyReport(makeReport(childId: 'child-a', storiesCompleted: 5));
         final fetched = await hiveService.getCachedMonthlyReport('child-a', 2024, 6);
         expect(fetched!.storiesCompleted, 5);
       });

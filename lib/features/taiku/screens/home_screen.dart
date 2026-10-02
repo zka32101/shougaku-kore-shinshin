@@ -85,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
                         ? _WeeklyProgress(progress: p, grade: grade)
                         : const SizedBox.shrink(),
                     loading: () => const SizedBox.shrink(),
-                    error: (_, __) => const SizedBox.shrink(),
+                    error: (_, _) => const SizedBox.shrink(),
                   ),
                   if (grade != GradeLevel.low) const SizedBox(height: 20),
 

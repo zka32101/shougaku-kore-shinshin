@@ -2,6 +2,7 @@
 ///
 /// Provides smooth slide-in effects from all directions with fade-in effect.
 /// Perfect for content entering screen, page transitions, and expansions.
+library;
 
 import 'package:flutter/material.dart';
 import '../../utils/animation_constants.dart';
@@ -47,14 +48,14 @@ class AnimatedSlideIn extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedSlideIn({
-    Key? key,
+    super.key,
     required this.child,
     this.direction = SlideDirection.fromBottom,
     this.duration = const Duration(milliseconds: 300),
     this.offset = 50,
     this.delay = Duration.zero,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedSlideIn> createState() => _AnimatedSlideInState();

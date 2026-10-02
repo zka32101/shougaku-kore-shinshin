@@ -42,7 +42,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
         children: [
           LinearProgressIndicator(
             value: (_step + 1) / 3,
-            backgroundColor: kHomeEcColor.withOpacity(0.2),
+            backgroundColor: kHomeEcColor.withValues(alpha: 0.2),
             valueColor: const AlwaysStoppedAnimation<Color>(kHomeEcColor),
             minHeight: 4,
           ),
@@ -189,8 +189,9 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
     int warmCount = 0, coolCount = 0, neutralCount = 0;
     for (final v in _selectedColors.values) {
       final idx = int.tryParse(v) ?? 0;
-      if (idx < 3) warmCount++;
-      else if (idx < 6 || idx >= 9) neutralCount++;
+      if (idx < 3) {
+        warmCount++;
+      } else if (idx < 6 || idx >= 9) neutralCount++;
       else coolCount++;
     }
     final total = warmCount + coolCount + neutralCount;
@@ -216,7 +217,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [kHomeEcColor, kHomeEcColor.withOpacity(0.7)],
+                colors: [kHomeEcColor, kHomeEcColor.withValues(alpha: 0.7)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -246,9 +247,9 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: favoriteColor.withOpacity(0.1),
+              color: favoriteColor.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: favoriteColor.withOpacity(0.3)),
+              border: Border.all(color: favoriteColor.withValues(alpha: 0.3)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,7 +284,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: Text('${favoriteColorName}チャレンジを始める！ 🍳', style: const TextStyle(fontSize: 16)),
+            child: Text('$favoriteColorNameチャレンジを始める！ 🍳', style: const TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -333,7 +334,7 @@ class _ColorRoomCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

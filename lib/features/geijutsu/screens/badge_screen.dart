@@ -120,7 +120,7 @@ class _BadgeSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,10 +173,10 @@ class _BadgeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isEarned ? color.withOpacity(0.1) : Colors.grey[100],
+        color: isEarned ? color.withValues(alpha: 0.1) : Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
         border: isEarned
-            ? Border.all(color: color.withOpacity(0.3), width: 1.5)
+            ? Border.all(color: color.withValues(alpha: 0.3), width: 1.5)
             : null,
       ),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),

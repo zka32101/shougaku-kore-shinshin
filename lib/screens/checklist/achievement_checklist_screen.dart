@@ -168,7 +168,7 @@ class _ChecklistTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: AppStyles.paddingSmall),
       decoration: BoxDecoration(
-        color: checked ? item.category.color.withOpacity(0.12) : AppColors.white,
+        color: checked ? item.category.color.withValues(alpha: 0.12) : AppColors.white,
         borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
         border: Border.all(
           color: checked ? item.category.color : AppColors.border,

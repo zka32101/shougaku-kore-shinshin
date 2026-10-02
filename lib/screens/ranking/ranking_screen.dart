@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/ranking.dart';
-import '../../services/ranking_service.dart';
 import 'ranking_list_screen.dart';
 import 'ranking_settings_screen.dart';
 

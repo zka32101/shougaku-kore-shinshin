@@ -116,7 +116,7 @@ class _ColorLessonTab extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [color, color.withOpacity(0.7)]),
+            gradient: LinearGradient(colors: [color, color.withValues(alpha: 0.7)]),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -133,7 +133,7 @@ class _ColorLessonTab extends ConsumerWidget {
                 spacing: 6,
                 children: foods.map((f) => Chip(
                   label: Text(f, style: const TextStyle(fontSize: 12)),
-                  backgroundColor: Colors.white.withOpacity(0.3),
+                  backgroundColor: Colors.white.withValues(alpha: 0.3),
                   labelStyle: const TextStyle(color: Colors.white),
                 )).toList(),
               ),
@@ -160,7 +160,7 @@ class _ColorLessonTab extends ConsumerWidget {
             await ref.read(homeChallengeProvider.notifier).add(challenge);
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Lv.1「${colorName}学習」完了！'), backgroundColor: color),
+                SnackBar(content: Text('Lv.1「$colorName学習」完了！'), backgroundColor: color),
               );
             }
           },
@@ -210,9 +210,9 @@ class _QuizCardState extends State<_QuizCard> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: widget.color.withOpacity(0.05),
+        color: widget.color.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: widget.color.withOpacity(0.2)),
+        border: Border.all(color: widget.color.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,9 +233,9 @@ class _QuizCardState extends State<_QuizCard> {
                 color: _answer == null
                     ? Colors.white
                     : e.key == quiz['ans']
-                        ? Colors.green.withOpacity(0.15)
+                        ? Colors.green.withValues(alpha: 0.15)
                         : e.key == _answer
-                            ? Colors.red.withOpacity(0.15)
+                            ? Colors.red.withValues(alpha: 0.15)
                             : Colors.white,
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
@@ -361,7 +361,7 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(0.1),
+            color: widget.color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -380,7 +380,7 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
                   onTap: () => setState(() => _menuCtrl.text = s),
                   child: Chip(
                     label: Text(s, style: const TextStyle(fontSize: 12)),
-                    backgroundColor: widget.color.withOpacity(0.2),
+                    backgroundColor: widget.color.withValues(alpha: 0.2),
                   ),
                 )).toList(),
               ),
@@ -506,7 +506,7 @@ class _FashionTabState extends ConsumerState<_FashionTab> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(0.1),
+            color: widget.color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Text(
@@ -637,7 +637,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: widget.color.withOpacity(0.1),
+            color: widget.color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -659,7 +659,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+            boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -825,17 +825,17 @@ class _PhotoSection extends StatelessWidget {
             child: Container(
               height: 80,
               decoration: BoxDecoration(
-                color: color.withOpacity(0.05),
+                color: color.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: color.withOpacity(0.3)),
+                border: Border.all(color: color.withValues(alpha: 0.3)),
               ),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.add_a_photo, color: color.withOpacity(0.5)),
+                    Icon(Icons.add_a_photo, color: color.withValues(alpha: 0.5)),
                     Text('タップして写真を追加',
-                        style: TextStyle(color: color.withOpacity(0.7), fontSize: 12)),
+                        style: TextStyle(color: color.withValues(alpha: 0.7), fontSize: 12)),
                   ],
                 ),
               ),

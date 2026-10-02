@@ -67,7 +67,7 @@ ThemeData lightTheme() {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: colorScheme.surfaceVariant,
+      fillColor: colorScheme.surfaceContainerHighest,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: colorScheme.outline),
@@ -107,42 +107,42 @@ ThemeData lightTheme() {
       displayLarge: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.bold,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       displayMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       displaySmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       headlineMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       headlineSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       titleLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodySmall: TextStyle(
         fontSize: 12,
@@ -219,7 +219,7 @@ ThemeData darkTheme() {
     // Input Decoration Theme
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: colorScheme.surfaceVariant,
+      fillColor: colorScheme.surfaceContainerHighest,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(color: colorScheme.outline),
@@ -259,42 +259,42 @@ ThemeData darkTheme() {
       displayLarge: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.bold,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       displayMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       displaySmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       headlineMedium: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       headlineSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       titleLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
-        color: colorScheme.onBackground,
+        color: colorScheme.onSurface,
       ),
       bodySmall: TextStyle(
         fontSize: 12,

@@ -1,4 +1,4 @@
-library literacy_core;
+library;
 
 export 'src/enums/grade_level.dart';
 export 'src/enums/literacy_ui_level.dart';

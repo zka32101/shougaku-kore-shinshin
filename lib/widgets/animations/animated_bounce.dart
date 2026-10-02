@@ -2,6 +2,7 @@
 ///
 /// Provides a bounce effect perfect for badge reveals, achievement unlocks,
 /// and surprise moments. Uses elasticOut curve for delightful animations.
+library;
 
 import 'package:flutter/material.dart';
 import '../../utils/animation_constants.dart';
@@ -36,13 +37,13 @@ class AnimatedBounce extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedBounce({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 600),
     this.scale = 1.0,
     this.delay = Duration.zero,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedBounce> createState() => _AnimatedBounceState();

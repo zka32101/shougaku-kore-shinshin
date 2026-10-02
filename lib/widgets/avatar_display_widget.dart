@@ -10,11 +10,11 @@ class AvatarDisplayWidget extends ConsumerWidget {
   final bool showName;
 
   const AvatarDisplayWidget({
-    Key? key,
+    super.key,
     this.size = 80,
     this.onTap,
     this.showName = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +38,7 @@ class AvatarDisplayWidget extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(size / 2),
                   color: Colors.grey[200],
                   border: Border.all(
-                    color: Colors.blue.withOpacity(0.3),
+                    color: Colors.blue.withValues(alpha: 0.3),
                     width: 2,
                   ),
                   image: DecorationImage(
@@ -111,7 +111,7 @@ class AvatarDisplayWidget extends ConsumerWidget {
 /// アバター選択ボタン
 /// 設定画面で使用
 class AvatarSelectionButton extends ConsumerWidget {
-  const AvatarSelectionButton({Key? key}) : super(key: key);
+  const AvatarSelectionButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -132,9 +132,9 @@ class AvatarPanel extends ConsumerWidget {
   final String? userName;
 
   const AvatarPanel({
-    Key? key,
+    super.key,
     this.userName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

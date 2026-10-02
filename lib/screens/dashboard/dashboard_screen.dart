@@ -9,14 +9,13 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../constants/app_constants.dart';
 import '../../widgets/common_states.dart';
-import '../../utils/logging_utils.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
 
 /// ダッシュボード画面 — 子どもの学習進捗を視覚的に表示
 /// 統計情報、バッジ、アクティビティ、成長トレンドを表示
 class DashboardScreen extends ConsumerWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

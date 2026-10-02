@@ -5,7 +5,7 @@ import '../../providers/avatar_provider.dart';
 
 /// アバターショップ画面
 class AvatarShopScreen extends ConsumerWidget {
-  const AvatarShopScreen({Key? key}) : super(key: key);
+  const AvatarShopScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

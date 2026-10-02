@@ -94,7 +94,7 @@ class LearnScreen extends ConsumerWidget {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                error: (_, __) => const SizedBox.shrink(),
+                error: (_, _) => const SizedBox.shrink(),
               ),
             ),
           ),
@@ -273,14 +273,14 @@ class _StageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLow = grade == GradeLevel.low;
 
-    void _navigateTo() {
+    void navigateTo() {
       if (theme == 'art') {
         final level = stageNum == 28 ? ArtLevel.lv1 : stageNum == 29 ? ArtLevel.lv2 : ArtLevel.lv3;
         Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => CanvasScreen(
             month: 1,
             level: level,
-            colorName: emoji + ' ' + title,
+            colorName: '$emoji $title',
             themeColor: color,
             stageNum: stageNum,
           ),
@@ -309,7 +309,7 @@ class _StageCard extends StatelessWidget {
     }
 
     return InkWell(
-      onTap: _navigateTo,
+      onTap: navigateTo,
       borderRadius: BorderRadius.circular(14),
       child: Container(
         padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),

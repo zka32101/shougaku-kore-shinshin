@@ -3,6 +3,7 @@
 /// This module defines all animation constants used throughout the app.
 /// By centralizing these values, we ensure consistency and can easily adjust
 /// animation feel across the entire application.
+library;
 
 import 'package:flutter/material.dart';
 

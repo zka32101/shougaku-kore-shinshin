@@ -1,8 +1,7 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/ai_features.dart';
 import '../../providers/ai_features_provider.dart';
-import '../../services/api_service.dart';
 
 // ③ りゆう記録分析ウィジェット（親レポート用）
 class ReasonAnalysisWidget extends ConsumerWidget {
@@ -10,10 +9,10 @@ class ReasonAnalysisWidget extends ConsumerWidget {
   final String month;
 
   const ReasonAnalysisWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.month,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -123,7 +122,7 @@ class ReasonAnalysisWidget extends ConsumerWidget {
                     Expanded(child: Text(obs, style: const TextStyle(fontSize: 12))),
                   ],
                 ),
-              )).toList(),
+              )),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(10),
@@ -159,11 +158,11 @@ class CreationInputWidget extends ConsumerStatefulWidget {
   final String storyTitle;
 
   const CreationInputWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.storyId,
     required this.storyTitle,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _CreationInputWidgetState();
@@ -297,10 +296,10 @@ class CreationFeedbackWidget extends ConsumerWidget {
   final String month;
 
   const CreationFeedbackWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.month,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -378,7 +377,7 @@ class CreationFeedbackWidget extends ConsumerWidget {
                           ),
                         ],
                       ),
-                    )).toList(),
+                    )),
                 ],
               ),
             ),

@@ -1,16 +1,15 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/kindness_mission.dart';
 import '../../providers/kindness_provider.dart';
-import '../../services/api_service.dart';
 
 class KindnessMissionWidget extends ConsumerWidget {
   final String userId;
 
   const KindnessMissionWidget({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,9 +94,9 @@ class KindnessRecordDialog extends ConsumerStatefulWidget {
   final String userId;
 
   const KindnessRecordDialog({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _KindnessRecordDialogState();
@@ -137,7 +136,7 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedPerson,
+              initialValue: _selectedPerson,
               decoration: const InputDecoration(labelText: 'だれですか？'),
               items: [
                 '家族の人',
@@ -191,10 +190,10 @@ class KindnessMapWidget extends ConsumerWidget {
   final String month;
 
   const KindnessMapWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.month,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -236,10 +235,10 @@ class KindnessCategoryCard extends StatelessWidget {
   final List<KindnessFinding> findings;
 
   const KindnessCategoryCard({
-    Key? key,
+    super.key,
     required this.category,
     required this.findings,
-  }) : super(key: key);
+  });
 
   String _getCategoryEmoji(String category) {
     switch (category) {
@@ -305,7 +304,7 @@ class KindnessCategoryCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                )).toList(),
+                )),
           ],
         ),
       ),

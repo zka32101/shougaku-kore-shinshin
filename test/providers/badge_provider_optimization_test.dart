@@ -4,11 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:shougaku_kore_doutoku/models/badge.dart';
 import 'package:shougaku_kore_doutoku/models/progress.dart';
 import 'package:shougaku_kore_doutoku/models/story.dart';
 import 'package:shougaku_kore_doutoku/providers/badge_provider.dart';
-import 'package:shougaku_kore_doutoku/providers/progress_provider.dart';
 import 'package:shougaku_kore_doutoku/providers/story_provider.dart'
     show apiServiceProvider, hiveServiceProvider;
 import 'package:shougaku_kore_doutoku/services/api_service.dart';

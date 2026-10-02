@@ -297,7 +297,7 @@ class _MelodyDisplay extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -373,11 +373,11 @@ class _PianoKeyboard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isPlaying
                     ? noteColors[i]
-                    : noteColors[i].withOpacity(0.7),
+                    : noteColors[i].withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: isPlaying
-                    ? [BoxShadow(color: noteColors[i].withOpacity(0.5), blurRadius: 12)]
-                    : [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)],
+                    ? [BoxShadow(color: noteColors[i].withValues(alpha: 0.5), blurRadius: 12)]
+                    : [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4)],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -628,7 +628,7 @@ class _DrumSection extends StatelessWidget {
             Switch(
               value: hasDrums,
               onChanged: onToggleDrums,
-              activeColor: kMusicColor,
+              activeThumbColor: kMusicColor,
             ),
           ],
         ),

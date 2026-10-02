@@ -172,7 +172,7 @@ class AnalyticsDashboard extends StatelessWidget {
                             final index = value.toInt();
                             if (index >= 0 && index < dailyActivity.length) {
                               return Text(
-                                '${_getDayLabel(dailyActivity[index].day)}',
+                                _getDayLabel(dailyActivity[index].day),
                                 style: const TextStyle(fontSize: 10),
                               );
                             }
@@ -281,9 +281,9 @@ class AnalyticsDashboard extends StatelessWidget {
     final hours = duration.inHours;
     final minutes = duration.inMinutes % 60;
     if (hours > 0) {
-      return '${hours}時間${minutes}分';
+      return '$hours時間$minutes分';
     }
-    return '${minutes}分';
+    return '$minutes分';
   }
 
   String _getDayLabel(int day) {

@@ -4,7 +4,7 @@ import '../../providers/subscription_provider.dart';
 import '../../services/analytics_service.dart';
 
 class TrialStatusScreen extends ConsumerWidget {
-  const TrialStatusScreen({Key? key}) : super(key: key);
+  const TrialStatusScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -116,7 +116,7 @@ class TrialStatusScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(

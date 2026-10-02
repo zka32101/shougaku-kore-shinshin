@@ -132,9 +132,9 @@ class ChildProfileNotifier extends StateNotifier<AsyncValue<void>> {
       final api = _ref.read(apiServiceProvider);
       // ignore: use_null_aware_elements
       final updates = <String, dynamic>{
-        if (name != null) 'name': name,
-        if (grade != null) 'grade': grade,
-        if (avatarEmoji != null) 'avatarEmoji': avatarEmoji,
+        'name': ?name,
+        'grade': ?grade,
+        'avatarEmoji': ?avatarEmoji,
       };
       await api.updateChild(childId, updates);
       state = const AsyncValue.data(null);

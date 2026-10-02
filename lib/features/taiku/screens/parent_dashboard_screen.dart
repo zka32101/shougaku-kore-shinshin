@@ -59,7 +59,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                     ),
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
-                    error: (_, __) => const SizedBox.shrink(),
+                    error: (_, _) => const SizedBox.shrink(),
                   ),
                   const SizedBox(height: 20),
 
@@ -77,7 +77,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                           .length,
                     ),
                     loading: () => const SizedBox.shrink(),
-                    error: (_, __) => const SizedBox.shrink(),
+                    error: (_, _) => const SizedBox.shrink(),
                   ),
                   const SizedBox(height: 20),
 
@@ -1141,7 +1141,7 @@ class _GrowthHighlightCard extends StatelessWidget {
   void _shareHighlight(BuildContext context) {
     final text =
         '【体育・体験コレ！】${streak.currentStreak}日連続学習中！'
-        'バッジ${acquired.length}個獲得！ステージ${completedStages}/11クリア！ #たいくコレ';
+        'バッジ${acquired.length}個獲得！ステージ$completedStages/11クリア！ #たいくコレ';
     Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

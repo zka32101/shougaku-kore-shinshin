@@ -100,7 +100,7 @@ class MonthlyChartWidget extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         kPrimaryColor,
-                        kPrimaryColor.withOpacity(0.3),
+                        kPrimaryColor.withValues(alpha: 0.3),
                       ],
                     ),
                     barWidth: 3,
@@ -119,8 +119,8 @@ class MonthlyChartWidget extends StatelessWidget {
                       show: true,
                       gradient: LinearGradient(
                         colors: [
-                          kPrimaryColor.withOpacity(0.3),
-                          kPrimaryColor.withOpacity(0.0),
+                          kPrimaryColor.withValues(alpha: 0.3),
+                          kPrimaryColor.withValues(alpha: 0.0),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,

@@ -69,7 +69,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
     final composition = Composition(
       id: const Uuid().v4(),
       stage: CompositionStage.stage1,
-      title: '${theme['emoji']}${_selectedTheme}の曲',
+      title: '${theme['emoji']}$_selectedThemeの曲',
       theme: _selectedTheme!,
       instrument: 'theme_piano',
       pattern: _selectedTheme!,
@@ -84,16 +84,16 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
     );
     await ref.read(compositionProvider.notifier).add(composition);
     await ref.read(badgeProvider.notifier).award(
-      'music_theme_compose_${_selectedTheme}',
-      '${theme['emoji']}${_selectedTheme}の作曲家',
+      'music_theme_compose_$_selectedTheme',
+      '${theme['emoji']}$_selectedThemeの作曲家',
       'music', '🎼',
-      '${_selectedTheme}のテーマで曲を作った',
+      '$_selectedThemeのテーマで曲を作った',
     );
     setState(() => _saved = true);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('「${_selectedTheme}」の曲を保存したよ！🎉'),
+          content: Text('「$_selectedTheme」の曲を保存したよ！🎉'),
           backgroundColor: theme['color'] as Color,
         ),
       );

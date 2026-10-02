@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/badge.dart';
-import '../models/story.dart';
 import 'progress_provider.dart';
 import 'story_provider.dart';
 

@@ -2,6 +2,7 @@
 ///
 /// Provides a circular progress indicator animation that smoothly fills.
 /// Perfect for showing achievement progress, completion status, and mastery levels.
+library;
 
 import 'package:flutter/material.dart';
 import '../../utils/animation_constants.dart';
@@ -46,7 +47,7 @@ class AnimatedProgressRing extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedProgressRing({
-    Key? key,
+    super.key,
     required this.progress,
     this.color = const Color(0xFF4CAF50),
     this.backgroundColor = const Color(0xFFE0E0E0),
@@ -55,7 +56,7 @@ class AnimatedProgressRing extends StatefulWidget {
     this.duration = const Duration(milliseconds: 800),
     this.child,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedProgressRing> createState() => _AnimatedProgressRingState();

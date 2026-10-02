@@ -2,6 +2,7 @@
 ///
 /// This file documents best practices for writing performant provider-dependent code.
 /// Implements Priority 1 optimizations: Provider Select Optimization
+library;
 
 // ─── Pattern 1: Using .select() to reduce rebuilds ───────────────
 //

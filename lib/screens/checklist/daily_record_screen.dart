@@ -71,7 +71,7 @@ class DailyRecordScreen extends ConsumerWidget {
                       return ChoiceChip(
                         label: Text('${category.emoji} ${category.label}'),
                         selected: selected,
-                        selectedColor: category.color.withOpacity(0.3),
+                        selectedColor: category.color.withValues(alpha: 0.3),
                         onSelected: (_) =>
                             setState(() => selectedCategory = category),
                       );

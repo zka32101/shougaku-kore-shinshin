@@ -8,9 +8,9 @@ class CommonLoadingState extends StatelessWidget {
   final String? message;
 
   const CommonLoadingState({
-    Key? key,
+    super.key,
     this.message,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +41,11 @@ class CommonErrorState extends StatelessWidget {
   final String? actionLabel;
 
   const CommonErrorState({
-    Key? key,
+    super.key,
     required this.error,
     this.onRetry,
     this.actionLabel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,12 +96,12 @@ class CommonEmptyState extends StatelessWidget {
   final String? actionLabel;
 
   const CommonEmptyState({
-    Key? key,
+    super.key,
     required this.message,
     this.icon,
     this.onAction,
     this.actionLabel,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -147,12 +147,12 @@ class AsyncValueBuilder<T> extends StatelessWidget {
   final Widget Function(Object error)? onError;
 
   const AsyncValueBuilder({
-    Key? key,
+    super.key,
     required this.value,
     required this.onData,
     this.onLoading,
     this.onError,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

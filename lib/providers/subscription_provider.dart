@@ -1,8 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import '../services/subscription_service.dart';
 import '../services/payment_service.dart';
-import '../models/user.dart';
 import '../providers/auth_provider.dart';
 
 // Service providers

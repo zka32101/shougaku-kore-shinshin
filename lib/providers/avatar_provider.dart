@@ -151,9 +151,5 @@ final isAvatarOwnedProvider =
   final avatar =
       allAvatars.firstWhere((a) => a.id == avatarId, orElse: () => null as Avatar);
 
-  if (avatar == null) {
-    return false;
-  }
-
   return userAvatarInfo.isOwnedAvatar(avatar);
 });

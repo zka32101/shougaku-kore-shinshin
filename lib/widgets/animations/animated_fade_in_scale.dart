@@ -2,6 +2,7 @@
 ///
 /// Combines fade and scale animations for a smooth card appearance effect.
 /// Perfect for revealing cards, gallery items, and UI elements.
+library;
 
 import 'package:flutter/material.dart';
 import '../../utils/animation_constants.dart';
@@ -39,14 +40,14 @@ class AnimatedFadeInScale extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedFadeInScale({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 300),
     this.beginScale = 0.8,
     this.endScale = 1.0,
     this.delay = Duration.zero,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedFadeInScale> createState() => _AnimatedFadeInScaleState();

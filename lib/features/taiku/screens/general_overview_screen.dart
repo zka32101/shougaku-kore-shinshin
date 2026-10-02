@@ -799,7 +799,7 @@ class _StageRow extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
-                '${_gradeLabelShort}学年',
+                '$_gradeLabelShort学年',
                 style: TextStyle(
                   fontSize: 9,
                   color: _gradeColor,

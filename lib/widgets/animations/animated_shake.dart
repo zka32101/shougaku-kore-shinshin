@@ -2,9 +2,9 @@
 ///
 /// Provides horizontal shake effect for error states and validation feedback.
 /// Creates a snappy, noticeable animation that draws attention to issues.
+library;
 
 import 'package:flutter/material.dart';
-import '../../utils/animation_constants.dart';
 
 /// AnimatedShake - Horizontal shake animation for error states
 ///
@@ -36,13 +36,13 @@ class AnimatedShake extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedShake({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 400),
     this.distance = 10,
     this.shakes = 4,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedShake> createState() => _AnimatedShakeState();

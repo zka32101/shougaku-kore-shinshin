@@ -62,7 +62,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
         children: [
           LinearProgressIndicator(
             value: (_step + 1) / 4,
-            backgroundColor: kArtColor.withOpacity(0.2),
+            backgroundColor: kArtColor.withValues(alpha: 0.2),
             valueColor: const AlwaysStoppedAnimation<Color>(kArtColor),
             minHeight: 4,
           ),
@@ -113,15 +113,19 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                 final selected = _selectedColors.contains(i);
                 return GestureDetector(
                   onTap: () => setState(() {
-                    if (selected) _selectedColors.remove(i); else _selectedColors.add(i);
+                    if (selected) {
+                      _selectedColors.remove(i);
+                    } else {
+                      _selectedColors.add(i);
+                    }
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
-                      color: selected ? color : color.withOpacity(0.2),
+                      color: selected ? color : color.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                       border: selected ? Border.all(color: color, width: 3) : null,
-                      boxShadow: selected ? [BoxShadow(color: color.withOpacity(0.4), blurRadius: 8)] : null,
+                      boxShadow: selected ? [BoxShadow(color: color.withValues(alpha: 0.4), blurRadius: 8)] : null,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -178,12 +182,16 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                 return CheckboxListTile(
                   value: sel,
                   onChanged: (_) => setState(() {
-                    if (sel) _selectedReasons.remove(i); else _selectedReasons.add(i);
+                    if (sel) {
+                      _selectedReasons.remove(i);
+                    } else {
+                      _selectedReasons.add(i);
+                    }
                   }),
                   title: Text(_reasons[i]),
                   activeColor: kArtColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  tileColor: sel ? kArtColor.withOpacity(0.08) : null,
+                  tileColor: sel ? kArtColor.withValues(alpha: 0.08) : null,
                 );
               },
             ),
@@ -296,7 +304,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [kArtColor, kArtColor.withOpacity(0.7)],
+                colors: [kArtColor, kArtColor.withValues(alpha: 0.7)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
