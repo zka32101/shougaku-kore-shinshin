@@ -134,24 +134,23 @@ Story _makeStory(int id) => Story(
 
 QuizSession _makeQuizSession(int id) => QuizSession(
   id: 'session-$id',
-  childId: 'child-1',
   storyId: 'story-$id',
-  selectedAnswers: {'q1': 'a', 'q2': 'b'},
-  score: 80,
-  completedAt: DateTime.now(),
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
+  childId: 'child-1',
+  answers: const [],
+  startedAt: DateTime(2024),
+  completedAt: DateTime(2024),
+  totalTimeSeconds: 120,
+  pointsEarned: 10,
+  reflectionNotes: '',
 );
 
 Progress _makeProgress(int id) => Progress(
   id: 'prog-$id',
   childId: 'child-1',
-  storiesCompleted: id,
-  averageScore: 85.0,
-  completionPercentage: (id * 5).toDouble(),
-  lastActivityAt: DateTime.now(),
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
+  storyId: 'story-$id',
+  action: 'story_completed',
+  pointsDelta: 10,
+  recordedAt: DateTime(2024),
 );
 
 // ── Performance Tests ────────────────────────────────────────────────────────
