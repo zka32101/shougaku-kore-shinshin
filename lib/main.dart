@@ -14,6 +14,7 @@ import 'screens/splash_screen.dart';
 import 'screens/auth/child_registration_screen.dart';
 import 'screens/badge/badge_showcase_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
+import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'theme/app_theme.dart';
 import 'providers/theme_provider.dart';
@@ -60,6 +61,11 @@ void main() async {
     );
     return;
   }
+
+  // ローカル保存（設定・進捗）。失敗してもアプリは起動を続ける
+  try {
+    await HiveService().initialize();
+  } catch (_) {}
 
   runApp(
     const ProviderScope(

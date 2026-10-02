@@ -9,8 +9,16 @@ import '../models/composition.dart';
 import '../models/home_challenge.dart';
 import '../models/badge.dart';
 
+/// GeijutsuModule が表示前に初期化する（独立アプリ時代は ProviderScope の
+/// override で注入していたが、統合アプリでは入れ子スコープを使わない）。
+SharedPreferences? geijutsuPrefs;
+
 final sharedPrefsProvider = Provider<SharedPreferences>((ref) {
-  throw UnimplementedError('SharedPreferences not initialized');
+  final prefs = geijutsuPrefs;
+  if (prefs == null) {
+    throw StateError('GeijutsuModule で SharedPreferences が未初期化です');
+  }
+  return prefs;
 });
 
 // ---- プロフィール管理 ----

@@ -69,6 +69,8 @@ class HomeScreen extends ConsumerWidget {
                     crossAxisCount: 2,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
+                    // 長いサブタイトル（例: スポーツ・防災・栄養）でも収まる高さ
+                    childAspectRatio: 0.78,
                   ),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

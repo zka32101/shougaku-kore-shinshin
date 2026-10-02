@@ -7,6 +7,12 @@ import '../models/report.dart';
 import 'logger_service.dart';
 
 class HiveService {
+  // 各 provider が HiveService() を直接生成するため、単一インスタンスにしないと
+  // 初期化したインスタンスと使うインスタンスが別物になる。
+  static final HiveService _instance = HiveService._internal();
+  factory HiveService() => _instance;
+  HiveService._internal();
+
   static const String storiesBox = 'stories';
   static const String progressBox = 'progress';
   static const String userBox = 'user';

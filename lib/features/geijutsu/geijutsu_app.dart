@@ -26,8 +26,8 @@ import 'theme/app_theme.dart';
 /// 小学コレ！芸術モジュール（小学コレ！心身に統合）
 ///
 /// 独立アプリだった頃の MaterialApp を入れ子の Navigator に置き換えたもの。
-/// 内側に専用の ProviderScope を持ち、SharedPreferences をここで注入する
-/// （統合アプリ側の main.dart を変更しなくて済むようにするため）。
+/// SharedPreferences はここで初期化して providers 側に渡す
+/// （入れ子の ProviderScope + override は Riverpod の依存宣言が必要になるため使わない）。
 class GeijutsuModule extends StatefulWidget {
   const GeijutsuModule({super.key});
 
@@ -103,18 +103,16 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
         if (prefs == null) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
-        return ProviderScope(
-          overrides: [sharedPrefsProvider.overrideWithValue(prefs)],
-          child: Theme(
-            data: buildAppTheme(),
-            // 芸術モジュール内で戻れるうちは内側を pop、トップなら道徳側へ戻る
-            child: NavigatorPopHandler(
-              onPop: () => _navKey.currentState?.maybePop(),
-              child: Navigator(
-                key: _navKey,
-                initialRoute: '/',
-                onGenerateRoute: _onGenerateRoute,
-              ),
+        geijutsuPrefs = prefs;
+        return Theme(
+          data: buildAppTheme(),
+          // 芸術モジュール内で戻れるうちは内側を pop、トップなら心身側へ戻る
+          child: NavigatorPopHandler(
+            onPop: () => _navKey.currentState?.maybePop(),
+            child: Navigator(
+              key: _navKey,
+              initialRoute: '/',
+              onGenerateRoute: _onGenerateRoute,
             ),
           ),
         );
