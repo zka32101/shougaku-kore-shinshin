@@ -25,7 +25,7 @@ class HelpScreen extends StatelessWidget {
           _FaqTile(
             question: 'アプリの目的は何ですか？',
             answer:
-                '「小学コレ！道徳」は、小学3〜4年生のお子さんが日常のジレンマを題材にした選択肢型ストーリーを通じて、'
+                '「小学コレ！心身」は、小学3〜4年生のお子さんが日常のジレンマを題材にした選択肢型ストーリーを通じて、'
                 '道徳的な判断力を楽しく育てるアプリです。お子さんの学習記録は月次レポートにまとめられ、'
                 '保護者の方が成長を確認できます。',
             iconPath: 'assets/images/icons/help_icon_purpose.png',

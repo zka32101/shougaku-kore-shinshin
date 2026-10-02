@@ -123,3 +123,6 @@ hs_err_pid*.mdmp
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# Android build settings must be tracked (useAndroidX etc.)
+!android/gradle.properties

@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.3.0
+  sdk: ^3.8.0
 
 dependencies:
   flutter:
@@ -17,19 +17,19 @@ dependencies:
 
   # State Management
   flutter_riverpod: ^2.4.0
-  riverpod_annotation: ^2.3.0
 
   # Shared Core (小学コレシリーズ共通)
   shared_core:
-    path: ../shared_core
+    git:
+      url: https://github.com/zka32101/shared_core.git
+      ref: main
 
   # Firebase
-  firebase_core: ^3.15.2
-  cloud_firestore: ^5.6.12
-  firebase_auth: ^5.5.4
-  firebase_analytics: ^11.6.0
-  firebase_messaging: ^15.2.10
-  google_sign_in: ^7.2.0
+  firebase_core: ^4.0.0
+  cloud_firestore: ^6.10.0
+  firebase_auth: ^6.7.0
+  firebase_analytics: ^12.0.0
+  firebase_messaging: ^16.7.0
   # flutter_local_notifications: (disabled for build - use FCM only)
 
   # HTTP & API
@@ -51,7 +51,7 @@ dependencies:
   flutter_tts: ^4.0.2
 
   # Charting (for radar chart in parent report)
-  fl_chart: ^1.2.0
+  fl_chart: ^0.70.2
 
   # Environment variables
   flutter_dotenv: ^6.0.1
@@ -67,6 +67,14 @@ dependencies:
   in_app_purchase_android: ^0.5.3
   in_app_purchase_storekit: ^0.4.13
 
+  # 体育・芸術モジュール（旧 taiku-kore / geijutsu-kore / literacy_core）
+  confetti: ^0.8.0
+  image_picker: ^1.0.8
+  http: ^1.1.0
+  uuid: ^4.5.1
+  path_provider: ^2.1.1
+  google_fonts: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -79,15 +87,13 @@ dev_dependencies:
 
   # Code Generation
   build_runner: ^2.4.0
-  riverpod_generator: ^2.3.0
-  analyzer: ^7.6.0
 
   # Test helpers
   path_provider_platform_interface: ^2.1.0
   plugin_platform_interface: ^2.1.0
   # mockito: ^5.8.0  # Temporarily removed for analyzer 8.0+ compatibility
-  fake_cloud_firestore: ^3.1.0
-  firebase_auth_mocks: ^0.14.0
+  fake_cloud_firestore: ^4.0.0
+  firebase_auth_mocks: ^0.15.0
 
 flutter:
   uses-material-design: true
@@ -95,6 +101,9 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
+    - assets/taiku/images/
+    - assets/taiku/images/characters/
+    - assets/taiku/audio/piano/
 
   # fonts:
   #   - family: NotoSansJP

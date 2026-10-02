@@ -21,7 +21,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     Future.delayed(const Duration(milliseconds: 1500), _runStartupFlow);
   }
 
-  /// 起動フロー: 認証確認 → JWT交換 → 子どもチェック → 適切な画面へ遷移
+  /// 起動フロー: 匿名認証 → JWT交換 → 子どもチェック → 適切な画面へ遷移
   Future<void> _runStartupFlow() async {
     if (!mounted || _navigated) return;
 
@@ -32,28 +32,21 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       return _runStartupFlow();
     }
 
-    final user = authState.asData?.value;
-    if (user == null) {
-      // 未ログイン → ログイン画面へ
-      _navigated = true;
-      if (mounted) Navigator.of(context).pushReplacementNamed('/login');
-      return;
-    }
+    // ログイン画面は無し: 未認証なら匿名サインインし、失敗してもゲストで続行する
+    var user = authState.asData?.value;
+    user ??= await ref.read(firebaseServiceProvider).signInAnonymously();
 
-    // Firebase ID トークンをバックエンド JWT に交換
     final api = ref.read(apiServiceProvider);
-    try {
-      final idToken = await user.getIdToken();
-      if (idToken != null) {
-        final result = await api.loginWithFirebase(idToken);
-        final jwt = result['accessToken'] as String?;
-        if (jwt != null) api.setAuthToken(jwt);
-      }
-    } catch (_) {
-      // JWT 取得失敗 → 再ログインを促す
-      _navigated = true;
-      if (mounted) Navigator.of(context).pushReplacementNamed('/login');
-      return;
+    if (user != null) {
+      // Firebase ID トークンをバックエンド JWT に交換（失敗してもゲストで続行）
+      try {
+        final idToken = await user.getIdToken();
+        if (idToken != null) {
+          final result = await api.loginWithFirebase(idToken);
+          final jwt = result['accessToken'] as String?;
+          if (jwt != null) api.setAuthToken(jwt);
+        }
+      } catch (_) {}
     }
 
     // 子どもプロフィールの存在を確認してルーティング
@@ -108,7 +101,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
             const SizedBox(height: 24),
             const Text(
-              '小学コレ！道徳',
+              '小学コレ！心身',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,

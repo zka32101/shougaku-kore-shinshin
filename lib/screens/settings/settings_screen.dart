@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, DailyActivityData, AccuracyTrendData;
+import 'package:shared_core/shared_core.dart' show AnalyticsDashboard;
 import '../../providers/audio_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -310,7 +310,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             onTap: () {
               showAboutDialog(
                 context: context,
-                applicationName: '小学コレ！道徳',
+                applicationName: '小学コレ！心身',
                 applicationVersion: '0.1.0',
               );
             },
@@ -326,48 +326,19 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               mode: LaunchMode.externalApplication,
             ),
           ),
-          const Divider(height: 0),
-          ListTile(
-            leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text(
-              'ログアウト',
-              style: TextStyle(color: Colors.red),
-            ),
-            onTap: () {
-              _showLogoutConfirmation(context, ref);
-            },
-          ),
               const SizedBox(height: 24),
             ],
           ),
           // Tab 2: 学習分析
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: AnalyticsDashboard(
-              userName: 'ユーザー',
-              totalQuestions: 0,
-              averageAccuracy: 0.0,
-              totalTimeSpent: Duration.zero,
-              dailyActivity: _generateDailyActivity(),
-              accuracyTrend: _generateAccuracyTrend(),
-            ),
-          ),
+          ref.watch(currentUserProvider).when(
+                data: (user) => user == null
+                    ? const Center(child: Text('ログインすると学習分析が表示されます'))
+                    : AnalyticsDashboard(userId: user.uid),
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(child: Text('学習分析を読み込めませんでした')),
+              ),
         ],
       ),
-    );
-  }
-
-  List<DailyActivityData> _generateDailyActivity() {
-    return List.generate(
-      7,
-      (index) => DailyActivityData(day: index + 1, questionsAnswered: 0),
-    );
-  }
-
-  List<AccuracyTrendData> _generateAccuracyTrend() {
-    return List.generate(
-      4,
-      (index) => AccuracyTrendData(week: index + 1, accuracy: 0.0),
     );
   }
 
@@ -391,36 +362,4 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
     }
   }
 
-  void _showLogoutConfirmation(BuildContext context, WidgetRef ref) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('ログアウト'),
-        content: const Text('ログアウトしますか？'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('キャンセル'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await ref.read(signOutProvider.future);
-              // ログアウト後にルートを /login にリセット
-              if (context.mounted) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login',
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text(
-              'ログアウト',
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

@@ -11,14 +11,10 @@ import 'screens/settings/avatar_selection_screen.dart';
 import 'screens/settings/avatar_shop_screen.dart';
 import 'screens/ranking/ranking_screen.dart';
 import 'screens/splash_screen.dart';
-import 'screens/auth/login_screen.dart';
 import 'screens/auth/child_registration_screen.dart';
-import 'screens/learning/piano_learning_screen.dart';
-import 'screens/learning/drawing_screen.dart';
-import 'screens/learning/physical_education_screen.dart';
-import 'screens/learning/color_learning_screen.dart';
 import 'screens/badge/badge_showcase_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
+import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'theme/app_theme.dart';
 import 'providers/theme_provider.dart';
@@ -52,7 +48,7 @@ void main() async {
     // Show error screen to user instead of crashing
     runApp(
       MaterialApp(
-        title: '小学コレ！道徳',
+        title: '小学コレ！心身',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF4CAF50),
@@ -65,6 +61,11 @@ void main() async {
     );
     return;
   }
+
+  // ローカル保存（設定・進捗）。失敗してもアプリは起動を続ける
+  try {
+    await HiveService().initialize();
+  } catch (_) {}
 
   runApp(
     const ProviderScope(
@@ -167,14 +168,13 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
     final brightness = ref.watch(brightnessProvider);
 
     return MaterialApp(
-      title: '小学コレ！道徳',
+      title: '小学コレ！心身',
       navigatorKey: navigatorKey,
       theme: lightTheme(),
       darkTheme: darkTheme(),
       themeMode: _themeModeToBrightness(brightness),
       home: const SplashScreen(),
       routes: {
-        '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/child-registration': (context) => const ChildRegistrationScreen(),
         '/trial_status': (context) => const TrialStatusScreen(),
@@ -184,10 +184,6 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
         '/ranking': (context) => const RankingScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/badge_showcase': (context) => const BadgeShowcaseScreen(),
-        '/piano': (context) => const PianoLearningScreen(),
-        '/drawing': (context) => const DrawingScreen(),
-        '/physical_education': (context) => const PhysicalEducationScreen(),
-        '/color_learning': (context) => const ColorLearningScreen(),
       },
     );
   }
