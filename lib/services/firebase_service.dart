@@ -49,6 +49,17 @@ class FirebaseService {
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
 
+  /// ログイン不要の匿名サインイン（他の小学コレ！アプリと同じ方式）。
+  /// 失敗してもアプリはゲストモードで動くので、null を返すだけにする。
+  Future<User?> signInAnonymously() async {
+    try {
+      final cred = await _auth.signInAnonymously();
+      return cred.user;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<User?> signInWithEmailPassword(String email, String password) async {
     // Validate input
     final emailError = validateEmail(email);

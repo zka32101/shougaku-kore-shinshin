@@ -38,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('小学コレ！道徳'),
+        title: const Text('小学コレ！心身'),
         backgroundColor: AppColors.bgSecondary,
         foregroundColor: AppColors.textPrimary,
         elevation: 0,

@@ -20,7 +20,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: const [
           _PolicyHeading(text: 'プライバシーポリシー'),
           _PolicyParagraph(
-            text: '当アプリ「小学コレ！道徳」（以下「本アプリ」）は、お子さんのプライバシー保護を最優先に運営しています。'
+            text: '当アプリ「小学コレ！心身」（以下「本アプリ」）は、お子さんのプライバシー保護を最優先に運営しています。'
                 '本ポリシーは、本アプリが収集する情報・利用目的・保護措置について説明します。',
           ),
 
@@ -230,7 +230,7 @@ class _PolicyFooter extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Text(
-        '制定日：2024年1月1日\n最終更新：2024年6月1日\n運営：小学コレ！道徳 開発チーム',
+        '制定日：2024年1月1日\n最終更新：2024年6月1日\n運営：小学コレ！心身 開発チーム',
         style: TextStyle(
           fontSize: 12,
           color: Color(0xFF888888),

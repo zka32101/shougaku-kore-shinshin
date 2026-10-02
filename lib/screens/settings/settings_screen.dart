@@ -310,7 +310,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             onTap: () {
               showAboutDialog(
                 context: context,
-                applicationName: '小学コレ！道徳',
+                applicationName: '小学コレ！心身',
                 applicationVersion: '0.1.0',
               );
             },
@@ -325,17 +325,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               Uri.parse('https://sites.google.com/view/yourwishapps'),
               mode: LaunchMode.externalApplication,
             ),
-          ),
-          const Divider(height: 0),
-          ListTile(
-            leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text(
-              'ログアウト',
-              style: TextStyle(color: Colors.red),
-            ),
-            onTap: () {
-              _showLogoutConfirmation(context, ref);
-            },
           ),
               const SizedBox(height: 24),
             ],
@@ -373,36 +362,4 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
     }
   }
 
-  void _showLogoutConfirmation(BuildContext context, WidgetRef ref) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('ログアウト'),
-        content: const Text('ログアウトしますか？'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('キャンセル'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await ref.read(signOutProvider.future);
-              // ログアウト後にルートを /login にリセット
-              if (context.mounted) {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/login',
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text(
-              'ログアウト',
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
