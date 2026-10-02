@@ -14,6 +14,7 @@ import 'package:shougaku_kore_doutoku/screens/story/story_learning_screen.dart';
 import 'package:shougaku_kore_doutoku/services/audio_service.dart';
 import '../helpers/fake_path_provider.dart';
 import '../helpers/hive_test_helper.dart';
+import 'package:shougaku_kore_doutoku/providers/quiz_completion_provider.dart';
 
 // ─── No-op AudioService ──────────────────────────────────────────────────────
 
@@ -113,15 +114,8 @@ void main() {
   tearDownAll(() async {
     await disposeHiveForTest(hiveTestDir);
   });
-  setUpAll(() async {
+  setUpAll(() {
     PathProviderPlatform.instance = FakePathProvider();
-    await Hive.initFlutter();
-  });
-
-  tearDownAll(() async {
-    try {
-      await Hive.close();
-    } catch (_) {}
   });
 
   group('StoryLearningScreen', () {
@@ -135,6 +129,10 @@ void main() {
             audioServiceProvider.overrideWith((ref) => _NoOpAudioService()),
             storyDetailProvider.overrideWith(
               (ref, _) => completer.future,
+            ),
+            // クイズ開始(実HTTP)を走らせない: 完了しない Future にしておく
+            quizStartProvider.overrideWith(
+              (ref, _) => Completer<String>().future,
             ),
           ],
           child: const MaterialApp(

@@ -57,7 +57,11 @@ void main() {
       _setTallViewport(tester);
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
-      expect(find.text('設定'), findsOneWidget);
+      // AppBar のタイトルと「設定」タブの両方に出るので、AppBar 内に限定して確認
+      expect(
+        find.descendant(of: find.byType(AppBar), matching: find.text('設定')),
+        findsWidgets,
+      );
     });
 
     testWidgets('shows プロフィール section header', (tester) async {
@@ -158,11 +162,11 @@ void main() {
       expect(find.text('プライバシーポリシー'), findsOneWidget);
     });
 
-    testWidgets('shows ログアウト tile', (tester) async {
+    testWidgets('does not show a logout tile (login was removed)', (tester) async {
       _setTallViewport(tester);
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
-      expect(find.text('ログアウト'), findsOneWidget);
+      expect(find.text('ログアウト'), findsNothing);
     });
 
     testWidgets('shows switch widgets for sound toggles', (tester) async {
@@ -171,16 +175,6 @@ void main() {
       await tester.pumpAndSettle();
       // At minimum two Switch widgets: 効果音 and ナレーション (and デイリーリマインダー/レポート通知)
       expect(find.byType(Switch), findsWidgets);
-    });
-
-    testWidgets('tapping ログアウト shows confirmation dialog', (tester) async {
-      _setTallViewport(tester);
-      await tester.pumpWidget(_wrap());
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('ログアウト'));
-      await tester.pumpAndSettle();
-      expect(find.text('ログアウトしますか？'), findsOneWidget);
-      expect(find.text('キャンセル'), findsOneWidget);
     });
   });
 }
