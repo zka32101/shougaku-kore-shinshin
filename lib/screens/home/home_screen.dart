@@ -13,7 +13,7 @@ import '../library/library_screen.dart';
 import '../report/report_screen.dart';
 import '../learning/piano_learning_screen.dart';
 import '../learning/drawing_screen.dart';
-import '../learning/physical_education_screen.dart';
+import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../learning/color_learning_screen.dart';
 import '../badge/badge_showcase_screen.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
       (icon: '⚙️', title: '設定', subtitle: 'アプリ設定', screen: const SettingsScreen()),
       (icon: '🎹', title: 'ピアノ', subtitle: '音の学習', screen: const PianoLearningScreen()),
       (icon: '🎨', title: 'お絵かき', subtitle: '創意表現', screen: const DrawingScreen()),
-      (icon: '⛹️', title: '体育', subtitle: '運動の学習', screen: const PhysicalEducationScreen()),
+      (icon: '⛹️', title: '体育・健康', subtitle: 'スポーツ・防災・栄養', screen: const TaikuModule()),
       (icon: '🎨', title: '色選び', subtitle: '色の学習', screen: const ColorLearningScreen()),
       (icon: '✅', title: 'できたことチェック', subtitle: '成長を確認', screen: const AchievementChecklistScreen()),
       (icon: '📝', title: 'きょうのきろく', subtitle: '日々の取り組み', screen: const DailyRecordScreen()),

@@ -68,6 +68,14 @@ dependencies:
   in_app_purchase_android: ^0.5.3
   in_app_purchase_storekit: ^0.4.13
 
+  # 体育・芸術モジュール（旧 taiku-kore / geijutsu-kore / literacy_core）
+  confetti: ^0.8.0
+  image_picker: ^1.0.8
+  http: ^1.1.0
+  uuid: ^4.5.1
+  path_provider: ^2.1.1
+  google_fonts: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -94,6 +102,9 @@ flutter:
   assets:
     - assets/images/
     - assets/sounds/
+    - assets/taiku/images/
+    - assets/taiku/images/characters/
+    - assets/taiku/audio/piano/
 
   # fonts:
   #   - family: NotoSansJP
