@@ -13,10 +13,6 @@ import 'screens/ranking/ranking_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/child_registration_screen.dart';
-import 'screens/learning/piano_learning_screen.dart';
-import 'screens/learning/drawing_screen.dart';
-import 'screens/learning/physical_education_screen.dart';
-import 'screens/learning/color_learning_screen.dart';
 import 'screens/badge/badge_showcase_screen.dart';
 import 'screens/dashboard/dashboard_screen.dart';
 import 'services/logger_service.dart';
@@ -184,10 +180,6 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
         '/ranking': (context) => const RankingScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/badge_showcase': (context) => const BadgeShowcaseScreen(),
-        '/piano': (context) => const PianoLearningScreen(),
-        '/drawing': (context) => const DrawingScreen(),
-        '/physical_education': (context) => const PhysicalEducationScreen(),
-        '/color_learning': (context) => const ColorLearningScreen(),
       },
     );
   }
