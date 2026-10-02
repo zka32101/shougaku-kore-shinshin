@@ -74,14 +74,14 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
 
   Widget _buildStep() {
     switch (_step) {
-      case 0: return _SoundSelectStep();
-      case 1: return _QuizStep();
-      case 2: return _ResultStep();
+      case 0: return _soundSelectStep();
+      case 1: return _quizStep();
+      case 2: return _resultStep();
       default: return const SizedBox();
     }
   }
 
-  Widget _SoundSelectStep() {
+  Widget _soundSelectStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -151,7 +151,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
     );
   }
 
-  Widget _QuizStep() {
+  Widget _quizStep() {
     final qIdx = _quizAnswers.length;
     if (qIdx >= _quizItems.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _step = 2));
@@ -193,7 +193,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
     );
   }
 
-  Widget _ResultStep() {
+  Widget _resultStep() {
     // タイプ集計
     final Map<String, int> typeCounts = {};
     for (final a in _quizAnswers) {

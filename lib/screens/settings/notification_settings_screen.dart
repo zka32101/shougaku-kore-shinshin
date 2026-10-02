@@ -6,8 +6,6 @@ import '../../providers/auth_provider.dart';
 
 const _primaryColor = Color(0xFF9B59B6);
 const _bgColor = Color(0xFFF5F5F5);
-const _cardColor = Color(0xFFFFFFFF);
-const _textPrimary = Color(0xFF333333);
 const _textSecondary = Color(0xFF999999);
 
 class NotificationSettingsScreen extends ConsumerStatefulWidget {
@@ -85,7 +83,6 @@ class _NotificationSettingsScreenState
   }
 
   void _showTimePicker() async {
-    final now = DateTime.now();
     final timeParts = _prefs.emailTime.split(':');
     final initialTime = TimeOfDay(
       hour: int.tryParse(timeParts[0]) ?? 18,

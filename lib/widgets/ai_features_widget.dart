@@ -282,6 +282,7 @@ class _CreationInputWidgetState extends ConsumerState<CreationInputWidget> {
         _isSubmitting = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() => _isSubmitting = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('エラー: $e')),

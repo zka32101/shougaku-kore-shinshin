@@ -54,14 +54,14 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
 
   Widget _buildStep() {
     switch (_step) {
-      case 0: return _ColorPickStep();
-      case 1: return _ReasonStep();
-      case 2: return _ResultStep();
+      case 0: return _colorPickStep();
+      case 1: return _reasonStep();
+      case 2: return _resultStep();
       default: return const SizedBox();
     }
   }
 
-  Widget _ColorPickStep() {
+  Widget _colorPickStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -105,7 +105,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
     );
   }
 
-  Widget _ReasonStep() {
+  Widget _reasonStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -184,7 +184,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
     );
   }
 
-  Widget _ResultStep() {
+  Widget _resultStep() {
     // 色傾向を計算
     int warmCount = 0, coolCount = 0, neutralCount = 0;
     for (final v in _selectedColors.values) {

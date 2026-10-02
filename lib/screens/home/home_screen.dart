@@ -126,7 +126,6 @@ class _MenuCard extends ConsumerStatefulWidget {
 class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -148,18 +147,15 @@ class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderS
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
     _handleTap();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 

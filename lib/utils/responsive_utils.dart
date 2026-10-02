@@ -89,7 +89,6 @@ class ResponsiveUtils {
     double maxWidth = 1200,
     EdgeInsets? padding,
   }) {
-    final screenSize = getScreenSize(context);
     final defaultPadding = padding ?? ResponsiveUtils.getResponsivePadding(context);
 
     return Center(

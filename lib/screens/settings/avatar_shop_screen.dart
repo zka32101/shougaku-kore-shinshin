@@ -234,6 +234,8 @@ class AvatarShopScreen extends ConsumerWidget {
 
     // Simulate purchase completion
     Future.delayed(const Duration(seconds: 2), () {
+      // 2 秒の間に画面が閉じられた場合は何もしない
+      if (!context.mounted) return;
       Navigator.of(context).pop();
       // Here we would call the actual purchase provider
       // and update the user's avatar info

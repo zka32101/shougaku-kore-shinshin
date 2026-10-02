@@ -160,6 +160,9 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
         ElevatedButton(
           onPressed: () async {
             final apiService = ref.read(apiServiceProvider);
+            // await の後で BuildContext を使わないよう、先に取得しておく
+            final navigator = Navigator.of(context);
+            final messenger = ScaffoldMessenger.of(context);
             try {
               await apiService.recordKindness(
                 widget.userId,
@@ -167,13 +170,16 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
                 _selectedPerson,
                 null,
               );
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              navigator.pop();
+              messenger.showSnackBar(
                 const SnackBar(content: Text('きろく しました！')),
               );
-              ref.refresh(currentKindnessMissionProvider(widget.userId));
+              // 最新のミッション状態を取り直す（結果は使わない）
+              ref.invalidate(currentKindnessMissionProvider(widget.userId));
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              messenger.showSnackBar(
                 SnackBar(content: Text('エラー: $e')),
               );
             }

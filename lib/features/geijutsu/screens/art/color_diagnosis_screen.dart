@@ -75,19 +75,19 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
   Widget _buildStep() {
     switch (_step) {
       case 0:
-        return _ColorSelectStep();
+        return _colorSelectStep();
       case 1:
-        return _ReasonStep();
+        return _reasonStep();
       case 2:
-        return _SceneStep();
+        return _sceneStep();
       case 3:
-        return _ResultStep();
+        return _resultStep();
       default:
         return const SizedBox();
     }
   }
 
-  Widget _ColorSelectStep() {
+  Widget _colorSelectStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -162,7 +162,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
     );
   }
 
-  Widget _ReasonStep() {
+  Widget _reasonStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -224,7 +224,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
     );
   }
 
-  Widget _SceneStep() {
+  Widget _sceneStep() {
     final qIdx = _sceneAnswers.length;
     if (qIdx >= _scenes.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _step = 3));
@@ -273,7 +273,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
     );
   }
 
-  Widget _ResultStep() {
+  Widget _resultStep() {
     // スコア計算
     final warmVotes = _sceneAnswers.where((a) => a == 0).length;
     final coolVotes = _sceneAnswers.where((a) => a == 2 || a == 3).length;

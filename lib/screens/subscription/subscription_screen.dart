@@ -18,7 +18,6 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
   Widget build(BuildContext context) {
     final monthlyProduct = ref.watch(monthlyProductProvider);
     final yearlyProduct = ref.watch(yearlyProductProvider);
-    final analyticsService = AnalyticsService();
 
     return Scaffold(
       appBar: AppBar(

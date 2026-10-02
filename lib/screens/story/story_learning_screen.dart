@@ -1122,7 +1122,6 @@ class _StoryActionButtonState extends State<_StoryActionButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -1145,13 +1144,11 @@ class _StoryActionButtonState extends State<_StoryActionButton>
 
   void _onTapDown(TapDownDetails details) {
     if (!widget.isLoading) {
-      setState(() => _isPressed = true);
       _controller.forward();
     }
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
     if (!widget.isLoading && widget.onPressed != null) {
       widget.onPressed!();
@@ -1159,7 +1156,6 @@ class _StoryActionButtonState extends State<_StoryActionButton>
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 

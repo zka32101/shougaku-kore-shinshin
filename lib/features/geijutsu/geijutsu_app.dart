@@ -108,7 +108,7 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
           data: buildAppTheme(),
           // 芸術モジュール内で戻れるうちは内側を pop、トップなら心身側へ戻る
           child: NavigatorPopHandler(
-            onPop: () => _navKey.currentState?.maybePop(),
+            onPopWithResult: (_) => _navKey.currentState?.maybePop(),
             child: Navigator(
               key: _navKey,
               initialRoute: '/',
