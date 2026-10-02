@@ -133,14 +133,18 @@ class _AppBar extends StatelessWidget {
         titlePadding: const EdgeInsets.only(left: 16, bottom: 14, right: 16),
         title: Row(
           children: [
-            const Text(
-              '🏃 体験・体育コレ！',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18),
+            // 拡大表示(FlexibleSpaceBar が1.5倍)でも横幅を超えないよう、残り幅で省略表示
+            const Expanded(
+              child: Text(
+                '🏃 体験・体育コレ！',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 18),
+              ),
             ),
-            const Spacer(),
             if (streak.currentStreak > 0)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
