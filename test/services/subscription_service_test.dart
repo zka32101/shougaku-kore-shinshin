@@ -8,12 +8,10 @@ import '../helpers/firebase_test_helper.dart';
 
 void main() {
   group('SubscriptionService', () {
-    late SubscriptionService subscriptionService;
-
     setUpAll(setupFirebaseForTest);
 
-    setUp(() {
-      subscriptionService = SubscriptionService();
+    test('can be constructed once Firebase is initialized', () {
+      expect(SubscriptionService(), isA<SubscriptionService>());
     });
 
     test('SubscriptionInfo.isInTrial returns true when trial is active', () {

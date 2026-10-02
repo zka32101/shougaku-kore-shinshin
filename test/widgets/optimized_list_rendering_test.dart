@@ -88,8 +88,9 @@ void main() {
         'large list scrolling is smooth',
         (WidgetTester tester) async {
           // Set screen size for predictable scrolling
-          tester.binding.window.physicalSizeTestValue = const Size(400, 600);
-          addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+          tester.view.physicalSize = const Size(400, 600);
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(tester.view.reset);
 
           await tester.pumpWidget(
             MaterialApp(
