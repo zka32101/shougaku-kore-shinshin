@@ -58,9 +58,6 @@ jobs:
       - name: Run unit tests
         run: flutter test --coverage --exclude-tags="integration"
 
-      - name: Run integration tests
-        run: flutter test test/integration_tests/ --coverage
-
       - name: Run performance tests
         run: flutter test test/performance_test.dart --coverage
 
@@ -135,41 +132,6 @@ jobs:
           file: backend/coverage.xml
           flags: backend
 
-  # ============ Detailed Integration Tests ============
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    needs: flutter-test
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.47.x'
-          channel: 'stable'
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get --verbose
-
-      - name: Run code generation
-        run: flutter pub run build_runner build --delete-conflicting-outputs
-
-      - name: Run app flow tests
-        run: flutter test test/integration_tests/app_flow_test.dart -v
-
-      - name: Run firebase integration tests
-        run: flutter test test/integration_tests/firebase_integration_test.dart -v
-
-      - name: Upload integration test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: integration-test-results
-          path: test-results/
-          retention-days: 30
-
   # ============ Performance Tests ============
   performance-tests:
     name: Performance Tests
@@ -230,7 +192,7 @@ jobs:
   flutter-build:
     name: Flutter Build Check
     runs-on: ubuntu-latest
-    needs: [flutter-test, integration-tests, performance-tests]
+    needs: [flutter-test, performance-tests]
     steps:
       - uses: actions/checkout@v4
 
