@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:shougaku_kore_doutoku/providers/story_provider.dart';
 import 'package:shougaku_kore_doutoku/screens/story/story_learning_screen.dart';
 import 'package:shougaku_kore_doutoku/services/audio_service.dart';
 import '../helpers/fake_path_provider.dart';
+import '../helpers/hive_test_helper.dart';
 
 // ─── No-op AudioService ──────────────────────────────────────────────────────
 
@@ -104,6 +106,13 @@ Widget _wrap({Story? storyOverride, bool storyError = false}) {
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
+  late Directory hiveTestDir;
+  setUpAll(() async {
+    hiveTestDir = await initHiveForTest();
+  });
+  tearDownAll(() async {
+    await disposeHiveForTest(hiveTestDir);
+  });
   setUpAll(() async {
     PathProviderPlatform.instance = FakePathProvider();
     await Hive.initFlutter();

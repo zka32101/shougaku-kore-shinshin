@@ -1,10 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shougaku_kore_doutoku/services/avatar_service.dart';
 import 'package:shougaku_kore_doutoku/models/avatar.dart';
+import '../helpers/firebase_test_helper.dart';
 
 void main() {
   group('AvatarService', () {
     late AvatarService avatarService;
+
+    setUpAll(setupFirebaseForTest);
 
     setUp(() {
       avatarService = AvatarService();

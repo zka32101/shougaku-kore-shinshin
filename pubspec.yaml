@@ -90,6 +90,7 @@ dev_dependencies:
 
   # Test helpers
   path_provider_platform_interface: ^2.1.0
+  firebase_core_platform_interface: ^8.1.1
   plugin_platform_interface: ^2.1.0
   mockito: ^5.4.4
   fake_cloud_firestore: ^4.0.0

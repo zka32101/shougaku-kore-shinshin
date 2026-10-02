@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:shougaku_kore_doutoku/providers/auth_provider.dart';
 import 'package:shougaku_kore_doutoku/screens/settings/settings_screen.dart';
 import '../helpers/fake_path_provider.dart';
+import '../helpers/hive_test_helper.dart';
 
 // ─── Helper ──────────────────────────────────────────────────────────────────
 
@@ -29,6 +31,13 @@ void _setTallViewport(WidgetTester tester) {
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
+  late Directory hiveTestDir;
+  setUpAll(() async {
+    hiveTestDir = await initHiveForTest();
+  });
+  tearDownAll(() async {
+    await disposeHiveForTest(hiveTestDir);
+  });
   setUpAll(() async {
     dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
