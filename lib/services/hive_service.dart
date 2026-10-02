@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'dart:developer' as developer;
@@ -26,11 +27,23 @@ class HiveService {
 
   static bool _initialized = false;
 
-  Future<void> initialize() async {
+  /// テスト用: 状態を未初期化に戻す（static で状態を持つため、テスト間で必要）
+  @visibleForTesting
+  static void resetForTesting() {
+    _initialized = false;
+  }
+
+  /// [path] を指定すると、そのディレクトリで Hive を初期化する（テスト用）。
+  /// 省略時は Flutter 標準の保存先（Hive.initFlutter）を使う。
+  Future<void> initialize({String? path}) async {
     if (_initialized) return;
 
     try {
-      await Hive.initFlutter();
+      if (path != null) {
+        Hive.init(path);
+      } else {
+        await Hive.initFlutter();
+      }
 
       // Open all boxes once during initialization
       _storiesBoxInstance = await Hive.openBox<String>(storiesBox);

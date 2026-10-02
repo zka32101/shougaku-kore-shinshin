@@ -41,13 +41,11 @@ void main() {
 
     test('UpdateRankingSettingsParams equality', () {
       final params1 = UpdateRankingSettingsParams(
-        userId: 'user1',
         isNamePublic: true,
         participateInRanking: true,
       );
 
       final params2 = UpdateRankingSettingsParams(
-        userId: 'user1',
         isNamePublic: true,
         participateInRanking: true,
       );
@@ -57,13 +55,11 @@ void main() {
 
     test('UpdateRankingSettingsParams with different settings are not equal', () {
       final params1 = UpdateRankingSettingsParams(
-        userId: 'user1',
         isNamePublic: true,
         participateInRanking: true,
       );
 
       final params2 = UpdateRankingSettingsParams(
-        userId: 'user1',
         isNamePublic: false, // Different
         participateInRanking: true,
       );
@@ -113,14 +109,12 @@ void main() {
 
     test('Ranking settings can be updated independently', () {
       final initial = UpdateRankingSettingsParams(
-        userId: 'user1',
         isNamePublic: false,
         participateInRanking: true,
       );
 
       // Simulate toggling name disclosure
       final updated = UpdateRankingSettingsParams(
-        userId: initial.userId,
         isNamePublic: !initial.isNamePublic,
         participateInRanking: initial.participateInRanking,
       );
@@ -130,22 +124,26 @@ void main() {
       expect(updated.participateInRanking, equals(initial.participateInRanking));
     });
 
-    test('Different users have different update parameters', () {
-      final user1 = UpdateRankingSettingsParams(
-        userId: 'user1',
+    test('Different settings combinations are not equal', () {
+      final publicParticipating = UpdateRankingSettingsParams(
         isNamePublic: true,
         participateInRanking: true,
       );
 
-      final user2 = UpdateRankingSettingsParams(
-        userId: 'user2',
+      final privateOptedOut = UpdateRankingSettingsParams(
         isNamePublic: false,
         participateInRanking: false,
       );
 
-      expect(user1.userId, isNot(equals(user2.userId)));
-      expect(user1.isNamePublic, isNot(equals(user2.isNamePublic)));
-      expect(user1.participateInRanking, isNot(equals(user2.participateInRanking)));
+      expect(publicParticipating, isNot(equals(privateOptedOut)));
+      expect(
+        publicParticipating.isNamePublic,
+        isNot(equals(privateOptedOut.isNamePublic)),
+      );
+      expect(
+        publicParticipating.participateInRanking,
+        isNot(equals(privateOptedOut.participateInRanking)),
+      );
     });
   });
 
@@ -178,14 +176,14 @@ void main() {
       expect(params.limit, equals(10000));
     });
 
-    test('UpdateRankingSettingsParams with empty userId', () {
+    test('UpdateRankingSettingsParams allows opting out while name is public', () {
       final params = UpdateRankingSettingsParams(
-        userId: '', // Empty userId
         isNamePublic: true,
-        participateInRanking: true,
+        participateInRanking: false,
       );
 
-      expect(params.userId, isEmpty);
+      expect(params.isNamePublic, isTrue);
+      expect(params.participateInRanking, isFalse);
     });
   });
 

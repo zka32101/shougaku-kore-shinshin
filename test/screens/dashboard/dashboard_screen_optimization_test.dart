@@ -33,7 +33,7 @@ void main() {
           expect(buildCount, 1, reason: 'Widget should build once initially');
 
           // Change unrelated property (title)
-          addTearDown(tester.binding.window.physicalSizeTestValue = null);
+          addTearDown(tester.view.resetPhysicalSize);
           await tester.pumpWidget(
             ProviderScope(
               child: MaterialApp(
@@ -248,7 +248,7 @@ void main() {
           expect(find.text('John'), findsOneWidget);
 
           // Update the selected property
-          tester.binding.window.physicalSizeTestValue = null;
+          tester.view.resetPhysicalSize();
 
           // Note: In actual app, would update via provider
           // This test demonstrates the pattern is correct

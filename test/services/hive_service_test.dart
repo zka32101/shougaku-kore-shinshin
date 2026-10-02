@@ -37,8 +37,9 @@ void main() {
   setUp(() async {
     // Use a unique directory per test run to avoid stale data
     testDir = await Directory.systemTemp.createTemp('hive_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
     hiveService = HiveService();
+    await hiveService.initialize(path: testDir.path);
   });
 
   tearDown(() async {

@@ -30,7 +30,7 @@ void _setTallViewport(WidgetTester tester) {
 
 void main() {
   setUpAll(() async {
-    dotenv.loadFromString(envString: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
     await Hive.initFlutter();
   });

@@ -157,7 +157,7 @@ void main() {
           await tester.tap(find.byType(ElevatedButton));
 
           // Animation should play smoothly
-          await tester.pumpFrames(find.byType(AnimatedContainer), Duration(milliseconds: 500));
+          await tester.pump(const Duration(milliseconds: 500));
 
           stopwatch.stop();
 

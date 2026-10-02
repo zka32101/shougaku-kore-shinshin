@@ -320,7 +320,7 @@ void main() {
         ApiPerformanceMonitor.recordRequestDuration('fetch_stories', duration);
 
         final stats = ApiPerformanceMonitor.getStats();
-        expect(stats, containsKey('fetch_stories'));
+        expect(stats.containsKey('fetch_stories'), isTrue);
         expect(stats['fetch_stories']?['count'], 1);
         expect(stats['fetch_stories']?['averageDuration'], 150);
       });

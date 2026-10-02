@@ -102,7 +102,7 @@ void main() {
   late Directory testDir;
 
   setUpAll(() {
-    dotenv.loadFromString(envString: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 

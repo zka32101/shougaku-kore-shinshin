@@ -507,7 +507,7 @@ class _MockStoryWithProgress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Story Progress'),
-            LinearProgressIndicator(
+            Slider(
               value: 0.5,
               onChanged: (_) {
                 onProgressUpdate();
