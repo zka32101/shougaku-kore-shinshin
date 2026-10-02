@@ -507,11 +507,11 @@ class _MockStoryWithProgress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Story Progress'),
-            Slider(
-              value: 0.5,
-              onChanged: (_) {
-                onProgressUpdate();
-              },
+            const LinearProgressIndicator(value: 0.5),
+            // ページを進めると進捗が更新される
+            IconButton(
+              icon: const Icon(Icons.arrow_forward),
+              onPressed: onProgressUpdate,
             ),
           ],
         ),
