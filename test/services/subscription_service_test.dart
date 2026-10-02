@@ -52,7 +52,8 @@ void main() {
 
     test('SubscriptionInfo.daysRemainingInTrial returns correct value', () {
       final now = DateTime.now();
-      final futureDate = now.add(const Duration(days: 7));
+      // inDays は切り捨てなので、テスト実行中の経過時間で 6 日にならないよう 1 時間の余裕を持たせる
+      final futureDate = now.add(const Duration(days: 7, hours: 1));
 
       final subscription = SubscriptionInfo(
         status: 'trial',
@@ -127,8 +128,8 @@ void main() {
       final json = {
         'status': 'trial',
         'plan': 'trial',
-        'trialStartDate': now,
-        'trialEndDate': futureDate,
+        'trialStartDate': now.toIso8601String(),
+        'trialEndDate': futureDate.toIso8601String(),
         'subscriptionStartDate': null,
         'subscriptionEndDate': null,
         'planType': null,
