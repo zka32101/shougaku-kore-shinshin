@@ -25,10 +25,6 @@ class _FreePianoScreenState extends ConsumerState<FreePianoScreen> {
     'B': Color(0xFFE91E8C),
   };
 
-  static const _whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-  // black key positions: 0=C#, 1=D#, skip, 3=F#, 4=G#, 5=A#, skip
-  static const _blackKeyOffsets = {1: 'C#', 2: 'D#', 4: 'F#', 5: 'G#', 6: 'A#'};
-
   void _pressKey(String note) {
     setState(() {
       _pressedKeys.add(note);
@@ -50,11 +46,6 @@ class _FreePianoScreenState extends ConsumerState<FreePianoScreen> {
   }
 
   void _clearNotes() => setState(() => _playedNotes.clear());
-
-  Color _keyColor(String note) {
-    final base = note.replaceAll('#', '');
-    return _noteColors[base] ?? kMusicColor;
-  }
 
   @override
   Widget build(BuildContext context) {

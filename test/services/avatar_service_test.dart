@@ -56,14 +56,14 @@ void main() {
       expect(purchasableAvatars.every((a) => a.isPurchasable), isTrue);
     });
 
-    test('Avatar ids match DEFAULT_AVATAR_IDS constant', () async {
+    test('Avatar ids match defaultAvatarIds constant', () async {
       final avatars = await avatarService.getAllAvatars();
       final defaultAvatars = avatars.where((a) => a.isDefault).toList();
       final defaultIds = defaultAvatars.map((a) => a.id).toList();
 
       expect(
         defaultIds,
-        AvatarService.DEFAULT_AVATAR_IDS,
+        AvatarService.defaultAvatarIds,
       );
     });
 

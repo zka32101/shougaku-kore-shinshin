@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/ranking.dart';
 import 'logger_service.dart';
 import 'api_service.dart';
@@ -8,11 +7,9 @@ import 'api_service.dart';
 /// ユーザーのランキング情報とプライバシー設定を管理
 class RankingService {
   late final FirebaseFirestore _firestore;
-  late final FirebaseAuth _auth;
 
   RankingService() {
     _firestore = FirebaseFirestore.instance;
-    _auth = FirebaseAuth.instance;
   }
 
   /// ランキング設定を初期化
@@ -297,8 +294,6 @@ class RankingService {
         return 'rankings/virtues/respect';
       case RankingType.virtueCooperation:
         return 'rankings/virtues/cooperation';
-      default:
-        throw ArgumentError('Unknown ranking type: $type');
     }
   }
 

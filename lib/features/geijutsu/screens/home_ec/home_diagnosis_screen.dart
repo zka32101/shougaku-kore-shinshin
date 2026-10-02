@@ -145,14 +145,16 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
           ),
           const SizedBox(height: 12),
           Expanded(
-            child: ListView.builder(
-              itemCount: _reasons.length,
-              itemBuilder: (ctx, i) => RadioListTile<String>(
-                value: _reasons[i],
-                groupValue: _favoriteColorReason,
-                onChanged: (v) => setState(() => _favoriteColorReason = v!),
-                title: Text(_reasons[i]),
-                activeColor: kHomeEcColor,
+            child: RadioGroup<String>(
+              groupValue: _favoriteColorReason,
+              onChanged: (v) => setState(() => _favoriteColorReason = v!),
+              child: ListView.builder(
+                itemCount: _reasons.length,
+                itemBuilder: (ctx, i) => RadioListTile<String>(
+                  value: _reasons[i],
+                  title: Text(_reasons[i]),
+                  activeColor: kHomeEcColor,
+                ),
               ),
             ),
           ),
@@ -191,8 +193,11 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
       final idx = int.tryParse(v) ?? 0;
       if (idx < 3) {
         warmCount++;
-      } else if (idx < 6 || idx >= 9) neutralCount++;
-      else coolCount++;
+      } else if (idx < 6 || idx >= 9) {
+        neutralCount++;
+      } else {
+        coolCount++;
+      }
     }
     final total = warmCount + coolCount + neutralCount;
     final warmPct = total > 0 ? (warmCount / total * 100).round() : 33;

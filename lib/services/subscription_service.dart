@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart';
 import 'logger_service.dart';
 
 class SubscriptionService {
   late final FirebaseFirestore _firestore;
-  late final FirebaseAuth _auth;
 
   SubscriptionService() {
     _firestore = FirebaseFirestore.instance;
-    _auth = FirebaseAuth.instance;
   }
 
   /// Initialize trial for a new user

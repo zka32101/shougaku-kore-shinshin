@@ -51,7 +51,6 @@ class AnimatedShake extends StatefulWidget {
 class _AnimatedShakeState extends State<AnimatedShake>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _offsetAnimation;
 
   @override
   void initState() {
@@ -62,9 +61,6 @@ class _AnimatedShakeState extends State<AnimatedShake>
       vsync: this,
     );
 
-    // Create shake animation using a custom Tween
-    _offsetAnimation = _buildShakeAnimation();
-
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         widget.onAnimationComplete?.call();
@@ -73,14 +69,6 @@ class _AnimatedShakeState extends State<AnimatedShake>
 
     // Start animation immediately
     _controller.forward();
-  }
-
-  Animation<double> _buildShakeAnimation() {
-    // Create a sequence of offsets for shake effect
-    // Oscillate between -distance and +distance
-    return Tween<double>(begin: 0, end: 0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
   }
 
   @override

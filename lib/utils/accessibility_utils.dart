@@ -63,7 +63,8 @@ class AccessibilityUtils {
     String message, {
     Duration duration = const Duration(milliseconds: 1000),
   }) {
-    SemanticsService.announce(
+    SemanticsService.sendAnnouncement(
+      View.of(context),
       message,
       TextDirection.ltr,
     );
