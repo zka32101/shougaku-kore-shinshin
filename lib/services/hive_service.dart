@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'dart:developer' as developer;
@@ -7,12 +8,6 @@ import '../models/report.dart';
 import 'logger_service.dart';
 
 class HiveService {
-  // 各 provider が HiveService() を直接生成するため、単一インスタンスにしないと
-  // 初期化したインスタンスと使うインスタンスが別物になる。
-  static final HiveService _instance = HiveService._internal();
-  factory HiveService() => _instance;
-  HiveService._internal();
-
   static const String storiesBox = 'stories';
   static const String progressBox = 'progress';
   static const String userBox = 'user';
@@ -20,21 +15,35 @@ class HiveService {
   static const String pendingSyncBox = 'pending_sync';
   static const String settingsBox = 'settings';
 
-  // Cached box instances to prevent race conditions
-  late Box<String> _storiesBoxInstance;
-  late Box<String> _progressBoxInstance;
-  late Box<String> _userBoxInstance;
-  late Box<String> _reportsBoxInstance;
-  late Box<String> _pendingSyncBoxInstance;
-  late Box<dynamic> _settingsBoxInstance;
+  // 各 provider が HiveService() を直接生成するため、状態は static に持つ
+  // （インスタンスごとに持つと、初期化したものと使うものが別物になる）。
+  // コンストラクタは通常のままにして、テストで継承して差し替えられるようにする。
+  static late Box<String> _storiesBoxInstance;
+  static late Box<String> _progressBoxInstance;
+  static late Box<String> _userBoxInstance;
+  static late Box<String> _reportsBoxInstance;
+  static late Box<String> _pendingSyncBoxInstance;
+  static late Box<dynamic> _settingsBoxInstance;
 
-  bool _initialized = false;
+  static bool _initialized = false;
 
-  Future<void> initialize() async {
+  /// テスト用: 状態を未初期化に戻す（static で状態を持つため、テスト間で必要）
+  @visibleForTesting
+  static void resetForTesting() {
+    _initialized = false;
+  }
+
+  /// [path] を指定すると、そのディレクトリで Hive を初期化する（テスト用）。
+  /// 省略時は Flutter 標準の保存先（Hive.initFlutter）を使う。
+  Future<void> initialize({String? path}) async {
     if (_initialized) return;
 
     try {
-      await Hive.initFlutter();
+      if (path != null) {
+        Hive.init(path);
+      } else {
+        await Hive.initFlutter();
+      }
 
       // Open all boxes once during initialization
       _storiesBoxInstance = await Hive.openBox<String>(storiesBox);

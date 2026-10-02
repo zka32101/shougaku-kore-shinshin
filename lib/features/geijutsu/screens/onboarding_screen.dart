@@ -89,7 +89,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: avatar == e
-                              ? kPrimaryColor.withOpacity(0.2)
+                              ? kPrimaryColor.withValues(alpha: 0.2)
                               : Colors.grey[100],
                           borderRadius: BorderRadius.circular(10),
                           border: avatar == e
@@ -234,8 +234,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           end: Alignment.bottomCenter,
           colors: [
             page.color,
-            page.color.withOpacity(0.7),
-            page.color.withOpacity(0.5),
+            page.color.withValues(alpha: 0.7),
+            page.color.withValues(alpha: 0.5),
           ],
         ),
       ),

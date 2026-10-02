@@ -1,5 +1,4 @@
 import '../enums/grade_level.dart';
-import '../enums/content_literacy_type.dart';
 
 /// ユーザーの学習進捗（教科横断・永続化）
 class LiteracyProgress {

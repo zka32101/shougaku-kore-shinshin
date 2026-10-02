@@ -265,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  code_builder:
+    dependency: transitive
+    description:
+      name: code_builder
+      sha256: aa5932e94c6c39c2f9ec4e5e06dfdd11a9430a61f6c41b6ba75b28ce0c481baf
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.12.0"
   collection:
     dependency: transitive
     description:
@@ -523,7 +531,7 @@ packages:
     source: hosted
     version: "4.15.0"
   firebase_core_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: firebase_core_platform_interface
       sha256: "9bfbc85faca09346471ac56fbcee00757ebcfd85887c6f602764eff0001902d8"
@@ -1109,6 +1117,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.2"
+  mockito:
+    dependency: "direct dev"
+    description:
+      name: mockito
+      sha256: eff30d002f0c8bf073b6f929df4483b543133fcafce056870163587b03f1d422
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.6.4"
   more:
     dependency: transitive
     description:

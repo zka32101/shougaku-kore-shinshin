@@ -1,9 +1,9 @@
+import 'dart:io';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:shougaku_kore_doutoku/models/story.dart';
 import 'package:shougaku_kore_doutoku/providers/audio_provider.dart';
@@ -12,6 +12,8 @@ import 'package:shougaku_kore_doutoku/providers/story_provider.dart';
 import 'package:shougaku_kore_doutoku/screens/story/story_learning_screen.dart';
 import 'package:shougaku_kore_doutoku/services/audio_service.dart';
 import '../helpers/fake_path_provider.dart';
+import '../helpers/hive_test_helper.dart';
+import 'package:shougaku_kore_doutoku/providers/quiz_completion_provider.dart';
 
 // ─── No-op AudioService ──────────────────────────────────────────────────────
 
@@ -104,15 +106,15 @@ Widget _wrap({Story? storyOverride, bool storyError = false}) {
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
+  late Directory hiveTestDir;
   setUpAll(() async {
-    PathProviderPlatform.instance = FakePathProvider();
-    await Hive.initFlutter();
+    hiveTestDir = await initHiveForTest();
   });
-
   tearDownAll(() async {
-    try {
-      await Hive.close();
-    } catch (_) {}
+    await disposeHiveForTest(hiveTestDir);
+  });
+  setUpAll(() {
+    PathProviderPlatform.instance = FakePathProvider();
   });
 
   group('StoryLearningScreen', () {
@@ -126,6 +128,10 @@ void main() {
             audioServiceProvider.overrideWith((ref) => _NoOpAudioService()),
             storyDetailProvider.overrideWith(
               (ref, _) => completer.future,
+            ),
+            // クイズ開始(実HTTP)を走らせない: 完了しない Future にしておく
+            quizStartProvider.overrideWith(
+              (ref, _) => Completer<String>().future,
             ),
           ],
           child: const MaterialApp(

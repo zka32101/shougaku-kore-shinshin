@@ -180,7 +180,7 @@ class _RankingSettingsScreenState extends ConsumerState<RankingSettingsScreen> {
                     Switch(
                       value: _isNamePublic,
                       onChanged: _isLoading ? null : _handleNamePublicChange,
-                      activeColor: const Color(0xFF9B59B6),
+                      activeThumbColor: const Color(0xFF9B59B6),
                     ),
                   ],
                 ),
@@ -243,7 +243,7 @@ class _RankingSettingsScreenState extends ConsumerState<RankingSettingsScreen> {
                       value: _participateInRanking,
                       onChanged:
                           _isLoading ? null : _handleParticipationChange,
-                      activeColor: const Color(0xFF27AE60),
+                      activeThumbColor: const Color(0xFF27AE60),
                     ),
                   ],
                 ),

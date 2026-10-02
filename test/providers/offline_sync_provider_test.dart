@@ -43,13 +43,14 @@ void main() {
 
   setUpAll(() {
     // Initialize dotenv with an empty map so ApiService constructor succeeds.
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('sync_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = HiveService();
     api = _FakeApiService();
   });

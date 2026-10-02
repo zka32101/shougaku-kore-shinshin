@@ -4,7 +4,7 @@ import '../../providers/subscription_provider.dart';
 import '../../services/analytics_service.dart';
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
-  const SubscriptionScreen({Key? key}) : super(key: key);
+  const SubscriptionScreen({super.key});
 
   @override
   ConsumerState<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -18,7 +18,6 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
   Widget build(BuildContext context) {
     final monthlyProduct = ref.watch(monthlyProductProvider);
     final yearlyProduct = ref.watch(yearlyProductProvider);
-    final analyticsService = AnalyticsService();
 
     return Scaffold(
       appBar: AppBar(
@@ -209,7 +208,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
-          color: isSelected ? Colors.blue.withOpacity(0.05) : Colors.white,
+          color: isSelected ? Colors.blue.withValues(alpha: 0.05) : Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -147,67 +147,45 @@ void main() {
     // ── Optimization Measurement Tests ─────────────────────────────────
 
     group('Select Optimization Effectiveness', () {
-      test('select() achieves 20-30% rebuild reduction in typical scenario', () async {
-        // Simulate a parent provider with multiple child listeners
+      test('select() suppresses notifications for unrelated field changes',
+          () async {
         final parentProvider = StateProvider<_TestState>((ref) {
           return const _TestState(name: 'John', age: 25);
         });
 
-        // Listener without select() - always rebuilds
-        var notSelectNotifyCount = 0;
-
-        // Listeners with select() - rebuild only on relevant change
-        var selectNameNotifyCount = 0;
-        var selectAgeNotifyCount = 0;
+        // 「名前だけ」に関心のあるリスナーを、select あり/なしで 1 つずつ用意する。
+        var withoutSelectCount = 0; // 状態が変わるたびに通知される
+        var nameOnlyCount = 0; // name が変わったときだけ通知される
 
         final container = ProviderContainer();
         addTearDown(container.dispose);
 
-        // Without select: always notifies
-        container.listen(
-          parentProvider,
-          (previous, next) => notSelectNotifyCount++,
-        );
-
-        // With select: only notifies on relevant change
+        container.listen(parentProvider, (previous, next) => withoutSelectCount++);
         container.listen(
           parentProvider.select((state) => state.name),
-          (previous, next) => selectNameNotifyCount++,
+          (previous, next) => nameOnlyCount++,
         );
 
-        container.listen(
-          parentProvider.select((state) => state.age),
-          (previous, next) => selectAgeNotifyCount++,
-        );
-
-        // Perform 10 updates
+        // 更新 10 回: name が変わるのは偶数回(5 回)、age だけが変わるのは奇数回(5 回)
         for (int i = 0; i < 10; i++) {
           if (i % 2 == 0) {
-            // Update only name (5 times)
             container.read(parentProvider.notifier).state =
                 _TestState(name: 'Name$i', age: 25);
           } else {
-            // Update only age (5 times)
             container.read(parentProvider.notifier).state =
-                const _TestState(name: 'John', age: 30);
+                _TestState(name: 'Name${i - 1}', age: 30 + i);
           }
         }
 
-        // Without select: 10 notifications
-        expect(notSelectNotifyCount, 10,
-            reason: 'Without select, should notify on all changes');
+        expect(withoutSelectCount, 10,
+            reason: 'Without select, every state change notifies');
+        expect(nameOnlyCount, 5,
+            reason: 'With select(name), only the 5 name changes notify');
 
-        // With select: should be significantly less
-        // Name changes: ~5 notifications
-        // Age changes: ~1 notification (mostly same age)
-        final totalSelectNotifies = selectNameNotifyCount + selectAgeNotifyCount;
         final reduction =
-            ((notSelectNotifyCount - totalSelectNotifies) / notSelectNotifyCount) *
-                100;
-
-        expect(reduction, greaterThanOrEqualTo(20),
-            reason:
-                'Select optimization should achieve 20%+ reduction (achieved: ${reduction.toStringAsFixed(1)}%)');
+            (withoutSelectCount - nameOnlyCount) / withoutSelectCount * 100;
+        expect(reduction, 50,
+            reason: 'Half of the updates only touch age, so select saves 50%');
       });
 
       test('select() with multiple listeners scales efficiently', () async {

@@ -4,11 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:shougaku_kore_doutoku/models/badge.dart';
 import 'package:shougaku_kore_doutoku/models/progress.dart';
 import 'package:shougaku_kore_doutoku/models/story.dart';
 import 'package:shougaku_kore_doutoku/providers/badge_provider.dart';
-import 'package:shougaku_kore_doutoku/providers/progress_provider.dart';
 import 'package:shougaku_kore_doutoku/providers/story_provider.dart'
     show apiServiceProvider, hiveServiceProvider;
 import 'package:shougaku_kore_doutoku/services/api_service.dart';
@@ -80,9 +78,9 @@ Story _makeStory({
       theme: theme,
       gradeLevel: gradeLevel,
       isPremium: isPremium,
-      content: 'Test content',
-      choices: [],
-      outcomes: {},
+      durationSeconds: 300,
+      createdAt: DateTime(2024),
+      updatedAt: DateTime(2024),
     );
 
 ProviderContainer _makeContainer({
@@ -102,13 +100,14 @@ void main() {
   late Directory testDir;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('badge_provider_opt_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _NoOpCacheHiveService();
     api = _FakeApiService();
   });
@@ -121,7 +120,7 @@ void main() {
   group('Badge Provider Optimization Tests', () {
     // ── PRIORITY 2 OPTIMIZATION: Caching to reduce duplicate API calls ────
 
-    group('_badgeStatsComputationProvider caching', () {
+    group('badgeStatsComputationProvider caching', () {
       test('computes badge statistics from progress and story data', () async {
         // Setup: 3 completed stories in 勇気 theme
         api.progressResult = [
@@ -139,7 +138,7 @@ void main() {
         addTearDown(container.dispose);
 
         final cache =
-            await container.read(_badgeStatsComputationProvider('child-1').future);
+            await container.read(badgeStatsComputationProvider('child-1').future);
 
         expect(cache.totalCompletions, 3);
         expect(cache.completionsByVirtue['勇気'], 2);
@@ -152,7 +151,7 @@ void main() {
         addTearDown(container.dispose);
 
         final cache =
-            await container.read(_badgeStatsComputationProvider('child-1').future);
+            await container.read(badgeStatsComputationProvider('child-1').future);
 
         expect(cache.totalCompletions, 0);
         expect(cache.completionsByVirtue, isEmpty);
@@ -173,7 +172,7 @@ void main() {
         addTearDown(container.dispose);
 
         final cache =
-            await container.read(_badgeStatsComputationProvider('child-1').future);
+            await container.read(badgeStatsComputationProvider('child-1').future);
 
         // Only 2 story_completed actions should be counted
         expect(cache.totalCompletions, 2);
@@ -235,8 +234,9 @@ void main() {
 
         final badges =
             await container.read(earnedBadgesProvider('child-1').future);
-        // Should handle missing story without crashing
-        expect(badges, isNotEmpty); // Could still have 'all' theme badge
+        // 進捗に対応するストーリーが無ければ完了数は 0。
+        // クラッシュせず、バッジも付与されない。
+        expect(badges, isEmpty);
       });
     });
 
@@ -359,7 +359,7 @@ void main() {
         // Without optimization: each provider would call fetchProgress and fetchStories
         // = 3 × 2 = 6 API calls total
         //
-        // With optimization: _badgeStatsComputationProvider is called once,
+        // With optimization: badgeStatsComputationProvider is called once,
         // all three providers depend on it
         // = 2 API calls total (progress + stories)
         //

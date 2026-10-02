@@ -13,7 +13,7 @@ class AchievementChecklistNotifier extends StateNotifier<Set<String>> {
   }
 
   final String _childId;
-  String get _storageKey => 'achievement_checklist_${_childId}';
+  String get _storageKey => 'achievement_checklist_$_childId';
 
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();

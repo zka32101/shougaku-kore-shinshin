@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:shougaku_kore_doutoku/providers/audio_provider.dart';
 import 'package:shougaku_kore_doutoku/services/audio_service.dart';
 import '../helpers/fake_path_provider.dart';
+import 'package:shougaku_kore_doutoku/services/hive_service.dart';
 
 // ── Fake AudioService ──────────────────────────────────────────────────────
 // Override all platform-specific methods to avoid FlutterTts I/O in tests.
@@ -48,13 +50,25 @@ void main() {
   late Directory testDir;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    TestWidgetsFlutterBinding.ensureInitialized();
+    // AudioService のコンストラクタが audioplayers / flutter_tts を初期化するため、
+    // プラグインのチャンネルを空応答にしておく
+    for (final channel in const [
+      'xyz.luan/audioplayers.global',
+      'xyz.luan/audioplayers',
+      'flutter_tts',
+    ]) {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(MethodChannel(channel), (call) async => null);
+    }
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('audio_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     // Pre-open settings box so _BoolSettingNotifier/_DoubleSettingNotifier
     // fire-and-forget _load completes in a single microtask turn.
     await Hive.openBox<dynamic>('settings');
@@ -66,7 +80,7 @@ void main() {
     if (testDir.existsSync()) testDir.deleteSync(recursive: true);
   });
 
-  ProviderContainer _makeContainer() => ProviderContainer(overrides: [
+  ProviderContainer makeContainer() => ProviderContainer(overrides: [
         audioServiceProvider.overrideWithValue(audioService),
       ]);
 
@@ -74,7 +88,7 @@ void main() {
 
   group('AudioControllerNotifier', () {
     test('playSoundEffect calls AudioService when sound is enabled', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump(); // let settings notifiers initialize
 
@@ -86,7 +100,7 @@ void main() {
     });
 
     test('playSoundEffect is skipped when sound is disabled', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -100,7 +114,7 @@ void main() {
     });
 
     test('speakText calls AudioService when narration is enabled', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -111,7 +125,7 @@ void main() {
     });
 
     test('speakText is skipped when narration is disabled', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -125,7 +139,7 @@ void main() {
 
     test('speakText sets currentlyPlayingAudioProvider when audioId provided',
         () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -137,7 +151,7 @@ void main() {
 
     test('stop calls AudioService.stop and clears currentlyPlayingAudio',
         () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -152,7 +166,7 @@ void main() {
     });
 
     test('setVolume updates volumeLevelProvider and AudioService', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -164,7 +178,7 @@ void main() {
     });
 
     test('setNarrationSpeed updates narrationSpeedProvider', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -175,7 +189,7 @@ void main() {
     });
 
     test('toggleSoundEnabled flips isSoundEnabledProvider', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -191,7 +205,7 @@ void main() {
     });
 
     test('toggleNarrationEnabled flips isNarrationEnabledProvider', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
 
@@ -207,35 +221,35 @@ void main() {
 
   group('default provider values', () {
     test('isSoundEnabledProvider defaults to true', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
       expect(container.read(isSoundEnabledProvider), isTrue);
     });
 
     test('isNarrationEnabledProvider defaults to true', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
       expect(container.read(isNarrationEnabledProvider), isTrue);
     });
 
     test('volumeLevelProvider defaults to 0.8', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
       expect(container.read(volumeLevelProvider), 0.8);
     });
 
     test('narrationSpeedProvider defaults to 1.0', () async {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
       expect(container.read(narrationSpeedProvider), 1.0);
     });
 
     test('currentlyPlayingAudioProvider defaults to null', () {
-      final container = _makeContainer();
+      final container = makeContainer();
       addTearDown(container.dispose);
       expect(container.read(currentlyPlayingAudioProvider), isNull);
     });

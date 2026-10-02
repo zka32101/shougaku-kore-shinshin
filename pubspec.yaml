@@ -90,8 +90,9 @@ dev_dependencies:
 
   # Test helpers
   path_provider_platform_interface: ^2.1.0
+  firebase_core_platform_interface: ^8.1.1
   plugin_platform_interface: ^2.1.0
-  # mockito: ^5.8.0  # Temporarily removed for analyzer 8.0+ compatibility
+  mockito: ^5.4.4
   fake_cloud_firestore: ^4.0.0
   firebase_auth_mocks: ^0.15.0
 
@@ -100,6 +101,11 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/avatars/
+    - assets/images/help/
+    - assets/images/icons/
+    - assets/images/illustrations/
+    - assets/images/parental_consent/
     - assets/sounds/
     - assets/taiku/images/
     - assets/taiku/images/characters/

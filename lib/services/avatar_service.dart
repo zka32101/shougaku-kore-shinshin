@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../models/avatar.dart';
 import 'logger_service.dart';
 
@@ -7,10 +6,9 @@ import 'logger_service.dart';
 /// アバターデータの管理、購入履歴、ユーザーのアバター選択を統括
 class AvatarService {
   late final FirebaseFirestore _firestore;
-  late final FirebaseAuth _auth;
 
   // デフォルトアバターのID（最初の4つ）
-  static const List<String> DEFAULT_AVATAR_IDS = [
+  static const List<String> defaultAvatarIds = [
     'avatar_001', // かわいい子犬
     'avatar_002', // 元気な男の子
     'avatar_003', // やさしい女の子
@@ -18,7 +16,7 @@ class AvatarService {
   ];
 
   // すべてのアバターマスターデータ
-  static const List<Map<String, dynamic>> AVATARS = [
+  static const List<Map<String, dynamic>> avatarCatalog = [
     {
       'id': 'avatar_001',
       'name': 'かわいい子犬',
@@ -95,13 +93,12 @@ class AvatarService {
 
   AvatarService() {
     _firestore = FirebaseFirestore.instance;
-    _auth = FirebaseAuth.instance;
   }
 
   /// すべてのアバターを取得
   Future<List<Avatar>> getAllAvatars() async {
     try {
-      final avatars = AVATARS
+      final avatars = avatarCatalog
           .map((data) => Avatar(
                 id: data['id'],
                 name: data['name'],
@@ -157,7 +154,7 @@ class AvatarService {
     try {
       final userAvatarInfo = UserAvatarInfo(
         userId: userId,
-        selectedAvatarId: DEFAULT_AVATAR_IDS[0], // 最初のデフォルトアバターを選択
+        selectedAvatarId: defaultAvatarIds[0], // 最初のデフォルトアバターを選択
         purchasedAvatarIds: [], // デフォルトは自動的に購入済み扱い
         lastUpdated: DateTime.now(),
       );

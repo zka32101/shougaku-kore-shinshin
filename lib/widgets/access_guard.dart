@@ -38,7 +38,7 @@ class AccessGuard extends ConsumerWidget {
       ),
       // If the access check fails (e.g. offline / not signed in yet),
       // fail open rather than blocking the app entirely on a network error.
-      error: (_, __) => child,
+      error: (_, _) => child,
     );
   }
 }

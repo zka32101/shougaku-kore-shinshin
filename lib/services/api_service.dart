@@ -1,4 +1,4 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import '../models/distribution_response.dart';
 import '../models/revisit_schedule.dart';
 import '../models/parent_child_comparison.dart';
@@ -169,9 +169,6 @@ class ApiService {
       }
 
       final List<dynamic> data = response.data['revisits'] ?? [];
-      if (data is! List) {
-        throw ApiException('Expected revisits to be a list');
-      }
 
       LoggerService.info('Revisit stories fetched for user: $userId (count: ${data.length})');
       return data.map((item) => RevisitStory.fromJson(item)).toList();
@@ -288,9 +285,6 @@ class ApiService {
       }
 
       final List<dynamic> data = response.data['histories'] ?? [];
-      if (data is! List) {
-        throw ApiException('Expected histories to be a list');
-      }
 
       LoggerService.info('Dialogue history fetched: ${data.length} items');
       return data.map((item) => ParentChildComparison.fromJson(item)).toList();
@@ -561,7 +555,7 @@ class ApiService {
 
       final params = {
         'group_type': groupType,
-        if (groupValue != null) 'group_value': groupValue,
+        'group_value': ?groupValue,
       };
 
       final response = await _retryRequest(
@@ -576,9 +570,6 @@ class ApiService {
       }
 
       final List<dynamic> rankings = response.data['rankings'] ?? [];
-      if (rankings is! List) {
-        throw ApiException('Expected rankings to be a list');
-      }
 
       LoggerService.info(
           'Monthly ranking fetched: ${rankings.length} entries for $month ($groupType)');
@@ -645,9 +636,9 @@ class ApiService {
   }) async {
     try {
       final params = {
-        if (theme != null) 'theme': theme,
-        if (gradeLevel != null) 'grade': gradeLevel,
-        if (isPremium != null) 'is_premium': isPremium,
+        'theme': ?theme,
+        'grade': ?gradeLevel,
+        'is_premium': ?isPremium,
       };
 
       final response = await _retryRequest(
@@ -1018,7 +1009,7 @@ class ApiService {
           data: {
             'chosenChoiceId': chosenChoiceId,
             'timeSpentSeconds': timeSpentSeconds,
-            if (reflectionText != null) 'reflectionText': reflectionText,
+            'reflectionText': ?reflectionText,
           },
         ),
       );
@@ -1052,8 +1043,8 @@ class ApiService {
         () => _dio.put(
           '/users/me',
           data: {
-            if (name != null) 'name': name,
-            if (fcmToken != null) 'fcmToken': fcmToken,
+            'name': ?name,
+            'fcmToken': ?fcmToken,
           },
         ),
       );

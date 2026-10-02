@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
@@ -19,7 +19,7 @@ import '../checklist/achievement_checklist_screen.dart';
 import '../checklist/daily_record_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,7 +126,6 @@ class _MenuCard extends ConsumerStatefulWidget {
 class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -148,18 +147,15 @@ class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderS
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
     _handleTap();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 

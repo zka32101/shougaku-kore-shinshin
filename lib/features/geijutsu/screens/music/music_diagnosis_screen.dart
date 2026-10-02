@@ -62,7 +62,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
         children: [
           LinearProgressIndicator(
             value: (_step + 1) / 3,
-            backgroundColor: kMusicColor.withOpacity(0.2),
+            backgroundColor: kMusicColor.withValues(alpha: 0.2),
             valueColor: const AlwaysStoppedAnimation<Color>(kMusicColor),
             minHeight: 4,
           ),
@@ -74,14 +74,14 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
 
   Widget _buildStep() {
     switch (_step) {
-      case 0: return _SoundSelectStep();
-      case 1: return _QuizStep();
-      case 2: return _ResultStep();
+      case 0: return _soundSelectStep();
+      case 1: return _quizStep();
+      case 2: return _resultStep();
       default: return const SizedBox();
     }
   }
 
-  Widget _SoundSelectStep() {
+  Widget _soundSelectStep() {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -102,7 +102,11 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                 final sel = _selectedSounds.contains(i);
                 return GestureDetector(
                   onTap: () => setState(() {
-                    if (sel) _selectedSounds.remove(i); else _selectedSounds.add(i);
+                    if (sel) {
+                      _selectedSounds.remove(i);
+                    } else {
+                      _selectedSounds.add(i);
+                    }
                   }),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -110,7 +114,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                       color: sel ? kMusicColor : Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: sel ? kMusicColor : Colors.grey[300]!),
-                      boxShadow: sel ? [BoxShadow(color: kMusicColor.withOpacity(0.3), blurRadius: 6)] : null,
+                      boxShadow: sel ? [BoxShadow(color: kMusicColor.withValues(alpha: 0.3), blurRadius: 6)] : null,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -147,7 +151,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
     );
   }
 
-  Widget _QuizStep() {
+  Widget _quizStep() {
     final qIdx = _quizAnswers.length;
     if (qIdx >= _quizItems.length) {
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => _step = 2));
@@ -189,7 +193,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
     );
   }
 
-  Widget _ResultStep() {
+  Widget _resultStep() {
     // タイプ集計
     final Map<String, int> typeCounts = {};
     for (final a in _quizAnswers) {
@@ -239,7 +243,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [kMusicColor, kMusicColor.withOpacity(0.7)],
+                colors: [kMusicColor, kMusicColor.withValues(alpha: 0.7)],
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -258,7 +262,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                   children: strengths.map((s) => Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(s, style: const TextStyle(color: Colors.white, fontSize: 12)),

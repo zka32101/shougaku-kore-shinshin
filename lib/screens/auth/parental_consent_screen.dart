@@ -11,7 +11,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../models/parental_consent.dart';
 import '../../services/logger_service.dart';
 import '../../providers/auth_provider.dart';
 
@@ -65,7 +64,7 @@ class ConsentFormState {
 
 /// 親の同意確認スクリーン
 class ParentalConsentScreen extends ConsumerStatefulWidget {
-  const ParentalConsentScreen({Key? key}) : super(key: key);
+  const ParentalConsentScreen({super.key});
 
   @override
   ConsumerState<ParentalConsentScreen> createState() =>

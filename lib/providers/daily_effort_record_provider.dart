@@ -15,7 +15,7 @@ class DailyEffortRecordNotifier extends StateNotifier<List<DailyEffortRecord>> {
   }
 
   final String _childId;
-  String get _storageKey => 'daily_effort_records_${_childId}';
+  String get _storageKey => 'daily_effort_records_$_childId';
 
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();

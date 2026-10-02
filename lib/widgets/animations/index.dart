@@ -2,6 +2,7 @@
 ///
 /// Centralizes exports for all reusable animation widgets.
 /// Provides convenient one-line imports for animation components.
+library;
 
 export 'animated_bounce.dart';
 export 'animated_count_up.dart';

@@ -54,7 +54,7 @@ class MistakeNoteScreen extends ConsumerWidget {
                   child: ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: wrongQuestions.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (_, _) =>
                         const SizedBox(height: 10),
                     itemBuilder: (context, i) {
                       final q = wrongQuestions[i];

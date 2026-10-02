@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -134,24 +134,23 @@ Story _makeStory(int id) => Story(
 
 QuizSession _makeQuizSession(int id) => QuizSession(
   id: 'session-$id',
-  childId: 'child-1',
   storyId: 'story-$id',
-  selectedAnswers: {'q1': 'a', 'q2': 'b'},
-  score: 80,
-  completedAt: DateTime.now(),
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
+  childId: 'child-1',
+  answers: const [],
+  startedAt: DateTime(2024),
+  completedAt: DateTime(2024),
+  totalTimeSeconds: 120,
+  pointsEarned: 10,
+  reflectionNotes: '',
 );
 
 Progress _makeProgress(int id) => Progress(
   id: 'prog-$id',
   childId: 'child-1',
-  storiesCompleted: id,
-  averageScore: 85.0,
-  completionPercentage: (id * 5).toDouble(),
-  lastActivityAt: DateTime.now(),
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
+  storyId: 'story-$id',
+  action: 'story_completed',
+  pointsDelta: 10,
+  recordedAt: DateTime(2024),
 );
 
 // ── Performance Tests ────────────────────────────────────────────────────────
@@ -161,13 +160,14 @@ void main() {
   late PerformanceBenchmark benchmark;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('perf_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     benchmark = PerformanceBenchmark();
   });
 
@@ -190,7 +190,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(500),
           reason: 'Caching 100 stories should take less than 500ms');
 
-      print('Cached 100 stories in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Cached 100 stories in ${stopwatch.elapsed.inMilliseconds}ms');
     });
 
     test('read 100 stories from cache', () async {
@@ -208,7 +208,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(100),
           reason: 'Reading 100 stories should take less than 100ms');
 
-      print('Read 100 stories in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Read 100 stories in ${stopwatch.elapsed.inMilliseconds}ms');
     });
 
     test('filter 100 stories by theme', () async {
@@ -225,7 +225,10 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(50),
           reason: 'Filtering stories should take less than 50ms');
 
-      print(
+      // 全件が theme 'kindness' なので、フィルタ結果は 100 件
+      expect(filtered.length, 100);
+
+      debugPrint(
         'Filtered 100 stories by theme in ${stopwatch.elapsed.inMilliseconds}ms',
       );
     });
@@ -250,7 +253,7 @@ void main() {
       expect(avgDuration.inMilliseconds, lessThan(1),
           reason: 'Single story lookup should take less than 1ms');
 
-      print('100 single lookups took average ${avgDuration.inMilliseconds}ms');
+      debugPrint('100 single lookups took average ${avgDuration.inMilliseconds}ms');
     });
   });
 
@@ -271,7 +274,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(200),
           reason: 'Saving 50 progress records should take less than 200ms');
 
-      print('Saved 50 progress records in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Saved 50 progress records in ${stopwatch.elapsed.inMilliseconds}ms');
     });
 
     test('read 50 progress records', () async {
@@ -294,7 +297,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(100),
           reason: 'Reading 50 progress records should take less than 100ms');
 
-      print('Read 50 progress records in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Read 50 progress records in ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -315,7 +318,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(150),
           reason: 'Saving 30 quiz sessions should take less than 150ms');
 
-      print('Saved 30 quiz sessions in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Saved 30 quiz sessions in ${stopwatch.elapsed.inMilliseconds}ms');
     });
 
     test('retrieve 30 quiz sessions', () async {
@@ -338,7 +341,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(100),
           reason: 'Reading 30 quiz sessions should take less than 100ms');
 
-      print('Read 30 quiz sessions in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Read 30 quiz sessions in ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -361,7 +364,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(600),
           reason: 'Bulk cache and read should take less than 600ms');
 
-      print('Bulk cache and read took ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Bulk cache and read took ${stopwatch.elapsed.inMilliseconds}ms');
     });
 
     test('concurrent data operations', () async {
@@ -387,7 +390,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(100),
           reason: 'Concurrent operations should complete within 100ms');
 
-      print('Concurrent operations took ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Concurrent operations took ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -408,7 +411,7 @@ void main() {
       final cached = await hive.getCachedStories();
       expect(cached.length, 500);
 
-      print('Loaded 500 stories in ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Loaded 500 stories in ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -428,7 +431,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(1000),
           reason: 'Story retrieval should be less than 1 second');
 
-      print('Story retrieval took ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Story retrieval took ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -458,7 +461,7 @@ void main() {
       expect(stopwatch.elapsed.inMilliseconds, lessThan(5000),
           reason: 'Report generation should take less than 5 seconds');
 
-      print('Report generation took ${stopwatch.elapsed.inMilliseconds}ms');
+      debugPrint('Report generation took ${stopwatch.elapsed.inMilliseconds}ms');
     });
   });
 
@@ -477,7 +480,7 @@ void main() {
       benchmark.recordMeasurement('cache_and_read', stopwatch.elapsed);
 
       final report = benchmark.getReport();
-      print('\n$report');
+      debugPrint('\n$report');
 
       // Verify benchmark is working
       expect(benchmark.getAverageDuration('cache_and_read'), isNotNull);

@@ -211,7 +211,6 @@ class _SummaryCardState extends State<_SummaryCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -233,17 +232,14 @@ class _SummaryCardState extends State<_SummaryCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
@@ -323,7 +319,6 @@ class _AICommentCardState extends State<_AICommentCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -345,17 +340,14 @@ class _AICommentCardState extends State<_AICommentCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
@@ -436,7 +428,6 @@ class _ReportRadarCardState extends State<_ReportRadarCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -458,17 +449,14 @@ class _ReportRadarCardState extends State<_ReportRadarCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
@@ -545,7 +533,6 @@ class _ParentMessageCardState extends State<_ParentMessageCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -567,17 +554,14 @@ class _ParentMessageCardState extends State<_ParentMessageCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    setState(() => _isPressed = true);
     _controller.forward();
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 

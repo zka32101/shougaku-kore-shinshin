@@ -1,16 +1,15 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/kindness_mission.dart';
 import '../../providers/kindness_provider.dart';
-import '../../services/api_service.dart';
 
 class KindnessMissionWidget extends ConsumerWidget {
   final String userId;
 
   const KindnessMissionWidget({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,9 +94,9 @@ class KindnessRecordDialog extends ConsumerStatefulWidget {
   final String userId;
 
   const KindnessRecordDialog({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _KindnessRecordDialogState();
@@ -137,7 +136,7 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
-              value: _selectedPerson,
+              initialValue: _selectedPerson,
               decoration: const InputDecoration(labelText: 'だれですか？'),
               items: [
                 '家族の人',
@@ -161,6 +160,9 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
         ElevatedButton(
           onPressed: () async {
             final apiService = ref.read(apiServiceProvider);
+            // await の後で BuildContext を使わないよう、先に取得しておく
+            final navigator = Navigator.of(context);
+            final messenger = ScaffoldMessenger.of(context);
             try {
               await apiService.recordKindness(
                 widget.userId,
@@ -168,13 +170,16 @@ class _KindnessRecordDialogState extends ConsumerState<KindnessRecordDialog> {
                 _selectedPerson,
                 null,
               );
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              navigator.pop();
+              messenger.showSnackBar(
                 const SnackBar(content: Text('きろく しました！')),
               );
-              ref.refresh(currentKindnessMissionProvider(widget.userId));
+              // 最新のミッション状態を取り直す（結果は使わない）
+              ref.invalidate(currentKindnessMissionProvider(widget.userId));
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
+              if (!mounted) return;
+              messenger.showSnackBar(
                 SnackBar(content: Text('エラー: $e')),
               );
             }
@@ -191,10 +196,10 @@ class KindnessMapWidget extends ConsumerWidget {
   final String month;
 
   const KindnessMapWidget({
-    Key? key,
+    super.key,
     required this.userId,
     required this.month,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -236,10 +241,10 @@ class KindnessCategoryCard extends StatelessWidget {
   final List<KindnessFinding> findings;
 
   const KindnessCategoryCard({
-    Key? key,
+    super.key,
     required this.category,
     required this.findings,
-  }) : super(key: key);
+  });
 
   String _getCategoryEmoji(String category) {
     switch (category) {
@@ -305,7 +310,7 @@ class KindnessCategoryCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                )).toList(),
+                )),
           ],
         ),
       ),

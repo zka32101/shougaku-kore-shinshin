@@ -78,17 +78,17 @@ void main() {
       expect(find.text('プロフィールがありません'), findsOneWidget);
     });
 
-    testWidgets('always shows 新しいプロフィールを作成 button', (tester) async {
+    testWidgets('always shows プロフィール追加 button', (tester) async {
       await tester.pumpWidget(_wrap(profiles: []));
       await tester.pumpAndSettle();
-      expect(find.text('新しいプロフィールを作成'), findsOneWidget);
+      expect(find.text('プロフィール追加'), findsOneWidget);
     });
 
-    testWidgets('shows 新しいプロフィールを作成 button even with profiles',
+    testWidgets('shows プロフィール追加 button even with profiles',
         (tester) async {
       await tester.pumpWidget(_wrap(profiles: [_makeProfile()]));
       await tester.pumpAndSettle();
-      expect(find.text('新しいプロフィールを作成'), findsOneWidget);
+      expect(find.text('プロフィール追加'), findsOneWidget);
     });
 
     testWidgets('shows profile name when profiles exist', (tester) async {

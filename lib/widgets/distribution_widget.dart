@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/distribution_response.dart';
 import '../../providers/distribution_provider.dart';
@@ -8,10 +8,10 @@ class DistributionWidget extends ConsumerWidget {
   final String userChoice;
 
   const DistributionWidget({
-    Key? key,
+    super.key,
     required this.storyId,
     required this.userChoice,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +40,7 @@ class DistributionWidget extends ConsumerWidget {
               percentage: option.percentage,
               count: option.count,
               isUserChoice: option.option == userChoice,
-            )).toList(),
+            )),
         const SizedBox(height: 12),
         Text(
           'ぜんぶで ${distribution.totalResponses} にんの こどもが こたえました',
@@ -59,13 +59,13 @@ class DistributionBar extends StatelessWidget {
   final bool isUserChoice;
 
   const DistributionBar({
-    Key? key,
+    super.key,
     required this.option,
     required this.text,
     required this.percentage,
     required this.count,
     required this.isUserChoice,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

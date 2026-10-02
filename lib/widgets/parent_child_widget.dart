@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/parent_child_comparison.dart';
 import '../../providers/parent_child_provider.dart';
@@ -8,10 +8,10 @@ class ParentChildComparisonWidget extends ConsumerWidget {
   final String childId;
 
   const ParentChildComparisonWidget({
-    Key? key,
+    super.key,
     required this.parentId,
     required this.childId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -142,10 +142,10 @@ class ParentChildDialogueHistoryWidget extends ConsumerWidget {
   final String childId;
 
   const ParentChildDialogueHistoryWidget({
-    Key? key,
+    super.key,
     required this.parentId,
     required this.childId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -181,9 +181,9 @@ class ParentChildHistoryCard extends StatelessWidget {
   final ParentChildComparison comparison;
 
   const ParentChildHistoryCard({
-    Key? key,
+    super.key,
     required this.comparison,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

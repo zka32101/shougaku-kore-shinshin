@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
@@ -90,7 +89,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
         )).future,
       );
       // setStateの前に再度マウント状態を確認
-      if (mounted && id != null) {
+      if (mounted) {
         setState(() => _sessionId = id);
       }
     } catch (e) {
@@ -1123,7 +1122,6 @@ class _StoryActionButtonState extends State<_StoryActionButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
-  bool _isPressed = false;
 
   @override
   void initState() {
@@ -1146,13 +1144,11 @@ class _StoryActionButtonState extends State<_StoryActionButton>
 
   void _onTapDown(TapDownDetails details) {
     if (!widget.isLoading) {
-      setState(() => _isPressed = true);
       _controller.forward();
     }
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() => _isPressed = false);
     _controller.reverse();
     if (!widget.isLoading && widget.onPressed != null) {
       widget.onPressed!();
@@ -1160,7 +1156,6 @@ class _StoryActionButtonState extends State<_StoryActionButton>
   }
 
   void _onTapCancel() {
-    setState(() => _isPressed = false);
     _controller.reverse();
   }
 

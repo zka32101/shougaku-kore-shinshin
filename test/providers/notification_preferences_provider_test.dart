@@ -6,8 +6,6 @@ import 'package:shougaku_kore_doutoku/providers/notification_preferences_provide
 void main() {
   group('NotificationPreferencesProvider', () {
     test('loads default preferences when Firestore document does not exist', () async {
-      final container = ProviderContainer();
-
       // Override the provider to return default preferences
       final overrides = [
         notificationPreferencesProvider('user-123').overrideWith(

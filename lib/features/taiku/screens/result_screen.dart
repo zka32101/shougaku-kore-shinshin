@@ -109,7 +109,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${stageTitle[stage] ?? 'ステージ$stage'}',
+                    stageTitle[stage] ?? 'ステージ$stage',
                     style: TextStyle(
                         fontSize: 14, color: Colors.grey.shade600),
                   ),

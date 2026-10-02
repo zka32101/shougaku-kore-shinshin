@@ -74,13 +74,14 @@ void main() {
   late Directory testDir;
 
   setUpAll(() {
-    dotenv.testLoad(fileInput: '');
+    dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('progress_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _NoOpCacheHiveService();
     api = _FakeApiService();
   });

@@ -134,6 +134,10 @@ void main() {
         final cached2 = ApiOptimizationUtils.getCachedRequest('test_key');
         expect(cached2, isNotNull);
         expect(identical(cached1, cached2), true);
+
+        // キャッシュから返しているだけで、再実行はされない（Future は 1 度だけ実行）
+        await cached1;
+        expect(callCount, 1);
       });
 
       test('cache expires after configured duration', () async {
@@ -255,8 +259,9 @@ void main() {
         );
 
         // Add requests up to max batch size
-        final result1 = batcher.add('id-1');
-        final result2 = batcher.add('id-2');
+        // 同じバッチの結果なので、最後の 1 件の完了だけを待てば足りる
+        batcher.add('id-1').ignore();
+        batcher.add('id-2').ignore();
         // This should trigger immediate batch processing
         final result3 = batcher.add('id-3');
 
@@ -320,7 +325,7 @@ void main() {
         ApiPerformanceMonitor.recordRequestDuration('fetch_stories', duration);
 
         final stats = ApiPerformanceMonitor.getStats();
-        expect(stats, containsKey('fetch_stories'));
+        expect(stats.containsKey('fetch_stories'), isTrue);
         expect(stats['fetch_stories']?['count'], 1);
         expect(stats['fetch_stories']?['averageDuration'], 150);
       });

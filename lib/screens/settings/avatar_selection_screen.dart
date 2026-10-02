@@ -5,7 +5,7 @@ import '../../providers/avatar_provider.dart';
 
 /// アバター選択画面
 class AvatarSelectionScreen extends ConsumerWidget {
-  const AvatarSelectionScreen({Key? key}) : super(key: key);
+  const AvatarSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

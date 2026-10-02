@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../enums/grade_level.dart';
-import '../enums/literacy_ui_level.dart';
 import '../models/literacy_question.dart';
 import '../theme/literacy_colors.dart';
 import '../theme/literacy_typography.dart';
@@ -53,7 +52,7 @@ class _LowGradeFeedback extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: color, width: 3),
       ),
@@ -112,7 +111,7 @@ class _MidGradeFeedback extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: color.withOpacity(0.2), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: color.withValues(alpha: 0.2), blurRadius: 8)],
         border: Border.all(color: color, width: 2),
       ),
       child: Column(

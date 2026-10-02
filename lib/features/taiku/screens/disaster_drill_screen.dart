@@ -19,7 +19,7 @@ class DisasterDrillScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3E0),
       appBar: AppBar(
-        title: Text(mission.emoji + ' ' + mission.title),
+        title: Text('${mission.emoji} ${mission.title}'),
         backgroundColor: const Color(0xFFFF5722),
         foregroundColor: Colors.white,
         elevation: 0,

@@ -172,7 +172,7 @@ class _SubjectCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
@@ -224,7 +224,7 @@ class _SubjectCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           description,
-                          style: TextStyle(fontSize: 13, color: color.withOpacity(0.8), height: 1.4),
+                          style: TextStyle(fontSize: 13, color: color.withValues(alpha: 0.8), height: 1.4),
                         ),
                       ],
                     ),
@@ -312,7 +312,7 @@ class _StatChip extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
+            BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8),
           ],
         ),
         child: Column(

@@ -2,9 +2,9 @@
 ///
 /// Provides horizontal shake effect for error states and validation feedback.
 /// Creates a snappy, noticeable animation that draws attention to issues.
+library;
 
 import 'package:flutter/material.dart';
-import '../../utils/animation_constants.dart';
 
 /// AnimatedShake - Horizontal shake animation for error states
 ///
@@ -36,13 +36,13 @@ class AnimatedShake extends StatefulWidget {
   final VoidCallback? onAnimationComplete;
 
   const AnimatedShake({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 400),
     this.distance = 10,
     this.shakes = 4,
     this.onAnimationComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedShake> createState() => _AnimatedShakeState();
@@ -51,7 +51,6 @@ class AnimatedShake extends StatefulWidget {
 class _AnimatedShakeState extends State<AnimatedShake>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _offsetAnimation;
 
   @override
   void initState() {
@@ -62,9 +61,6 @@ class _AnimatedShakeState extends State<AnimatedShake>
       vsync: this,
     );
 
-    // Create shake animation using a custom Tween
-    _offsetAnimation = _buildShakeAnimation();
-
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         widget.onAnimationComplete?.call();
@@ -73,14 +69,6 @@ class _AnimatedShakeState extends State<AnimatedShake>
 
     // Start animation immediately
     _controller.forward();
-  }
-
-  Animation<double> _buildShakeAnimation() {
-    // Create a sequence of offsets for shake effect
-    // Oscillate between -distance and +distance
-    return Tween<double>(begin: 0, end: 0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
   }
 
   @override

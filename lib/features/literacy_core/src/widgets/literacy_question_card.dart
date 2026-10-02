@@ -62,7 +62,7 @@ class _QuestionText extends StatelessWidget {
         borderRadius: BorderRadius.circular(level.cardBorderRadius),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: level == LiteracyUILevel.simple ? 8 : 4,
             offset: const Offset(0, 2),
           ),
@@ -169,8 +169,8 @@ class _ChoiceButton extends StatelessWidget {
     if (!isAnswered) {
       return selectedIndex == index ? const Color(0xFFE3F2FD) : Colors.white;
     }
-    if (index == correctIndex) return LiteracyColors.correct.withOpacity(0.15);
-    if (selectedIndex == index) return LiteracyColors.incorrect.withOpacity(0.15);
+    if (index == correctIndex) return LiteracyColors.correct.withValues(alpha: 0.15);
+    if (selectedIndex == index) return LiteracyColors.incorrect.withValues(alpha: 0.15);
     return Colors.white;
   }
 

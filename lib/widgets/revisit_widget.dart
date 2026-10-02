@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/revisit_schedule.dart';
 import '../../providers/revisit_provider.dart';
@@ -7,9 +7,9 @@ class RevisitStoriesListWidget extends ConsumerWidget {
   final String userId;
 
   const RevisitStoriesListWidget({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,10 +44,10 @@ class RevisitStoryCard extends StatelessWidget {
   final String userId;
 
   const RevisitStoryCard({
-    Key? key,
+    super.key,
     required this.story,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +117,10 @@ class RevisitStoryDetailScreen extends ConsumerStatefulWidget {
   final String userId;
 
   const RevisitStoryDetailScreen({
-    Key? key,
+    super.key,
     required this.story,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState createState() => _RevisitStoryDetailScreenState();
@@ -198,10 +198,10 @@ class RevisitResultDisplay extends ConsumerWidget {
   final String currentChoice;
 
   const RevisitResultDisplay({
-    Key? key,
+    super.key,
     required this.story,
     required this.currentChoice,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

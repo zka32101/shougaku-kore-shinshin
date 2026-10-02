@@ -1,18 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mockito/mockito.dart';
 import 'package:shougaku_kore_doutoku/services/subscription_service.dart';
 import 'package:shougaku_kore_doutoku/models/user.dart';
+import '../helpers/firebase_test_helper.dart';
 
 // Generate mocks with: flutter pub run build_runner build
 // Note: For production, use proper Firebase mocking library
 
 void main() {
   group('SubscriptionService', () {
-    late SubscriptionService subscriptionService;
+    setUpAll(setupFirebaseForTest);
 
-    setUp(() {
-      subscriptionService = SubscriptionService();
+    test('can be constructed once Firebase is initialized', () {
+      expect(SubscriptionService(), isA<SubscriptionService>());
     });
 
     test('SubscriptionInfo.isInTrial returns true when trial is active', () {
@@ -49,7 +48,8 @@ void main() {
 
     test('SubscriptionInfo.daysRemainingInTrial returns correct value', () {
       final now = DateTime.now();
-      final futureDate = now.add(const Duration(days: 7));
+      // inDays は切り捨てなので、テスト実行中の経過時間で 6 日にならないよう 1 時間の余裕を持たせる
+      final futureDate = now.add(const Duration(days: 7, hours: 1));
 
       final subscription = SubscriptionInfo(
         status: 'trial',
@@ -124,8 +124,8 @@ void main() {
       final json = {
         'status': 'trial',
         'plan': 'trial',
-        'trialStartDate': now,
-        'trialEndDate': futureDate,
+        'trialStartDate': now.toIso8601String(),
+        'trialEndDate': futureDate.toIso8601String(),
         'subscriptionStartDate': null,
         'subscriptionEndDate': null,
         'planType': null,

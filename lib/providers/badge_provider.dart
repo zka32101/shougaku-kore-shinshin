@@ -1,16 +1,16 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/badge.dart';
-import '../models/story.dart';
 import 'progress_provider.dart';
 import 'story_provider.dart';
 
 /// Cached badge computation result (internal use)
-class _BadgeComputationCache {
+class BadgeComputationCache {
   final int totalCompletions;
   final Map<String, int> completionsByVirtue;
   final DateTime computedAt;
 
-  _BadgeComputationCache({
+  BadgeComputationCache({
     required this.totalCompletions,
     required this.completionsByVirtue,
     required this.computedAt,
@@ -20,8 +20,9 @@ class _BadgeComputationCache {
 /// Shared computation of badge statistics from progress data
 /// Optimization: Prevents duplicate computation when multiple providers
 /// (earnedBadgesProvider, badgeProgressProvider) need the same data
-final _badgeStatsComputationProvider = FutureProvider.autoDispose
-    .family<_BadgeComputationCache, String>((ref, childId) async {
+@visibleForTesting
+final badgeStatsComputationProvider = FutureProvider.autoDispose
+    .family<BadgeComputationCache, String>((ref, childId) async {
   try {
     // 進捗データを取得
     final progressList = await ref.watch(userProgressProvider(childId).future);
@@ -50,13 +51,13 @@ final _badgeStatsComputationProvider = FutureProvider.autoDispose
       }
     }
 
-    return _BadgeComputationCache(
+    return BadgeComputationCache(
       totalCompletions: totalCompletions,
       completionsByVirtue: completionsByVirtue,
       computedAt: DateTime.now(),
     );
   } catch (_) {
-    return _BadgeComputationCache(
+    return BadgeComputationCache(
       totalCompletions: 0,
       completionsByVirtue: {},
       computedAt: DateTime.now(),
@@ -67,13 +68,13 @@ final _badgeStatsComputationProvider = FutureProvider.autoDispose
 /// 子どもが獲得したバッジ一覧プロバイダー
 /// 完了したストーリーとその徳目に基づいてバッジ獲得を計算
 ///
-/// Optimization: Now uses cached computation from _badgeStatsComputationProvider
+/// Optimization: Now uses cached computation from badgeStatsComputationProvider
 /// to avoid duplicate progress/story data fetching
 final earnedBadgesProvider = FutureProvider.autoDispose
     .family<List<EarnedBadge>, String>((ref, childId) async {
   try {
     // Use cached computation result
-    final cache = await ref.watch(_badgeStatsComputationProvider(childId).future);
+    final cache = await ref.watch(badgeStatsComputationProvider(childId).future);
     final completionsByVirtue = cache.completionsByVirtue;
     final totalCompletions = cache.totalCompletions;
 
@@ -110,13 +111,13 @@ final earnedBadgesProvider = FutureProvider.autoDispose
 /// バッジ進捗プロバイダー
 /// バッジ獲得までの進捗パーセンテージを計算
 ///
-/// Optimization: Now uses cached computation from _badgeStatsComputationProvider
+/// Optimization: Now uses cached computation from badgeStatsComputationProvider
 /// to avoid duplicate progress/story data fetching
 final badgeProgressProvider = FutureProvider.autoDispose
     .family<Map<String, double>, String>((ref, childId) async {
   try {
     // Use cached computation result
-    final cache = await ref.watch(_badgeStatsComputationProvider(childId).future);
+    final cache = await ref.watch(badgeStatsComputationProvider(childId).future);
     final completionsByVirtue = cache.completionsByVirtue;
     final totalCompletions = cache.totalCompletions;
 
@@ -154,7 +155,7 @@ final badgeProgressProvider = FutureProvider.autoDispose
 final totalEarnedBadgesCountProvider = FutureProvider.autoDispose
     .family<int, String>((ref, childId) async {
   try {
-    final cache = await ref.watch(_badgeStatsComputationProvider(childId).future);
+    final cache = await ref.watch(badgeStatsComputationProvider(childId).future);
     final completionsByVirtue = cache.completionsByVirtue;
     final totalCompletions = cache.totalCompletions;
 

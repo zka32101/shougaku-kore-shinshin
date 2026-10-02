@@ -45,7 +45,7 @@ class _ProfileSelectScreenState extends ConsumerState<ProfileSelectScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: avatar == e ? kPrimaryColor.withOpacity(0.2) : Colors.grey[100],
+                        color: avatar == e ? kPrimaryColor.withValues(alpha: 0.2) : Colors.grey[100],
                         borderRadius: BorderRadius.circular(10),
                         border: avatar == e ? Border.all(color: kPrimaryColor, width: 2) : null,
                       ),
@@ -119,7 +119,7 @@ class _ProfileSelectScreenState extends ConsumerState<ProfileSelectScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: avatar == e ? kPrimaryColor.withOpacity(0.2) : Colors.grey[100],
+                        color: avatar == e ? kPrimaryColor.withValues(alpha: 0.2) : Colors.grey[100],
                         borderRadius: BorderRadius.circular(10),
                         border: avatar == e ? Border.all(color: kPrimaryColor, width: 2) : null,
                       ),
@@ -237,7 +237,7 @@ class _ProfileSelectScreenState extends ConsumerState<ProfileSelectScreen> {
                           onTap: _showAddDialog,
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
+                              color: Colors.white.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(color: Colors.white54, width: 2),
                             ),
@@ -259,12 +259,12 @@ class _ProfileSelectScreenState extends ConsumerState<ProfileSelectScreen> {
                         onLongPress: () => _showEditDialog(profile),
                         child: Container(
                           decoration: BoxDecoration(
-                            color: isActive ? Colors.white : Colors.white.withOpacity(0.85),
+                            color: isActive ? Colors.white : Colors.white.withValues(alpha: 0.85),
                             borderRadius: BorderRadius.circular(20),
                             border: isActive ? Border.all(color: Colors.white, width: 3) : null,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
+                                color: Colors.black.withValues(alpha: 0.15),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),

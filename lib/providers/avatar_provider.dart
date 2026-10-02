@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../services/avatar_service.dart';
-import '../models/avatar.dart';
 import '../providers/auth_provider.dart';
 
 // Service provider
@@ -148,12 +147,12 @@ final isAvatarOwnedProvider =
     return false;
   }
 
-  final avatar =
-      allAvatars.firstWhere((a) => a.id == avatarId, orElse: () => null as Avatar);
-
-  if (avatar == null) {
+  // 存在しない avatarId は「所有していない」として扱う
+  // （以前は orElse: () => null as Avatar で、該当なしのとき必ず例外になっていた）
+  final index = allAvatars.indexWhere((a) => a.id == avatarId);
+  if (index < 0) {
     return false;
   }
 
-  return userAvatarInfo.isOwnedAvatar(avatar);
+  return userAvatarInfo.isOwnedAvatar(allAvatars[index]);
 });

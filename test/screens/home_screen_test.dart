@@ -1,218 +1,91 @@
-import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:shougaku_kore_doutoku/models/child_profile.dart';
-import 'package:shougaku_kore_doutoku/models/notification_preferences.dart';
-import 'package:shougaku_kore_doutoku/models/progress.dart';
-import 'package:shougaku_kore_doutoku/models/report.dart';
-import 'package:shougaku_kore_doutoku/models/story.dart';
 import 'package:shougaku_kore_doutoku/providers/auth_provider.dart';
-import 'package:shougaku_kore_doutoku/providers/notification_preferences_provider.dart';
-import 'package:shougaku_kore_doutoku/providers/story_provider.dart'; // apiServiceProvider
-import 'package:shougaku_kore_doutoku/providers/story_provider_fs.dart'; // storiesFsProvider
 import 'package:shougaku_kore_doutoku/screens/home/home_screen.dart';
-import 'package:shougaku_kore_doutoku/services/api_service.dart';
-import '../helpers/fake_path_provider.dart';
+import '../helpers/firebase_test_helper.dart';
+import '../helpers/hive_test_helper.dart';
 
-// ─── Fake API ─────────────────────────────────────────────────────────────────
+// ホーム画面はメニューカードの一覧（道徳・体育・芸術などの入口）。
+// 各カードの遷移先は重いので、ここでは「何が並ぶか」を確認する。
 
-class _FakeApiService extends ApiService {
-  final List<ChildProfile> children;
-  final ChildProfile? singleChild;
+Widget _wrap() => ProviderScope(
+      overrides: [
+        userAuthStateProvider.overrideWith((_) => Stream.value(null)),
+      ],
+      child: const MaterialApp(home: HomeScreen()),
+    );
 
-  _FakeApiService({this.children = const [], this.singleChild});
-
-  @override
-  Future<List<ChildProfile>> fetchChildrenProfiles() async => children;
-
-  @override
-  Future<ChildProfile> fetchChildProfile(String childId) async {
-    if (singleChild != null) return singleChild!;
-    throw Exception('not found');
-  }
-
-  @override
-  Future<List<Story>> fetchStories({
-    String? theme,
-    int? gradeLevel,
-    bool? isPremium,
-    int offset = 0,
-    int limit = 20,
-  }) async =>
-      [];
-
-  @override
-  Future<List<Story>> fetchWeeklyTheme(int weekNumber) async => [];
-
-  @override
-  Future<List<Progress>> fetchProgress(String childId,
-          {int limit = 100}) async =>
-      [];
-
-  @override
-  Future<MonthlyReport?> fetchMonthlyReport({
-    required String childId,
-    required int year,
-    required int month,
-  }) async =>
-      null;
-
-  @override
-  Future<Map<String, dynamic>> loginWithFirebase(String idToken) async =>
-      {'accessToken': null};
+/// カードは遅延付きのアニメーションで現れる。表示とタイマーの完了まで時間を進める。
+Future<void> _pumpHome(WidgetTester tester) async {
+  await tester.pumpWidget(_wrap());
+  await tester.pump(const Duration(seconds: 3));
 }
 
-// ─── Fixtures ────────────────────────────────────────────────────────────────
-
-final _testChild = ChildProfile(
-  id: 'child-1',
-  parentId: 'parent-1',
-  name: 'たろう',
-  grade: 3,
-  avatarEmoji: '🦁',
-  createdAt: DateTime(2024, 1, 1),
-  level: 2,
-  totalPoints: 150,
-);
-
-// ─── Helper ──────────────────────────────────────────────────────────────────
-
-Widget _wrap({List<ChildProfile>? children, ChildProfile? singleChild}) {
-  final api = _FakeApiService(
-    children: children ?? [],
-    singleChild: singleChild,
-  );
-  return ProviderScope(
-    overrides: [
-      userAuthStateProvider.overrideWith((_) => Stream.value(null)),
-      apiServiceProvider.overrideWith((ref) => api),
-      storiesFsProvider.overrideWith(
-        (ref, _) => Future.value(<Story>[]),
-      ),
-      notificationPreferencesProvider.overrideWith(
-        (ref, userId) => Future.value(
-          NotificationPreferences(updatedAt: DateTime.now()),
-        ),
-      ),
-    ],
-    child: MaterialApp(
-      home: const HomeScreen(),
-      routes: {
-        '/child-registration': (_) =>
-            const Scaffold(body: Text('ChildRegistrationPage')),
-        '/login': (_) => const Scaffold(body: Text('LoginPage')),
-        '/home': (_) => const Scaffold(body: Text('HomePage')),
-      },
-    ),
-  );
+/// 全カードが画面内に収まるよう、縦長のビューポートにする。
+void _setTallViewport(WidgetTester tester) {
+  tester.view.physicalSize = const Size(800, 4000);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
 }
-
-// ─── Tests ───────────────────────────────────────────────────────────────────
 
 void main() {
+  late Directory hiveTestDir;
   setUpAll(() async {
-    dotenv.testLoad(fileInput: '');
-    PathProviderPlatform.instance = FakePathProvider();
-    await Hive.initFlutter();
+    hiveTestDir = await initHiveForTest();
   });
-
   tearDownAll(() async {
-    try {
-      await Hive.close();
-    } catch (_) {}
+    await disposeHiveForTest(hiveTestDir);
   });
+  setUpAll(setupFirebaseForTest);
 
   group('HomeScreen', () {
-    testWidgets('shows loading indicator before child init completes',
+    testWidgets('shows the integrated app name in the AppBar', (tester) async {
+      _setTallViewport(tester);
+      await _pumpHome(tester);
+
+      expect(find.text('小学コレ！心身'), findsOneWidget);
+    });
+
+    testWidgets('shows a menu card for every section', (tester) async {
+      _setTallViewport(tester);
+      await _pumpHome(tester);
+
+      for (final title in const [
+        'ストーリー',
+        'ランキング',
+        'ダッシュボード',
+        'バッジ図鑑',
+        'レポート',
+        '設定',
+        '体育・健康',
+        '芸術',
+        'できたことチェック',
+        'きょうのきろく',
+      ]) {
+        expect(find.text(title), findsOneWidget, reason: 'card "$title"');
+      }
+    });
+
+    testWidgets('体育・健康 and 芸術 cards describe their contents',
         (tester) async {
-      // Use an api that never resolves fetchChildrenProfiles
-      final neverApi = _FakeApiServiceNever();
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            userAuthStateProvider.overrideWith((_) => Stream.value(null)),
-            apiServiceProvider.overrideWith((ref) => neverApi),
-            storiesProvider.overrideWith((ref, _) => Future.value(<Story>[])),
-          ],
-          child: const MaterialApp(home: HomeScreen()),
-        ),
-      );
-      // One frame: postFrameCallback fires but fetchChildrenProfiles hasn't resolved
-      await tester.pump();
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      _setTallViewport(tester);
+      await _pumpHome(tester);
+
+      expect(find.text('スポーツ・防災・栄養'), findsOneWidget);
+      expect(find.text('図工・音楽・家庭科'), findsOneWidget);
     });
 
-    testWidgets('redirects to /child-registration when no children exist',
+    testWidgets('has no leftover stub cards (piano / drawing / colors)',
         (tester) async {
-      await tester.pumpWidget(_wrap(children: []));
-      await tester.pumpAndSettle();
-      expect(find.text('ChildRegistrationPage'), findsOneWidget);
-    });
+      _setTallViewport(tester);
+      await _pumpHome(tester);
 
-    testWidgets('shows BottomNavigationBar after init', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.byType(BottomNavigationBar), findsOneWidget);
-    });
-
-    testWidgets('shows all five bottom nav labels', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.text('ホーム'), findsOneWidget);
-      expect(find.text('学習'), findsOneWidget);
-      expect(find.text('成長'), findsOneWidget);
-      expect(find.text('レポート'), findsOneWidget);
-      expect(find.text('設定'), findsOneWidget);
-    });
-
-    testWidgets('shows 心のレッスン in home header', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.text('心のレッスン'), findsOneWidget);
-    });
-
-    testWidgets('shows child name in home header', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('たろう'), findsOneWidget);
-    });
-
-    testWidgets('shows level info in header', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.textContaining('レベル 2'), findsOneWidget);
-    });
-
-    testWidgets('shows すべてのストーリーを見る CTA', (tester) async {
-      await tester.pumpWidget(
-          _wrap(children: [_testChild], singleChild: _testChild));
-      await tester.pumpAndSettle();
-      expect(find.text('すべてのストーリーを見る'), findsOneWidget);
+      expect(find.text('ピアノ'), findsNothing);
+      expect(find.text('お絵かき'), findsNothing);
+      expect(find.text('色選び'), findsNothing);
     });
   });
-}
-
-// ─── Helper for never-resolving API ──────────────────────────────────────────
-
-class _FakeApiServiceNever extends ApiService {
-  // Never completes — keeps HomeScreen in the loading state indefinitely
-  // without leaving a pending timer that violates '!timersPending'.
-  final _completer = Completer<List<ChildProfile>>();
-
-  @override
-  Future<List<ChildProfile>> fetchChildrenProfiles() => _completer.future;
-
-  @override
-  Future<Map<String, dynamic>> loginWithFirebase(String idToken) async =>
-      {'accessToken': null};
 }

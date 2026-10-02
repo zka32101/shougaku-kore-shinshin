@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -124,6 +125,11 @@ class ParentalConsentService {
 
   /// 同意記録を監査ログに追加
   /// Adds entry to audit log
+  ///
+  /// NOTE: 現在どこからも呼ばれていない（saveParentalConsent / revokeConsent が
+  /// 監査ログを残していない）。記録内容(IP等)とプライバシー方針の判断が要るため、
+  /// 配線は別途決める。getConsentAuditLog は parental_consent_audit を読む。
+  // ignore: unused_element
   Future<void> _logConsentAction(
     String parentUserId,
     String action,
@@ -139,7 +145,7 @@ class ParentalConsentService {
       });
     } catch (e) {
       // Log silently - audit logging should not break main flow
-      print('Failed to log consent action: $e');
+      debugPrint('Failed to log consent action: $e');
     }
   }
 
