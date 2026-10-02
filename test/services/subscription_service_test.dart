@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shougaku_kore_doutoku/services/subscription_service.dart';
 import 'package:shougaku_kore_doutoku/models/user.dart';
+import '../helpers/firebase_test_helper.dart';
 
 // Generate mocks with: flutter pub run build_runner build
 // Note: For production, use proper Firebase mocking library
@@ -10,6 +11,8 @@ import 'package:shougaku_kore_doutoku/models/user.dart';
 void main() {
   group('SubscriptionService', () {
     late SubscriptionService subscriptionService;
+
+    setUpAll(setupFirebaseForTest);
 
     setUp(() {
       subscriptionService = SubscriptionService();

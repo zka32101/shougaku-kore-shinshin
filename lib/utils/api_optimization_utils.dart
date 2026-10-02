@@ -126,7 +126,7 @@ class RequestBatcher<T, R> {
 
   List<T> _pendingRequests = [];
   Timer? _batchTimer;
-  final List<Completer<R>> _completers = [];
+  List<Completer<R>> _completers = [];
 
   RequestBatcher({
     required this.batchFn,
@@ -163,8 +163,11 @@ class RequestBatcher<T, R> {
     final requestsToProcess = _pendingRequests;
     final completersToResolve = _completers;
 
+    // 待機リストは新しいインスタンスに差し替える。
+    // _completers.clear() だと completersToResolve も同じリストなので空になり、
+    // add() の Future が永久に完了しなくなる。
     _pendingRequests = [];
-    _completers.clear();
+    _completers = [];
 
     try {
       final result = await batchFn(requestsToProcess);
