@@ -10,6 +10,7 @@ import 'package:shougaku_kore_doutoku/providers/story_provider.dart'
     show apiServiceProvider;
 import 'package:shougaku_kore_doutoku/services/api_service.dart';
 import '../helpers/fake_path_provider.dart';
+import 'package:shougaku_kore_doutoku/services/hive_service.dart';
 
 // ── Fake ApiService ────────────────────────────────────────────────────────
 
@@ -96,7 +97,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('child_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     // Pre-open the settings box so _ChildIdNotifier._loadFromHive
     // resolves in a single microtask turn (box.get is a sync lookup once open).
     await Hive.openBox<dynamic>('settings');

@@ -49,7 +49,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('sync_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = HiveService();
     api = _FakeApiService();
   });

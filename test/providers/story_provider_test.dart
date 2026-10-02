@@ -116,7 +116,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('story_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _InMemoryHiveService();
     api = _FakeApiService();
   });

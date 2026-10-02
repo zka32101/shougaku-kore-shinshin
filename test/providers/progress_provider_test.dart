@@ -80,7 +80,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('progress_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _NoOpCacheHiveService();
     api = _FakeApiService();
   });

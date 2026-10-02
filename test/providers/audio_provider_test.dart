@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,6 +8,7 @@ import 'package:path_provider_platform_interface/path_provider_platform_interfac
 import 'package:shougaku_kore_doutoku/providers/audio_provider.dart';
 import 'package:shougaku_kore_doutoku/services/audio_service.dart';
 import '../helpers/fake_path_provider.dart';
+import 'package:shougaku_kore_doutoku/services/hive_service.dart';
 
 // ── Fake AudioService ──────────────────────────────────────────────────────
 // Override all platform-specific methods to avoid FlutterTts I/O in tests.
@@ -48,13 +50,25 @@ void main() {
   late Directory testDir;
 
   setUpAll(() {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    // AudioService のコンストラクタが audioplayers / flutter_tts を初期化するため、
+    // プラグインのチャンネルを空応答にしておく
+    for (final channel in const [
+      'xyz.luan/audioplayers.global',
+      'xyz.luan/audioplayers',
+      'flutter_tts',
+    ]) {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(MethodChannel(channel), (call) async => null);
+    }
     dotenv.loadFromString(envString: 'TEST_ENV=1');
     PathProviderPlatform.instance = FakePathProvider();
   });
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('audio_provider_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     // Pre-open settings box so _BoolSettingNotifier/_DoubleSettingNotifier
     // fire-and-forget _load completes in a single microtask turn.
     await Hive.openBox<dynamic>('settings');

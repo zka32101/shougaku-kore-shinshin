@@ -167,7 +167,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('perf_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     benchmark = PerformanceBenchmark();
   });
 

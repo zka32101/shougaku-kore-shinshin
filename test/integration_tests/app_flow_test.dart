@@ -247,7 +247,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('app_flow_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _InMemoryHiveService();
     api = _FakeApiService();
     auth = _MockAuthService();

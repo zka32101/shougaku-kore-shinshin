@@ -108,7 +108,8 @@ void main() {
 
   setUp(() async {
     testDir = await Directory.systemTemp.createTemp('badge_provider_opt_test_');
-    Hive.init(testDir.path);
+    HiveService.resetForTesting();
+    await HiveService().initialize(path: testDir.path);
     hive = _NoOpCacheHiveService();
     api = _FakeApiService();
   });
