@@ -1,8 +1,6 @@
 ﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/revisit_schedule.dart';
-import '../services/api_service.dart';
-
-final apiServiceProvider = Provider((ref) => ApiService());
+import 'story_provider.dart' show apiServiceProvider;
 
 final revisitStoriesProvider = FutureProvider.autoDispose
     .family<List<RevisitStory>, String>((ref, userId) async {

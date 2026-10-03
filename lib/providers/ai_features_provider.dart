@@ -1,8 +1,6 @@
 ﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/ai_features.dart';
-import '../services/api_service.dart';
-
-final apiServiceProvider = Provider((ref) => ApiService());
+import 'story_provider.dart' show apiServiceProvider;
 
 final reasonAnalysisProvider = FutureProvider.autoDispose
     .family<ReasonAnalysis?, (String, String)>((ref, args) async {
