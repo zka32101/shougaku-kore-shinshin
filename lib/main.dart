@@ -8,7 +8,6 @@ import 'screens/home/home_screen.dart';
 import 'screens/subscription/trial_status_screen.dart';
 import 'screens/subscription/subscription_screen.dart';
 import 'screens/settings/avatar_selection_screen.dart';
-import 'screens/settings/avatar_shop_screen.dart';
 import 'screens/ranking/ranking_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/auth/child_registration_screen.dart';
@@ -180,7 +179,6 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
         '/trial_status': (context) => const TrialStatusScreen(),
         '/subscription': (context) => const SubscriptionScreen(),
         '/avatar_selection': (context) => const AvatarSelectionScreen(),
-        '/avatar_shop': (context) => const AvatarShopScreen(),
         '/ranking': (context) => const RankingScreen(),
         '/dashboard': (context) => const DashboardScreen(),
         '/badge_showcase': (context) => const BadgeShowcaseScreen(),
