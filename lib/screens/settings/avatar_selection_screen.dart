@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/avatar.dart';
 import '../../providers/avatar_provider.dart';
+import '../../providers/premium_provider.dart';
+import '../upgrade_screen.dart';
 
 /// アバター選択画面
 ///
-/// アバターは単品課金をやめ、全て選べる（購入ショップは廃止）。
-/// 将来サブスク会員限定にする場合は、ここで isOwned を会員状態から決める。
+/// アバターは単品課金をやめ、デフォルト以外は無料期間中または購読中のみ選べる。
 class AvatarSelectionScreen extends ConsumerWidget {
   const AvatarSelectionScreen({super.key});
 
@@ -14,6 +15,7 @@ class AvatarSelectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final allAvatarsAsync = ref.watch(allAvatarsProvider);
     final userAvatarInfoAsync = ref.watch(userAvatarInfoProvider);
+    final hasAccess = ref.watch(premiumProvider).hasAccess;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +47,7 @@ class AvatarSelectionScreen extends ConsumerWidget {
                     ref,
                     avatar,
                     userAvatarInfo.selectedAvatarId == avatar.id,
-                    true, // isOwned
+                    avatar.isDefault || hasAccess, // isOwned
                   );
                 },
               );
@@ -99,7 +101,9 @@ class AvatarSelectionScreen extends ConsumerWidget {
                 }
               }
             }
-          : null,
+          : () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const UpgradeScreen()),
+              ),
       child: Card(
         elevation: isSelected ? 8 : 2,
         shape: RoundedRectangleBorder(

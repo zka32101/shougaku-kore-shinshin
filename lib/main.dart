@@ -17,6 +17,8 @@ import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'theme/app_theme.dart';
 import 'providers/theme_provider.dart';
+import 'providers/premium_provider.dart';
+import 'services/shinshin_purchase_service.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -64,6 +66,11 @@ void main() async {
   // ローカル保存（設定・進捗）。失敗してもアプリは起動を続ける
   try {
     await HiveService().initialize();
+  } catch (_) {}
+
+  // 課金（RevenueCat）。キー未設定・失敗でも起動を続ける
+  try {
+    await ShinshinPurchaseService.instance.initialize();
   } catch (_) {}
 
   runApp(
@@ -164,6 +171,7 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Watch theme mode and brightness
     ref.watch(initializeThemeProvider);
+    ref.watch(premiumBootstrapProvider);
     final brightness = ref.watch(brightnessProvider);
 
     return MaterialApp(
