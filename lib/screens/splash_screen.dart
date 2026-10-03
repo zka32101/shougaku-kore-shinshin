@@ -12,6 +12,9 @@ class SplashScreen extends ConsumerStatefulWidget {
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
+  // バックエンドが応答しない時にスプラッシュで待ち続けないための上限
+  static const _backendTimeout = Duration(seconds: 3);
+
   bool _navigated = false;
 
   @override
@@ -42,7 +45,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       try {
         final idToken = await user.getIdToken();
         if (idToken != null) {
-          final result = await api.loginWithFirebase(idToken);
+          final result = await api
+              .loginWithFirebase(idToken)
+              .timeout(_backendTimeout);
           final jwt = result['accessToken'] as String?;
           if (jwt != null) api.setAuthToken(jwt);
         }
@@ -51,7 +56,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
     // 子どもプロフィールの存在を確認してルーティング
     try {
-      final children = await api.fetchChildrenProfiles();
+      final children = await api.fetchChildrenProfiles().timeout(_backendTimeout);
       if (!mounted) return;
       _navigated = true;
       if (children.isNotEmpty) {
