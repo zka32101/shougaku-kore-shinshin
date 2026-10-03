@@ -17,6 +17,7 @@ import '../badge/badge_showcase_screen.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../checklist/achievement_checklist_screen.dart';
 import '../checklist/daily_record_screen.dart';
+import '../../widgets/premium_gate.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -24,14 +25,14 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menuItems = [
-      (icon: '📖', title: 'ストーリー', subtitle: '道徳の学習', screen: const LibraryScreen()),
+      (icon: '📖', title: 'ストーリー', subtitle: '道徳の学習', screen: const PremiumGate(child: LibraryScreen())),
       (icon: '🏆', title: 'ランキング', subtitle: '成績を確認', screen: const RankingScreen()),
       (icon: '📈', title: 'ダッシュボード', subtitle: '学習統計', screen: const DashboardScreen()),
       (icon: '🎖️', title: 'バッジ図鑑', subtitle: 'バッジを集める', screen: const BadgeShowcaseScreen()),
       (icon: '📊', title: 'レポート', subtitle: '成長を分析', screen: const ReportScreen()),
       (icon: '⚙️', title: '設定', subtitle: 'アプリ設定', screen: const SettingsScreen()),
-      (icon: '⛹️', title: '体育・健康', subtitle: 'スポーツ・防災・栄養', screen: const TaikuModule()),
-      (icon: '🎨', title: '芸術', subtitle: '図工・音楽・家庭科', screen: const GeijutsuModule()),
+      (icon: '⛹️', title: '体育・健康', subtitle: 'スポーツ・防災・栄養', screen: const PremiumGate(child: TaikuModule())),
+      (icon: '🎨', title: '芸術', subtitle: '図工・音楽・家庭科', screen: const PremiumGate(child: GeijutsuModule())),
       (icon: '✅', title: 'できたことチェック', subtitle: '成長を確認', screen: const AchievementChecklistScreen()),
       (icon: '📝', title: 'きょうのきろく', subtitle: '日々の取り組み', screen: const DailyRecordScreen()),
     ];
