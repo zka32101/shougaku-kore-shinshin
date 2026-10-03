@@ -1,8 +1,6 @@
 ﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/kindness_mission.dart';
-import '../services/api_service.dart';
-
-final apiServiceProvider = Provider((ref) => ApiService());
+import 'story_provider.dart' show apiServiceProvider;
 
 final currentKindnessMissionProvider = FutureProvider.autoDispose
     .family<KindnessMission, String>((ref, userId) async {
