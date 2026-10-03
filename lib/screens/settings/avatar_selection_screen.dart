@@ -4,6 +4,9 @@ import '../../models/avatar.dart';
 import '../../providers/avatar_provider.dart';
 
 /// アバター選択画面
+///
+/// アバターは単品課金をやめ、全て選べる（購入ショップは廃止）。
+/// 将来サブスク会員限定にする場合は、ここで isOwned を会員状態から決める。
 class AvatarSelectionScreen extends ConsumerWidget {
   const AvatarSelectionScreen({super.key});
 
@@ -26,116 +29,25 @@ class AvatarSelectionScreen extends ConsumerWidget {
                 );
               }
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      // デフォルトアバター セクション
-                      const Text(
-                        'デフォルトアバター',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.0,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                        ),
-                        itemCount: avatars
-                            .where((a) => a.isDefault)
-                            .toList()
-                            .length,
-                        itemBuilder: (context, index) {
-                          final avatar = avatars
-                              .where((a) => a.isDefault)
-                              .toList()[index];
-                          final isSelected =
-                              userAvatarInfo.selectedAvatarId == avatar.id;
-
-                          return _buildAvatarCard(
-                            context,
-                            ref,
-                            avatar,
-                            isSelected,
-                            true, // isOwned (all defaults are owned)
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 32),
-                      // 購入済みアバター セクション
-                      if (userAvatarInfo.purchasedAvatarIds.isNotEmpty) ...[
-                        const Text(
-                          '購入済みアバター',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 1.0,
-                            mainAxisSpacing: 12,
-                            crossAxisSpacing: 12,
-                          ),
-                          itemCount: avatars
-                              .where((a) =>
-                                  userAvatarInfo.purchasedAvatarIds
-                                      .contains(a.id))
-                              .toList()
-                              .length,
-                          itemBuilder: (context, index) {
-                            final avatar = avatars
-                                .where((a) =>
-                                    userAvatarInfo.purchasedAvatarIds
-                                        .contains(a.id))
-                                .toList()[index];
-                            final isSelected =
-                                userAvatarInfo.selectedAvatarId == avatar.id;
-
-                            return _buildAvatarCard(
-                              context,
-                              ref,
-                              avatar,
-                              isSelected,
-                              true, // isOwned
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 32),
-                      ],
-                      // ショップへのボタン
-                      const Text(
-                        'もっとアバターを探す',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/avatar_shop');
-                        },
-                        icon: const Icon(Icons.shopping_bag),
-                        label: const Text('アバターショップを開く'),
-                      ),
-                    ],
-                  ),
+              return GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.0,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
                 ),
+                itemCount: avatars.length,
+                itemBuilder: (context, index) {
+                  final avatar = avatars[index];
+                  return _buildAvatarCard(
+                    context,
+                    ref,
+                    avatar,
+                    userAvatarInfo.selectedAvatarId == avatar.id,
+                    true, // isOwned
+                  );
+                },
               );
             },
             loading: () => const Center(
