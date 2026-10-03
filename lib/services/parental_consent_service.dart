@@ -32,7 +32,6 @@ class ParentalConsentService {
         'consentedToAnalytics': consentedToAnalytics,
         'consentedAt': now,
         'updatedAt': now,
-        'ipAddress': await _getClientIp(), // For audit trail
         'userAgent': 'flutter_app',
       };
 
@@ -40,6 +39,12 @@ class ParentalConsentService {
           .collection('parental_consent')
           .doc(parentUserId)
           .set(consentData, SetOptions(merge: true));
+
+      await _logConsentAction(parentUserId, 'given', {
+        'consentedToTerms': consentedToTerms,
+        'consentedToPrivacy': consentedToPrivacy,
+        'consentedToAnalytics': consentedToAnalytics,
+      });
     } catch (e) {
       throw Exception('Failed to save parental consent: $e');
     }
@@ -93,6 +98,8 @@ class ParentalConsentService {
         'revokedAt': FieldValue.serverTimestamp(),
       });
 
+      await _logConsentAction(parentUserId, 'revoked', {});
+
       // TODO: Implement data deletion workflow
       // - Delete user profile
       // - Delete child profile
@@ -126,10 +133,7 @@ class ParentalConsentService {
   /// 同意記録を監査ログに追加
   /// Adds entry to audit log
   ///
-  /// NOTE: 現在どこからも呼ばれていない（saveParentalConsent / revokeConsent が
-  /// 監査ログを残していない）。記録内容(IP等)とプライバシー方針の判断が要るため、
-  /// 配線は別途決める。getConsentAuditLog は parental_consent_audit を読む。
-  // ignore: unused_element
+  /// 個人情報を増やさないため、IP等は記録しない（誰が・いつ・何に同意/撤回したかのみ）。
   Future<void> _logConsentAction(
     String parentUserId,
     String action,
@@ -141,20 +145,11 @@ class ParentalConsentService {
         'action': action,
         'details': details,
         'timestamp': FieldValue.serverTimestamp(),
-        'ipAddress': await _getClientIp(),
       });
     } catch (e) {
       // Log silently - audit logging should not break main flow
       debugPrint('Failed to log consent action: $e');
     }
-  }
-
-  /// クライアントIPを取得（監査用）
-  /// Gets client IP for audit trail
-  Future<String> _getClientIp() async {
-    // In production, this would be captured from request context
-    // For now, return placeholder
-    return 'client_ip';
   }
 }
 
@@ -224,17 +219,15 @@ class ParentalConsentRecord {
 /// Audit log entry for consent actions
 class ConsentAuditLog {
   final String parentUserId;
-  final String action; // 'given', 'revoked', 'updated'
+  final String action; // 'given', 'revoked'
   final Map<String, dynamic> details;
   final DateTime timestamp;
-  final String ipAddress;
 
   ConsentAuditLog({
     required this.parentUserId,
     required this.action,
     required this.details,
     required this.timestamp,
-    required this.ipAddress,
   });
 
   factory ConsentAuditLog.fromJson(Map<String, dynamic> json) {
@@ -243,7 +236,6 @@ class ConsentAuditLog {
       action: json['action'] as String,
       details: json['details'] as Map<String, dynamic>? ?? {},
       timestamp: (json['timestamp'] as Timestamp).toDate(),
-      ipAddress: json['ipAddress'] as String,
     );
   }
 }
