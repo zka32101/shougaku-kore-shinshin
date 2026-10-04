@@ -137,7 +137,10 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => Padding(
+      builder: (context) {
+        String? descError;
+        return StatefulBuilder(builder: (context, setSheet) {
+          return Padding(
         padding: EdgeInsets.only(
           left: 20, right: 20, top: 20,
           bottom: MediaQuery.of(context).viewInsets.bottom + 20,
@@ -164,15 +167,22 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             TextField(
               controller: _descCtrl,
               maxLines: 3,
-              decoration: const InputDecoration(
+              maxLength: 50,
+              decoration: InputDecoration(
                 labelText: '何を表現したか (20-50字)',
                 hintText: '例：赤だけで「情熱」を描きました...',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                errorText: descError,
               ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _isSaving ? null : () async {
+                final len = _descCtrl.text.trim().characters.length;
+                if (len < 20) {
+                  setSheet(() => descError = 'あと${20 - len}字以上書いてね（20〜50字）');
+                  return;
+                }
                 setState(() => _isSaving = true);
                 Navigator.pop(context);
                 await _doSave();
@@ -186,7 +196,9 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             ),
           ],
         ),
-      ),
+      );
+        });
+      },
     );
   }
 

@@ -170,9 +170,9 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
             emoji: '🍳',
             title: '色彩料理×ファッション',
             subtitle: '12ヶ月・12色のカラーチャレンジ',
-            description: 'Month $homeMonth「${kMonthColors[homeMonth - 1]['name']}」に挑戦中！',
+            description: '$homeMonth月「${kMonthColors[homeMonth - 1]['name']}」に挑戦中！',
             color: kHomeEcColor,
-            badge: 'Month $homeMonth',
+            badge: '$homeMonth月',
             onTap: () => Navigator.pushNamed(context, '/home-ec/month', arguments: homeMonth),
           ),
 

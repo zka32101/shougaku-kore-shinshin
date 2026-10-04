@@ -135,14 +135,18 @@ class _AppBar extends StatelessWidget {
           children: [
             // 拡大表示(FlexibleSpaceBar が1.5倍)でも横幅を超えないよう、残り幅で省略表示
             const Expanded(
-              child: Text(
-                '🏃 体験・体育コレ！',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 18),
+              // 拡大表示(1.5倍)でも省略されないよう、収まらない分は縮小する
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '🏃 体験・体育コレ！',
+                  maxLines: 1,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      fontSize: 18),
+                ),
               ),
             ),
             if (streak.currentStreak > 0)
@@ -448,6 +452,16 @@ class _SmartRecommendCard extends ConsumerWidget {
       case 'disaster': return '防災';
       case 'nutrition': return '栄養';
       case 'career': return 'キャリア';
+      case 'health': return '健康';
+      case 'safety': return 'あんぜん';
+      case 'environment': return '環境';
+      case 'money': return 'お金';
+      case 'values': return '価値観';
+      case 'art': return '図工';
+      case 'music': return '音楽';
+      case 'home_ec': return '家庭科';
+      case 'ict': return '情報';
+      case 'experience': return '実体験';
       default: return theme;
     }
   }
@@ -580,6 +594,16 @@ class _ThemeStageGrid extends ConsumerWidget {
       case 'disaster': return '🛡️ 防災';
       case 'nutrition': return '🥗 栄養';
       case 'career': return '⭐ キャリア';
+      case 'health': return '💪 健康';
+      case 'safety': return '🚦 あんぜん';
+      case 'environment': return '🌏 環境';
+      case 'money': return '💴 お金';
+      case 'values': return '💡 価値観';
+      case 'art': return '🎨 図工';
+      case 'music': return '🎵 音楽';
+      case 'home_ec': return '🍳 家庭科';
+      case 'ict': return '💻 情報';
+      case 'experience': return '🌟 実体験';
       default: return theme;
     }
   }

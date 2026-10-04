@@ -124,7 +124,6 @@ class _RootShellState extends ConsumerState<RootShell> {
 
   @override
   Widget build(BuildContext context) {
-    final grade = ref.watch(gradeLevelProvider);
     const color = TaikuColors.primary;
     final currentProfile = ref.watch(currentChildProfileProvider);
     final unreadCount = currentProfile != null
@@ -149,8 +148,9 @@ class _RootShellState extends ConsumerState<RootShell> {
         backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedFontSize: grade == GradeLevel.low ? 11 : 10,
-        unselectedFontSize: grade == GradeLevel.low ? 10 : 9,
+        // 6タブで幅が狭く、ラベルが「…」で省略されないよう選択/非選択で同じ大きさにする
+        selectedFontSize: 10,
+        unselectedFontSize: 10,
         items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -170,7 +170,7 @@ class _RootShellState extends ConsumerState<RootShell> {
           const BottomNavigationBarItem(
             icon: Icon(Icons.photo_library_outlined),
             activeIcon: Icon(Icons.photo_library),
-            label: 'アルバム',
+            label: 'きろく',
           ),
           BottomNavigationBarItem(
             icon: Badge(
@@ -183,7 +183,7 @@ class _RootShellState extends ConsumerState<RootShell> {
               isLabelVisible: unreadCount > 0,
               child: const Icon(Icons.family_restroom),
             ),
-            label: '親メニュー',
+            label: '保護者',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
