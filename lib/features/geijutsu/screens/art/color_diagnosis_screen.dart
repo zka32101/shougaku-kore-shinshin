@@ -50,6 +50,19 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
     },
   ];
 
+  // 種別: 0=暖色 1=冷色 2=中間。_colorNames と同じ並び / _scenes の選択肢と同じ並び。
+  static const _colorKinds = [
+    0, 0, 0, 2, 1, 1, // 赤 橙 黄 黄緑 緑 青緑
+    1, 1, 0, 2, 2, 2, // 青 紫 ピンク 茶 グレー 黒
+  ];
+  static const _sceneKinds = [
+    [0, 0, 1, 2], // 朝: 赤橙 / 黄黄緑 / 青紫 / グレー黒
+    [0, 0, 1, 1], // 友達: 赤ピンク / 黄黄緑 / 緑 / 紫ピンク
+    [0, 1, 2, 1], // 困った: 赤 / 青 / グレー / 紫
+    [1, 2, 1, 2], // 夜: 紫紺 / 黒 / 青 / グレー
+    [0, 0, 1, 0], // 作る: 赤橙 / 黄緑 / 青紫 / ピンク
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,17 +287,37 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
   }
 
   Widget _resultStep() {
-    // スコア計算
-    final warmVotes = _sceneAnswers.where((a) => a == 0).length;
-    final coolVotes = _sceneAnswers.where((a) => a == 2 || a == 3).length;
+    // スコア計算: 場面の答え(各1票)と選んだ色(各0.5票)を、暖色/冷色/中間に振り分けて割合にする
+    var warmVotes = 0.0, coolVotes = 0.0, neutralVotes = 0.0;
+    void vote(int kind, double w) {
+      if (kind == 0) {
+        warmVotes += w;
+      } else if (kind == 1) {
+        coolVotes += w;
+      } else {
+        neutralVotes += w;
+      }
+    }
 
-    final warmPct = (warmVotes / 5 * 100 + (_selectedColors.where((i) => i < 3).length * 10)).clamp(0.0, 100.0);
-    final coolPct = (coolVotes / 5 * 100 + (_selectedColors.where((i) => i > 6).length * 10)).clamp(0.0, 100.0);
-    final neutralPct = (100 - warmPct * 0.5 - coolPct * 0.5).clamp(0.0, 100.0);
+    for (var q = 0; q < _sceneAnswers.length && q < _sceneKinds.length; q++) {
+      final a = _sceneAnswers[q];
+      if (a >= 0 && a < _sceneKinds[q].length) vote(_sceneKinds[q][a], 1);
+    }
+    for (final i in _selectedColors) {
+      if (i >= 0 && i < _colorKinds.length) vote(_colorKinds[i], 0.5);
+    }
+    final totalVotes = warmVotes + coolVotes + neutralVotes;
+    double pct(double v) => totalVotes == 0 ? 0.0 : v / totalVotes * 100;
+    final warmPct = pct(warmVotes);
+    final coolPct = pct(coolVotes);
+    final neutralPct = pct(neutralVotes);
 
     final String typeStr;
     final String typeMsg;
-    if (warmPct >= coolPct) {
+    if (neutralPct > warmPct && neutralPct > coolPct) {
+      typeStr = '中間色系・バランス派';
+      typeMsg = 'あなたは「落ち着いて全体を見渡すバランスタイプ」。グレーや茶、黒などの落ち着いた色に、好きな色を一点だけ足すと、「あなたらしさ」が引き立つ！';
+    } else if (warmPct >= coolPct) {
       typeStr = '暖色系・情熱派';
       typeMsg = 'あなたは「情熱的な表現者タイプ」。赤・橙・ピンクを使った表現をすると、「あなたらしさ」が最も引き出される！';
     } else {
