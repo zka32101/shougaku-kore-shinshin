@@ -124,7 +124,6 @@ class _RootShellState extends ConsumerState<RootShell> {
 
   @override
   Widget build(BuildContext context) {
-    final grade = ref.watch(gradeLevelProvider);
     const color = TaikuColors.primary;
     final currentProfile = ref.watch(currentChildProfileProvider);
     final unreadCount = currentProfile != null
