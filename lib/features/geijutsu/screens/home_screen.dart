@@ -84,7 +84,7 @@ class HomeScreen extends ConsumerWidget {
                   bgColor: kArtColorLight,
                   progress: artworks.completedMonths / 12,
                   progressLabel: '${artworks.completedMonths}/12 ヶ月完了',
-                  currentLabel: '現在: Month $artMonth「${kMonthColors[artMonth - 1]['name']}」',
+                  currentLabel: '現在: $artMonth月「${kMonthColors[artMonth - 1]['name']}」',
                   onTap: () {
                     final colorProfile = ref.read(colorProfileProvider);
                     if (!colorProfile.isCompleted) {
@@ -103,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
                   color: kMusicColor,
                   bgColor: kMusicColorLight,
                   progress: compositions.maxStageCompleted / 8,
-                  progressLabel: 'Stage ${compositions.maxStageCompleted}/8 完了',
+                  progressLabel: 'ステージ ${compositions.maxStageCompleted}/8 完了',
                   currentLabel: '現在: Stage $musicStage',
                   onTap: () => Navigator.pushNamed(context, '/music/hub'),
                 ),
@@ -117,7 +117,7 @@ class HomeScreen extends ConsumerWidget {
                   bgColor: kHomeEcColorLight,
                   progress: challenges.completedMonths / 12,
                   progressLabel: '${challenges.completedMonths}/12 ヶ月完了',
-                  currentLabel: '現在: Month $homeMonth「${kMonthColors[homeMonth - 1]['name']}」',
+                  currentLabel: '現在: $homeMonth月「${kMonthColors[homeMonth - 1]['name']}」',
                   onTap: () => Navigator.pushNamed(context, '/home-ec/hub'),
                 ),
                 const SizedBox(height: 24),

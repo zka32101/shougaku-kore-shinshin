@@ -41,7 +41,7 @@ class ArtMonthScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'Month $month: $colorName',
+                          '$month月: $colorName',
                           style: const TextStyle(
                             color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold,
                           ),

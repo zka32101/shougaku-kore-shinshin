@@ -81,7 +81,7 @@ class _CompositionScreenState extends ConsumerState<CompositionScreen>
     final comp = Composition(
       id: const Uuid().v4(),
       stage: CompositionStage.values[widget.stage - 1],
-      title: _titleCtrl.text.isEmpty ? 'Stage ${widget.stage} の作品' : _titleCtrl.text,
+      title: _titleCtrl.text.isEmpty ? 'ステージ${widget.stage}の作品' : _titleCtrl.text,
       theme: _themeCtrl.text.isEmpty ? '楽しさ' : _themeCtrl.text,
       instrument: _selectedInstrument,
       pattern: _selectedPattern,

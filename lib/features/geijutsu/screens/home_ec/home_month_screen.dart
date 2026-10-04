@@ -39,7 +39,7 @@ class _HomeMonthScreenState extends ConsumerState<HomeMonthScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Month ${widget.month}: $colorName'),
+        title: Text('${widget.month}月: $colorName'),
         backgroundColor: color,
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -47,6 +47,9 @@ class _HomeMonthScreenState extends ConsumerState<HomeMonthScreen>
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white60,
           indicatorColor: Colors.white,
+          labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+          unselectedLabelStyle: const TextStyle(fontSize: 12),
+          labelPadding: EdgeInsets.zero,
           tabs: const [
             Tab(text: 'Lv.1\n色学習', height: 44),
             Tab(text: 'Lv.2\n料理', height: 44),
@@ -132,9 +135,10 @@ class _ColorLessonTab extends ConsumerWidget {
               Wrap(
                 spacing: 6,
                 children: foods.map((f) => Chip(
-                  label: Text(f, style: const TextStyle(fontSize: 12)),
-                  backgroundColor: Colors.white.withValues(alpha: 0.3),
-                  labelStyle: const TextStyle(color: Colors.white),
+                  // 地色が月の色なので、白地+月色の文字で読めるようにする
+                  label: Text(f, style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.w600)),
+                  backgroundColor: Colors.white,
+                  side: BorderSide.none,
                 )).toList(),
               ),
               const SizedBox(height: 8),
@@ -227,6 +231,7 @@ class _QuizCardState extends State<_QuizCard> {
             onTap: _answer == null ? () => setState(() => _answer = e.key) : null,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
+              width: double.infinity,
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
@@ -618,7 +623,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Month ${widget.month}「${widget.colorName}」完了！'),
+          content: Text('${widget.month}月「${widget.colorName}」完了！'),
           backgroundColor: widget.color,
         ),
       );
@@ -703,7 +708,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
           child: Text(
-            _saved ? '✓ Month ${widget.month} 完了！' : 'Month ${widget.month} を完了する ✓',
+            _saved ? '✓ ${widget.month}月 完了！' : '${widget.month}月を完了する ✓',
             style: const TextStyle(fontSize: 16),
           ),
         ),
