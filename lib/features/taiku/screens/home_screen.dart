@@ -576,7 +576,14 @@ class _ThemeStageGrid extends ConsumerWidget {
                                 .state = stageNum;
                             Navigator.of(context).pushNamed('/quiz');
                           }
-                        : null,
+                        : () => ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            const SnackBar(
+                              content: Text('ひとつ前のステージをクリアすると、あそべるようになるよ'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          ),
                   );
                 }).toList(),
               ),
