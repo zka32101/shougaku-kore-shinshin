@@ -62,10 +62,12 @@ jobs:
         run: flutter test test/performance_test.dart --coverage
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: coverage/lcov.info
+          files: coverage/lcov.info
           flags: flutter
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
       - name: Generate coverage report
         if: always()
@@ -127,10 +129,12 @@ jobs:
         run: pytest -vv --cov=app --cov-report=xml
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: backend/coverage.xml
+          files: backend/coverage.xml
           flags: backend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
   # ============ Performance Tests ============
   performance-tests:
