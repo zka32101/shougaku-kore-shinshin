@@ -106,7 +106,7 @@ class ProfileManagementScreen extends ConsumerWidget {
             },
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (error, st) => Center(
-              child: Text('エラー: $error'),
+              child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
             ),
           ),
     );

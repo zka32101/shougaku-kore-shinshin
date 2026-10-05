@@ -24,7 +24,7 @@ class GrowthScreen extends ConsumerWidget {
       backgroundColor: _bgColor,
       body: childAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('エラー: $e')),
+        error: (e, _) => Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         data: (child) => child == null
             ? const _NoChildView()
             : _GrowthContent(child: child),

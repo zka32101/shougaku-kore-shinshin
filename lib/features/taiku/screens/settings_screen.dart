@@ -60,7 +60,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             title: 'アプリ情報',
             child: Column(
               children: [
-                const _InfoTile(label: 'アプリ名', value: '体験・体育コレ！'),
+                const _InfoTile(label: 'アプリ名', value: '体育・健康'),
                 const _InfoTile(label: 'バージョン', value: 'v2.0'),
                 const _InfoTile(label: '対象', value: '小学1〜6年生'),
                 const _InfoTile(label: 'コンテンツ', value: '525問・150語彙・31競技・142活動'),
@@ -119,7 +119,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           // フッター
           Center(
             child: Text(
-              '© 2026 Petit Studio · 体験・体育コレ！',
+              '© 2026 Petit Studio · 体育・健康',
               style: TextStyle(
                   fontSize: 11, color: Colors.grey.shade500),
             ),

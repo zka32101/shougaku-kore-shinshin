@@ -70,7 +70,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Text('エラー: $error'),
+                error: (error, stack) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
               ),
               const SizedBox(height: 16),
               // Yearly Plan Card (Recommended)
@@ -122,7 +122,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stack) => Text('エラー: $error'),
+                error: (error, stack) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
               ),
               const SizedBox(height: 40),
               // Restore button
@@ -324,7 +324,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('エラー: $e')),
+          SnackBar(content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         );
       }
     } finally {
@@ -351,7 +351,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('エラー: $e')),
+          SnackBar(content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         );
       }
     } finally {
@@ -374,7 +374,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('エラー: $e')),
+          SnackBar(content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         );
       }
     } finally {

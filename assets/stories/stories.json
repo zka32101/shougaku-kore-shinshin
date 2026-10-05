@@ -1,0 +1,1272 @@
+[
+ {
+  "id": "local-story-1",
+  "title": "ともだちのかさ",
+  "description": "雨の日、友達のかさを借りるかどうか迷う太郎のお話",
+  "theme": "kindness",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "☔",
+  "content": {
+   "introduction": "太郎は学校の帰り道、急に雨が降り出しました。かさを持っていなかった太郎は困ってしまいました。",
+   "mainNarrative": [
+    "太郎は空を見上げました。雨はどんどん強くなっています。",
+    "友達の花子が黄色いかさを持って歩いているのが見えました。花子は遠い家に帰らなければなりません。"
+   ],
+   "dilemmaScene": "「花子のかさを借りたいな」と太郎は思いました。でも花子も遠い家に帰らなければなりません。さあ、太郎はどうすればいいでしょう？",
+   "choices": [
+    {
+     "id": "s1c1",
+     "text": "花子に正直に話して、一緒に傘に入れてもらう",
+     "value": "honesty",
+     "branchContent": "花子は「一緒に入ろう」と笑顔で言ってくれました。二人は仲良く帰ることができました。太郎は正直に話して良かったと思いました。",
+     "reflection": "困ったとき、正直に話すことが大切です。相手のことを考えながら、自分の気持ちも伝えてみましょう。"
+    },
+    {
+     "id": "s1c2",
+     "text": "何も言わずに花子の後ろについていく",
+     "value": "courage",
+     "branchContent": "花子は気づいてくれましたが、少し困った顔をしていました。太郎は自分から話せば良かったと思いました。",
+     "reflection": "勇気を出して話しかけることが大切です。黙ってついていくよりも、正直に伝えましょう。"
+    },
+    {
+     "id": "s1c3",
+     "text": "雨の中を走って帰る",
+     "value": "responsibility",
+     "branchContent": "びしょ濡れになりましたが、花子に気を遣わせなくてすみました。でも、風邪を引いてしまいました。",
+     "reflection": "自分だけで解決しようとする気持ちも大切ですが、困ったときは助けを求めることも勇気のある行動です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-2",
+  "title": "あきらめないこころ",
+  "description": "運動会のかけっこで転んでしまった次郎のお話",
+  "theme": "courage",
+  "gradeLevel": 4,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🏃",
+  "content": {
+   "introduction": "次郎はクラスのかけっこで一番になりたいと思っていました。毎日練習して、この日をとても楽しみにしていました。",
+   "mainNarrative": [
+    "スタートの合図と同時に、みんなが走り出しました。次郎も精一杯走りました。",
+    "でも、スタートしてすぐ、次郎は石につまずいて転んでしまいました。ひざがジンジン痛みます。"
+   ],
+   "dilemmaScene": "みんなはどんどん先へ進んでいきます。立ち上がるのが怖い気持ちもありました。さあ、次郎はどうすればいいでしょう？",
+   "choices": [
+    {
+     "id": "s2c1",
+     "text": "痛くても最後まで走りきる",
+     "value": "courage",
+     "branchContent": "最後になったかもしれないけど、次郎は走りきりました。ゴールしたとき、クラスのみんなが大きな拍手をしてくれました。",
+     "reflection": "転んでも諦めない勇気は、とても大切な心の力です。結果よりも、最後まで頑張ったことが大切なのです。"
+    },
+    {
+     "id": "s2c2",
+     "text": "先生を呼んでもらう",
+     "value": "honesty",
+     "branchContent": "先生がすぐに来てくれました。ひざを確認してもらうと、少し擦り傷ができていました。",
+     "reflection": "ケガが心配なときは、先生に助けを求めることも正しい判断です。自分の状態を正直に伝えましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-3",
+  "title": "みんなのルール",
+  "description": "公園でゲームのルールをめぐって意見が分かれたときのお話",
+  "theme": "cooperation",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 3,
+  "emoji": "⚽",
+  "content": {
+   "introduction": "放課後、公園でドッジボールをすることになりました。友達が5人集まりましたが、チームの分け方でもめてしまいました。",
+   "mainNarrative": [
+    "花子は「じゃんけんで決めよう」と言います。公平で良さそうです。",
+    "健太は「強い人から選ぼう」と言います。強いチームが作れると言っています。",
+    "他の子も違う意見を言っています。なかなかまとまりません。"
+   ],
+   "dilemmaScene": "みんなが違う意見を言っていて、なかなか決まりません。あなたならどうしますか？",
+   "choices": [
+    {
+     "id": "s3c1",
+     "text": "みんなの意見を聞いて、多数決で決める",
+     "value": "cooperation",
+     "branchContent": "多数決で決めた結果、じゃんけん方式になりました。みんなが納得してゲームが楽しくできました。",
+     "reflection": "みんなの意見を聞いて、公平な方法で決めることが協調性の大切さです。一人の意見だけでなく、みんなで考えましょう。"
+    },
+    {
+     "id": "s3c2",
+     "text": "自分の意見を強く主張する",
+     "value": "courage",
+     "branchContent": "自分の意見は言えましたが、他の人が嫌な気持ちになってしまいました。遊びが始まっても雰囲気が悪かったです。",
+     "reflection": "自分の意見を言うことは大切ですが、相手の気持ちも考えましょう。強く主張するより、みんなで話し合う方が良い結果になります。"
+    },
+    {
+     "id": "s3c3",
+     "text": "もめているから、遊ぶのをやめる",
+     "value": "responsibility",
+     "branchContent": "問題を避けましたが、楽しい遊びの機会がなくなりました。友達もがっかりした様子でした。",
+     "reflection": "困難な状況を避けるより、一緒に解決する方法を考えましょう。諦めないで話し合うことが大切です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-4",
+  "title": "うそとやさしさ",
+  "description": "友達の絵を正直に評価するかどうか悩む美咲のお話",
+  "theme": "honesty",
+  "gradeLevel": 3,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 4,
+  "emoji": "🎨",
+  "content": {
+   "introduction": "美咲の友達の桜子が、一生懸命描いた絵を見せてくれました。桜子はとても嬉しそうです。",
+   "mainNarrative": [
+    "美咲は絵を見ました。桜子が一生懸命描いたことはわかります。でも、正直に言うと、上手くないと思いました。",
+    "桜子は「どう？上手でしょ？」と期待の目で聞いてきました。"
+   ],
+   "dilemmaScene": "美咲はどう答えればいいか悩んでいます。正直に言うべきか、嘘をついて喜ばせるべきか。さあ、美咲はどうすればいいでしょう？",
+   "choices": [
+    {
+     "id": "s4c1",
+     "text": "いいところを見つけて、正直に伝える",
+     "value": "honesty",
+     "branchContent": "「この色使いが素敵だね。もっと練習したらもっと上手くなるよ」と言いました。桜子は少し考えて、「ありがとう、もっと頑張る！」と言いました。",
+     "reflection": "正直に伝えながらも、相手を傷つけない言い方を考えることが大切です。良いところを見つけてあげることも思いやりです。"
+    },
+    {
+     "id": "s4c2",
+     "text": "「すごく上手だよ！」と言う",
+     "value": "kindness",
+     "branchContent": "桜子はとても喜びました。でも、美咲の心の中には嘘をついた気持ちが残りました。",
+     "reflection": "相手を喜ばせたい気持ちは大切ですが、嘘は長い目で見ると信頼を失うことになります。優しい嘘より、優しい正直さを目指しましょう。"
+    },
+    {
+     "id": "s4c3",
+     "text": "「うーん、もっと練習したほうがいいよ」と言う",
+     "value": "honesty",
+     "branchContent": "正直な言葉でしたが、桜子の顔が曇ってしまいました。言い方を工夫する必要があったかもしれません。",
+     "reflection": "正直さは大切ですが、言い方も同じくらい大切です。相手の気持ちを考えた言い方を学びましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-5",
+  "title": "おとしもの",
+  "description": "道でお金が入った財布を見つけた翔太のお話",
+  "theme": "honesty",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "👛",
+  "content": {
+   "introduction": "翔太は学校の帰り道、道に財布が落ちているのを見つけました。辺りを見回しましたが、誰もいません。",
+   "mainNarrative": [
+    "翔太は財布を拾って中を見ました。お札が何枚か入っていました。",
+    "「これで好きなお菓子が買えるな」という気持ちが少し湧いてきました。でも、誰かが困っているかもしれません。"
+   ],
+   "dilemmaScene": "財布を持った翔太は、これからどうすればいいのか考えています。さあ、翔太はどうすればいいでしょう？",
+   "choices": [
+    {
+     "id": "s5c1",
+     "text": "すぐに警察（交番）に届ける",
+     "value": "honesty",
+     "branchContent": "翔太は交番に届けました。後日、落とした人がとても感謝してくれました。翔太は正しいことをしたと胸を張れました。",
+     "reflection": "落とし物を届けることは、正直で責任感のある行動です。誰かが困っているかもしれないと考えて行動できる力を育てましょう。"
+    },
+    {
+     "id": "s5c2",
+     "text": "家に持ち帰って親に相談する",
+     "value": "responsibility",
+     "branchContent": "お父さんやお母さんと一緒に交番に届けました。一人で抱え込まずに相談した、良い判断です。",
+     "reflection": "困ったことは一人で抱え込まずに、信頼できる大人に相談することも大切な判断力です。"
+    },
+    {
+     "id": "s5c3",
+     "text": "誰も見ていないから、使ってしまう",
+     "value": "honesty",
+     "branchContent": "後から罪悪感を感じ、夜も眠れませんでした。正しいことをしなかったと翔太は後悔しました。",
+     "reflection": "誰も見ていなくても、正しい行動をすることが本当の正直さです。自分自身の良心に従って行動しましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-6",
+  "title": "きゅうしょくのおかわり",
+  "description": "おかわりがひとつだけ残った日のお話",
+  "theme": "kindness",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🍛",
+  "content": {
+   "introduction": "今日の給食はみんなの大すきなカレーです。あおいさんは、はやく食べ終わりました。",
+   "mainNarrative": [
+    "おかわりが残っているのは、あとひとつだけです。",
+    "あおいさんが立ち上がると、うしろの席のけんくんも立ち上がりました。けんくんは、ちょうし悪くて朝ごはんを食べられなかったそうです。"
+   ],
+   "dilemmaScene": "おかわりはひとつだけ。あおいさんもまだ食べたいけれど、けんくんはおなかがすいていそうです。あおいさんはどうしますか？",
+   "choices": [
+    {
+     "id": "s6c1",
+     "text": "「けんくん、おなかすいてるよね。先にどうぞ」とゆずる",
+     "value": "kindness",
+     "branchContent": "けんくんは「ありがとう」と笑顔になりました。あおいさんは、自分もうれしい気持ちになりました。",
+     "reflection": "相手の様子に気づいてゆずることは、やさしさです。ゆずったあとの気持ちも、ぽかぽかします。"
+    },
+    {
+     "id": "s6c2",
+     "text": "じゃんけんで決めようと言う",
+     "value": "respect",
+     "branchContent": "二人はじゃんけんをして、けんくんが勝ちました。ふたりとも気持ちよく決められました。",
+     "reflection": "どちらも納得できる決め方を考えるのも大切です。"
+    },
+    {
+     "id": "s6c3",
+     "text": "気づかないふりをして、先にもらう",
+     "value": "responsibility",
+     "branchContent": "あおいさんはおかわりをもらいましたが、けんくんのさびしそうな顔が頭からはなれません。",
+     "reflection": "自分だけを考えると、あとでもやもやすることがあります。相手の気持ちを考えてみましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-7",
+  "title": "ひろったおさいふ",
+  "description": "公園で見つけたおさいふをどうするか",
+  "theme": "honesty",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 3,
+  "emoji": "👛",
+  "content": {
+   "introduction": "休み時間に、ゆうとくんは校庭のすみで小さなおさいふをひろいました。",
+   "mainNarrative": [
+    "中を見ると、お金が少し入っています。",
+    "まわりには、だれもいません。ゆうとくんは、このお金でほしかったカードが買えるなと思いました。"
+   ],
+   "dilemmaScene": "だれにも見られていません。ゆうとくんは、このおさいふをどうしますか？",
+   "choices": [
+    {
+     "id": "s7c1",
+     "text": "先生にとどけて、落とし主をさがしてもらう",
+     "value": "honesty",
+     "branchContent": "先生は「えらいね」とほめてくれました。あとで、落とした下級生がお礼を言いにきました。",
+     "reflection": "ひろったものは持ち主にもどすのが正しいことです。だれも見ていなくても、正直でいることが大切です。"
+    },
+    {
+     "id": "s7c2",
+     "text": "お金だけぬいて、おさいふはすてる",
+     "value": "honesty",
+     "branchContent": "ゆうとくんは家に帰っても、心がずっとざわざわしていました。",
+     "reflection": "他の人のものを自分のものにすると、自分の心が苦しくなります。"
+    },
+    {
+     "id": "s7c3",
+     "text": "友だちに相談してから、いっしょに先生にとどける",
+     "value": "cooperation",
+     "branchContent": "友だちは「いっしょに行こう」と言ってくれました。ふたりで先生にとどけました。",
+     "reflection": "ひとりで迷ったら、信頼できる人に相談するのも良い方法です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-8",
+  "title": "ほけんしつのまえで",
+  "description": "けがをした友だちに声をかけられるか",
+  "theme": "courage",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "🩹",
+  "content": {
+   "introduction": "体育の時間に、ひなたさんは、ころんでひざをすりむいてしまいました。",
+   "mainNarrative": [
+    "まわりの子たちは、どうしたらいいかわからず見ています。",
+    "まりさんは、ひなたさんをほけんしつにつれていってあげたいと思いましたが、はずかしくて声が出ません。"
+   ],
+   "dilemmaScene": "ひなたさんは立ち上がれずにいます。まりさんはどうしますか？",
+   "choices": [
+    {
+     "id": "s8c1",
+     "text": "勇気を出して「ほけんしつに行こう」と声をかける",
+     "value": "courage",
+     "branchContent": "まりさんはひなたさんの手をかして、いっしょにほけんしつに行きました。ひなたさんは「ありがとう」と言いました。",
+     "reflection": "はずかしくても、こまっている人に声をかける勇気が、人を助けます。"
+    },
+    {
+     "id": "s8c2",
+     "text": "先生を大きな声でよぶ",
+     "value": "responsibility",
+     "branchContent": "先生がすぐに来てくれました。まりさんの声のおかげで、手当てが早くできました。",
+     "reflection": "自分ひとりでできないときは、大人をよぶことも立派な行動です。"
+    },
+    {
+     "id": "s8c3",
+     "text": "みんなが助けるだろうと思って見ている",
+     "value": "courage",
+     "branchContent": "けっきょくだれも動かず、ひなたさんは長い間ひとりでがまんしていました。",
+     "reflection": "『だれかがやる』と思うと、だれも動かないことがあります。まず自分から動いてみましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-9",
+  "title": "そうじのとうばん",
+  "description": "そうじをさぼりたくなった日のお話",
+  "theme": "responsibility",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 4,
+  "emoji": "🧹",
+  "content": {
+   "introduction": "今日はたくやくんのそうじとうばんの日です。でも、放課後にサッカーの約束があります。",
+   "mainNarrative": [
+    "同じ班のみんなは、もうほうきを持ってそうじをはじめています。",
+    "たくやくんは、そうじをぬけても、きっとだれも気づかないと思いました。"
+   ],
+   "dilemmaScene": "約束の時間がせまっています。たくやくんはどうしますか？",
+   "choices": [
+    {
+     "id": "s9c1",
+     "text": "そうじをさいごまでやってから、友だちのところへ行く",
+     "value": "responsibility",
+     "branchContent": "そうじは少しおくれましたが、友だちに事情を話すと「だいじょうぶだよ」と待ってくれました。",
+     "reflection": "自分の役目をはたすことは、みんなへの信頼につながります。"
+    },
+    {
+     "id": "s9c2",
+     "text": "班のみんなに「あとで必ずやる」と言って先に行く",
+     "value": "responsibility",
+     "branchContent": "みんなが残りをやってくれましたが、少しいやな顔をしていました。",
+     "reflection": "役目をほかの人にまかせると、その人の負担になります。"
+    },
+    {
+     "id": "s9c3",
+     "text": "だまって帰ってしまう",
+     "value": "responsibility",
+     "branchContent": "つぎの日、班の子に「ずるい」と言われて、たくやくんは気まずくなりました。",
+     "reflection": "役目をさぼると、あとで自分も困ることがあります。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-10",
+  "title": "じゅんばんをまもる",
+  "description": "遊具のじゅんばんをやぶる友だちがいたら",
+  "theme": "respect",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🛝",
+  "content": {
+   "introduction": "公園のすべり台には、ならんでまつ子どもがたくさんいます。",
+   "mainNarrative": [
+    "そこへ、さっき来たばかりの男の子が、列のまんなかにわりこみました。",
+    "みおさんは、ずっとならんでいたので、少しもやもやします。"
+   ],
+   "dilemmaScene": "みおさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s10c1",
+     "text": "おだやかな声で「うしろにならんでね」と伝える",
+     "value": "respect",
+     "branchContent": "男の子は「ごめんね」と言って、うしろにならびました。みんな気持ちよく遊べました。",
+     "reflection": "きまりをまもってもらうときも、相手を大切にしたやさしい言い方をしましょう。"
+    },
+    {
+     "id": "s10c2",
+     "text": "おこって大きな声でどなる",
+     "value": "respect",
+     "branchContent": "男の子はびっくりして泣いてしまいました。みおさんも後味が悪い気持ちになりました。",
+     "reflection": "正しいことでも、いかり方によっては相手を傷つけてしまいます。"
+    },
+    {
+     "id": "s10c3",
+     "text": "何も言わずにがまんする",
+     "value": "courage",
+     "branchContent": "みおさんは言えなかったことを、家に帰ってもずっと気にしていました。",
+     "reflection": "勇気を出して伝えることも、ときには必要です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-11",
+  "title": "ひとりぼっちのこ",
+  "description": "新しく転校してきた子にどう接するか",
+  "theme": "kindness",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 3,
+  "emoji": "🍀",
+  "content": {
+   "introduction": "クラスに、さくらさんという転校生が来ました。",
+   "mainNarrative": [
+    "さくらさんは、休み時間も自分の席にすわったままです。",
+    "えまさんは友だちとあそぼうとしていましたが、さくらさんがさびしそうに見えました。"
+   ],
+   "dilemmaScene": "えまさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s11c1",
+     "text": "「いっしょにあそぼう」とさそう",
+     "value": "kindness",
+     "branchContent": "さくらさんはぱっと笑顔になって、「うれしい」と言いました。ふたりはすぐに仲よくなりました。",
+     "reflection": "声をかけるだけで、相手の心はあたたかくなります。"
+    },
+    {
+     "id": "s11c2",
+     "text": "友だちにも声をかけてもらって、みんなでさそう",
+     "value": "cooperation",
+     "branchContent": "みんなでさそうと、さくらさんもすぐに輪に入れました。クラスがもっと明るくなりました。",
+     "reflection": "みんなで協力すると、もっと大きなやさしさになります。"
+    },
+    {
+     "id": "s11c3",
+     "text": "気になるけど、声をかけずにあそびにいく",
+     "value": "courage",
+     "branchContent": "えまさんは、さくらさんのさびしそうな顔を思い出して、少し後悔しました。",
+     "reflection": "ちょっとの勇気で、だれかを助けられることがあります。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-12",
+  "title": "まけたくない",
+  "description": "ゲームでズルをしたくなったとき",
+  "theme": "honesty",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "🎲",
+  "content": {
+   "introduction": "クラスのカードゲーム大会で、りょうくんは決勝に進みました。",
+   "mainNarrative": [
+    "あいては、とても強いともやくんです。",
+    "勝負の途中で、りょうくんは、じぶんの手札をこっそり入れかえれば勝てることに気づきました。"
+   ],
+   "dilemmaScene": "だれにも気づかれません。りょうくんはどうしますか？",
+   "choices": [
+    {
+     "id": "s12c1",
+     "text": "ズルはしないで、さいごまで正々堂々と戦う",
+     "value": "honesty",
+     "branchContent": "りょうくんは負けましたが、ともやくんは「いい勝負だった」と握手してくれました。",
+     "reflection": "結果より、正々堂々と戦ったことが大切です。"
+    },
+    {
+     "id": "s12c2",
+     "text": "こっそり手札を入れかえて勝つ",
+     "value": "honesty",
+     "branchContent": "りょうくんは優勝しましたが、うれしい気持ちにはなれませんでした。",
+     "reflection": "ズルをして勝っても、本当の喜びは得られません。"
+    },
+    {
+     "id": "s12c3",
+     "text": "途中で気づいたことを正直に先生に話す",
+     "value": "honesty",
+     "branchContent": "先生は「正直に話してくれてありがとう」と言いました。試合は仕切り直しになりました。",
+     "reflection": "自分の間違いを正直に話せるのは、とても勇気のいることです。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-13",
+  "title": "うんどうかいのリレー",
+  "description": "みんなで協力するということ",
+  "theme": "cooperation",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🏃",
+  "content": {
+   "introduction": "運動会のリレーの練習で、バトンパスがなかなかうまくいきません。",
+   "mainNarrative": [
+    "しゅんくんはバトンを落としてしまい、チームのみんなは少し気まずい空気になりました。",
+    "しゅんくんは下をむいて、「ごめん」と小さな声で言いました。"
+   ],
+   "dilemmaScene": "チームのひとりとして、あなたはどうしますか？",
+   "choices": [
+    {
+     "id": "s13c1",
+     "text": "「だいじょうぶ。いっしょに練習しよう」と声をかける",
+     "value": "cooperation",
+     "branchContent": "みんなで放課後に練習をして、本番ではバトンがきれいにつながりました。",
+     "reflection": "失敗した仲間をはげますと、チームの力が大きくなります。"
+    },
+    {
+     "id": "s13c2",
+     "text": "「しゅんのせいだ」と責める",
+     "value": "respect",
+     "branchContent": "しゅんくんは落ちこんで、チームのふんいきが悪くなってしまいました。",
+     "reflection": "人を責めても、問題は解決しません。みんなで解決策を考えましょう。"
+    },
+    {
+     "id": "s13c3",
+     "text": "バトンパスの練習方法を、みんなで考えて提案する",
+     "value": "responsibility",
+     "branchContent": "みんなで工夫したので、バトンパスがどんどんうまくなりました。",
+     "reflection": "問題を前向きに考えて、みんなで解決する姿勢が大切です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-14",
+  "title": "ともだちのひみつ",
+  "description": "聞いてしまった秘密を守れるか",
+  "theme": "respect",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 3,
+  "emoji": "🤫",
+  "content": {
+   "introduction": "なおさんは、親友のみさきさんから「ここだけの話だよ」と秘密をうちあけられました。",
+   "mainNarrative": [
+    "みさきさんは、ずっと悩んでいたことを話してくれたのです。",
+    "次の日、クラスの友だちが「何か聞いてない？」となおさんに聞いてきました。"
+   ],
+   "dilemmaScene": "なおさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s14c1",
+     "text": "「それは、みさきさんの話だから言えないよ」と断る",
+     "value": "respect",
+     "branchContent": "友だちはがっかりしましたが、みさきさんは、なおさんをもっと信頼してくれるようになりました。",
+     "reflection": "友だちの秘密を守ることは、信頼をうらぎらないことです。"
+    },
+    {
+     "id": "s14c2",
+     "text": "少しだけ話してしまう",
+     "value": "respect",
+     "branchContent": "うわさが広がって、みさきさんは悲しい思いをしました。なおさんもこうかいしました。",
+     "reflection": "一度話してしまうと、取り返しがつきません。"
+    },
+    {
+     "id": "s14c3",
+     "text": "みさきさんに「みんなに聞かれたよ」と正直に伝えて相談する",
+     "value": "honesty",
+     "branchContent": "みさきさんは「ありがとう、教えてくれて」と言いました。二人で話し合えました。",
+     "reflection": "困ったときは、本人にきちんと相談することも大切です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-15",
+  "title": "うさぎのせわ",
+  "description": "当番を最後までやりぬく責任",
+  "theme": "responsibility",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 4,
+  "emoji": "🐰",
+  "content": {
+   "introduction": "ゆいさんは、学級のうさぎのせわがかりになりました。",
+   "mainNarrative": [
+    "さいしょは楽しくて、毎日エサをあげていました。",
+    "でも、一週間たつと、めんどうに思えてきました。きょうは友だちとあそびたい気持ちがあります。"
+   ],
+   "dilemmaScene": "ゆいさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s15c1",
+     "text": "あそぶ前に、うさぎのせわをすませる",
+     "value": "responsibility",
+     "branchContent": "うさぎはうれしそうにエサを食べました。ゆいさんも気持ちよくあそべました。",
+     "reflection": "いのちを預かる仕事は、毎日きちんとおこなうことが大切です。"
+    },
+    {
+     "id": "s15c2",
+     "text": "他の係の子にたのんで、かわってもらう",
+     "value": "cooperation",
+     "branchContent": "その子はこころよく引き受けてくれましたが、ゆいさんは「ありがとう」を忘れずに伝えました。",
+     "reflection": "困ったときに助け合うのも大切ですが、お礼を忘れないようにしましょう。"
+    },
+    {
+     "id": "s15c3",
+     "text": "きょうはいいやとサボってしまう",
+     "value": "responsibility",
+     "branchContent": "つぎの日、うさぎは元気がなく、ゆいさんは後悔して泣いてしまいました。",
+     "reflection": "生き物の世話は、休むことができません。責任をもって続けましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-16",
+  "title": "かいだんでぶつかった",
+  "description": "ぶつかったときの「ごめんなさい」",
+  "theme": "respect",
+  "gradeLevel": 3,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "🏫",
+  "content": {
+   "introduction": "ろうかを走っていたそうたくんは、かいだんの前で一年生にぶつかってしまいました。",
+   "mainNarrative": [
+    "一年生は、持っていたノートを落として、びっくりしています。",
+    "まわりの友だちが、そうたくんを見ています。"
+   ],
+   "dilemmaScene": "そうたくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s16c1",
+     "text": "すぐに「ごめんね、だいじょうぶ？」とあやまって、ノートをひろう",
+     "value": "respect",
+     "branchContent": "一年生は「だいじょうぶです」と笑ってくれました。そうたくんは、ろうかを走らないと決めました。",
+     "reflection": "まちがいをしたら、すぐにあやまることが大切です。"
+    },
+    {
+     "id": "s16c2",
+     "text": "はずかしくて、何も言わずに行ってしまう",
+     "value": "courage",
+     "branchContent": "そうたくんは、そのあとずっと気になって、勉強に集中できませんでした。",
+     "reflection": "あやまることは勇気がいりますが、あとで気持ちが軽くなります。"
+    },
+    {
+     "id": "s16c3",
+     "text": "「そっちがよけなかったからだ」と言う",
+     "value": "responsibility",
+     "branchContent": "一年生は泣き出してしまい、先生にも注意されました。",
+     "reflection": "自分の行動に責任をもつことが大切です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-17",
+  "title": "ごみのぽいすて",
+  "description": "だれも見ていない場所での行動",
+  "theme": "responsibility",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🗑️",
+  "content": {
+   "introduction": "かえり道で、あかりさんはお菓子を食べ終わりました。",
+   "mainNarrative": [
+    "ごみ箱は、すこし先のコンビニにしかありません。",
+    "まわりには、だれもいません。あかりさんは、ごみをこっそり道にすててしまおうか迷いました。"
+   ],
+   "dilemmaScene": "だれも見ていません。あかりさんはどうしますか？",
+   "choices": [
+    {
+     "id": "s17c1",
+     "text": "ごみをポケットに入れて、ごみ箱まで持っていく",
+     "value": "responsibility",
+     "branchContent": "あかりさんは、町をきれいに保てて、気持ちのいい気分になりました。",
+     "reflection": "だれも見ていなくても、正しい行動をすることが大切です。"
+    },
+    {
+     "id": "s17c2",
+     "text": "ごみをその場に捨てる",
+     "value": "responsibility",
+     "branchContent": "つぎの日、そこにごみがたまっているのを見て、あかりさんは申し訳ない気持ちになりました。",
+     "reflection": "ごみをすてると、町や自然をよごしてしまいます。"
+    },
+    {
+     "id": "s17c3",
+     "text": "友だちを誘って、みんなで道のごみもひろう",
+     "value": "cooperation",
+     "branchContent": "友だちも「いいね」と言って、みんなで町をきれいにしました。",
+     "reflection": "みんなでやると、小さな行動が大きな力になります。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-18",
+  "title": "おもちゃのかしかり",
+  "description": "ともだちにおもちゃをかしてあげるか",
+  "theme": "kindness",
+  "gradeLevel": 1,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 150,
+  "weekNumber": 1,
+  "emoji": "🧸",
+  "content": {
+   "introduction": "ひなちゃんは、あたらしいくまのぬいぐるみをもってようちえんにきました。",
+   "mainNarrative": [
+    "ともだちのあいちゃんが「いいなあ、かして」と言いました。",
+    "ひなちゃんは、こわしたらどうしようとしんぱいになりました。"
+   ],
+   "dilemmaScene": "ひなちゃんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s18c1",
+     "text": "「いっしょにあそぼう」と言って、いっしょにもつ",
+     "value": "kindness",
+     "branchContent": "あいちゃんはにっこりして、ふたりでなかよくあそびました。",
+     "reflection": "いっしょにあそぶと、うれしさが2ばいになります。"
+    },
+    {
+     "id": "s18c2",
+     "text": "「だめ」と言ってかくす",
+     "value": "kindness",
+     "branchContent": "あいちゃんはさびしそうなかおでいってしまいました。ひなちゃんもさびしくなりました。",
+     "reflection": "ともだちのきもちをかんがえてみましょう。"
+    },
+    {
+     "id": "s18c3",
+     "text": "「やさしくもってね」とやくそくしてかす",
+     "value": "respect",
+     "branchContent": "あいちゃんは「うん」と言って、そっとだきました。",
+     "reflection": "やくそくをして、たいせつにつかうのもいいことです。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-19",
+  "title": "あいさつのこえ",
+  "description": "あさのあいさつをするゆうき",
+  "theme": "courage",
+  "gradeLevel": 1,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 150,
+  "weekNumber": 2,
+  "emoji": "🌞",
+  "content": {
+   "introduction": "あさ、がっこうのもんのまえで、そうたくんはせんせいにあいました。",
+   "mainNarrative": [
+    "せんせいは「おはよう」とわらっています。",
+    "そうたくんは、はずかしくてこえがでません。"
+   ],
+   "dilemmaScene": "そうたくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s19c1",
+     "text": "おおきなこえで「おはようございます」と言う",
+     "value": "courage",
+     "branchContent": "せんせいは「いいあいさつだね」とほめてくれました。そうたくんはいちにちじゅうげんきでした。",
+     "reflection": "あいさつは、げんきとゆうきをくれます。"
+    },
+    {
+     "id": "s19c2",
+     "text": "ちいさなこえで、おじぎだけする",
+     "value": "respect",
+     "branchContent": "せんせいはうなずいてくれました。つぎはこえをだそうと思いました。",
+     "reflection": "まずはおじぎからでも、いいはじめかたです。"
+    },
+    {
+     "id": "s19c3",
+     "text": "だまってとおりすぎる",
+     "value": "courage",
+     "branchContent": "せんせいは、ちょっとさびしそうでした。",
+     "reflection": "あいさつをすると、おたがいにきもちがいいです。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-20",
+  "title": "なげたごみ",
+  "description": "おちているごみをどうするか",
+  "theme": "responsibility",
+  "gradeLevel": 1,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 150,
+  "weekNumber": 3,
+  "emoji": "🍬",
+  "content": {
+   "introduction": "がっこうのかえりみちで、みゆちゃんはおかしのふくろがおちているのを見つけました。",
+   "mainNarrative": [
+    "みゆちゃんがすてたのではありません。",
+    "でも、みちがよごれていて、ちょっといやなきもちです。"
+   ],
+   "dilemmaScene": "みゆちゃんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s20c1",
+     "text": "ひろって、ごみばこにすてる",
+     "value": "responsibility",
+     "branchContent": "みちがきれいになって、みゆちゃんはうれしくなりました。",
+     "reflection": "じぶんがすてていなくても、きれいにするのはすてきなことです。"
+    },
+    {
+     "id": "s20c2",
+     "text": "みなかったことにして、とおりすぎる",
+     "value": "responsibility",
+     "branchContent": "みゆちゃんは、あとでもういちどそこをとおって、ごみがのこっているのをみてしまいました。",
+     "reflection": "ちいさなことから、まちをきれいにしてみましょう。"
+    },
+    {
+     "id": "s20c3",
+     "text": "おとうさんやおかあさんにそうだんする",
+     "value": "cooperation",
+     "branchContent": "おかあさんは「えらいね」と言って、いっしょにひろってくれました。",
+     "reflection": "こまったときは、おとなにそうだんできます。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-21",
+  "title": "じゅんばんまち",
+  "description": "すべりだいのじゅんばんをまもる",
+  "theme": "respect",
+  "gradeLevel": 2,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 1,
+  "emoji": "🛝",
+  "content": {
+   "introduction": "こうえんのすべりだいに、たくさんのこがならんでいます。",
+   "mainNarrative": [
+    "かいとくんはさいごにならんでいます。",
+    "そこへ、ちいさなおとこのこがわりこんできました。"
+   ],
+   "dilemmaScene": "かいとくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s21c1",
+     "text": "やさしく「うしろにならんでね」と言う",
+     "value": "respect",
+     "branchContent": "おとこのこは「ごめんね」と言ってうしろにならびました。",
+     "reflection": "やさしくつたえれば、ちゃんとわかってくれます。"
+    },
+    {
+     "id": "s21c2",
+     "text": "おこってどなる",
+     "value": "respect",
+     "branchContent": "おとこのこはなきだしてしまいました。",
+     "reflection": "おこりすぎると、あいてをきずつけてしまいます。"
+    },
+    {
+     "id": "s21c3",
+     "text": "おとなのひとにつたえる",
+     "value": "responsibility",
+     "branchContent": "おとなのひとが、やさしくおしえてくれました。",
+     "reflection": "じぶんでむずかしいときは、おとなにたのみましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-22",
+  "title": "ごめんなさい",
+  "description": "ぶつかってしまったときのこと",
+  "theme": "honesty",
+  "gradeLevel": 2,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 2,
+  "emoji": "🤕",
+  "content": {
+   "introduction": "きゅうしょくのじかんに、なつきさんはまちがえてともだちのおぼんにぶつかってしまいました。",
+   "mainNarrative": [
+    "ともだちのスープがこぼれてしまいました。",
+    "なつきさんは、ちょっとこわくてだまっていたいきもちです。"
+   ],
+   "dilemmaScene": "なつきさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s22c1",
+     "text": "すぐに「ごめんね」と言って、いっしょにふく",
+     "value": "honesty",
+     "branchContent": "ともだちは「だいじょうぶだよ」と言ってくれました。",
+     "reflection": "すぐにあやまれると、きもちがらくになります。"
+    },
+    {
+     "id": "s22c2",
+     "text": "だまってにげる",
+     "value": "honesty",
+     "branchContent": "あとで、ともだちがこまっているのを見て、なつきさんはとてもつらくなりました。",
+     "reflection": "あやまるのはゆうきがいりますが、とてもたいせつです。"
+    },
+    {
+     "id": "s22c3",
+     "text": "せんせいにほうこくする",
+     "value": "responsibility",
+     "branchContent": "せんせいは「しょうじきにいえたね」とほめてくれました。",
+     "reflection": "せんせいにそうだんするのもいいほうほうです。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-23",
+  "title": "おてつだい",
+  "description": "いえでのおてつだいをするか",
+  "theme": "responsibility",
+  "gradeLevel": 2,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 3,
+  "emoji": "🍚",
+  "content": {
+   "introduction": "ゆうなさんは、ゲームをしているところです。",
+   "mainNarrative": [
+    "おかあさんが「ごはんのじゅんびをてつだってくれる？」と言いました。",
+    "ゲームはいいところで、やめたくありません。"
+   ],
+   "dilemmaScene": "ゆうなさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s23c1",
+     "text": "ゲームをとめて、おてつだいをする",
+     "value": "responsibility",
+     "branchContent": "おかあさんは「ありがとう」と言いました。ゆうなさんもうれしくなりました。",
+     "reflection": "かぞくのためにうごくのは、すてきなことです。"
+    },
+    {
+     "id": "s23c2",
+     "text": "「あとでね」と言ってゲームをつづける",
+     "value": "responsibility",
+     "branchContent": "おかあさんはひとりでじゅんびをして、すこしつかれたかおでした。",
+     "reflection": "『あとで』のまえに、すぐできることをさがしてみましょう。"
+    },
+    {
+     "id": "s23c3",
+     "text": "「ゲームをおわったらてつだうね」とやくそくする",
+     "value": "honesty",
+     "branchContent": "おかあさんは「やくそくだよ」と言いました。ゆうなさんはやくそくをまもりました。",
+     "reflection": "やくそくをまもるのもたいせつです。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-24",
+  "title": "グループチャット",
+  "description": "ネットのなかのわるぐち",
+  "theme": "respect",
+  "gradeLevel": 5,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 270,
+  "weekNumber": 1,
+  "emoji": "📱",
+  "content": {
+   "introduction": "クラスのグループチャットで、ひとりの子のわるぐちが書かれていました。",
+   "mainNarrative": [
+    "かんなさんは、その子が友だちだったので、なんだか悲しくなりました。",
+    "ほかの子は、「おもしろい」とスタンプをおしています。"
+   ],
+   "dilemmaScene": "かんなさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s24c1",
+     "text": "「それはやめよう」と書きこむ",
+     "value": "courage",
+     "branchContent": "何人かが「そうだね」と言ってくれて、わるぐちはなくなりました。",
+     "reflection": "ネットでも、いやなことには声をあげる勇気が大切です。"
+    },
+    {
+     "id": "s24c2",
+     "text": "先生や大人に相談して、画面を見せる",
+     "value": "responsibility",
+     "branchContent": "先生がクラスで話し合う時間をつくってくれました。",
+     "reflection": "大人に相談することは、問題を解決するのに役立ちます。"
+    },
+    {
+     "id": "s24c3",
+     "text": "見なかったふりをして、そのままにする",
+     "value": "courage",
+     "branchContent": "わるぐちはどんどんひどくなり、その子は学校を休みました。",
+     "reflection": "見て見ぬふりをすると、いじめに加担することになってしまいます。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-25",
+  "title": "ふくしゅうのやくそく",
+  "description": "ほかの子のなかよしグループ",
+  "theme": "cooperation",
+  "gradeLevel": 5,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 270,
+  "weekNumber": 2,
+  "emoji": "🤝",
+  "content": {
+   "introduction": "ゆうとくんのグループでは、ひとりだけ作業をしないあすかさんがいました。",
+   "mainNarrative": [
+    "みんなはイライラしています。",
+    "そんななか、あすかさんは、実は家のことで忙しいと言い出しました。"
+   ],
+   "dilemmaScene": "ゆうとくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s25c1",
+     "text": "あすかさんの事情を聞いて、役割を相談し直す",
+     "value": "cooperation",
+     "branchContent": "みんなで話し合って、あすかさんにできる仕事を決めました。",
+     "reflection": "事情を聞くと、見え方が変わります。"
+    },
+    {
+     "id": "s25c2",
+     "text": "先生にあすかさんの悪口を言いつける",
+     "value": "respect",
+     "branchContent": "先生は「まず本人と話してみて」と言いました。",
+     "reflection": "まず本人と話してみることが大切です。"
+    },
+    {
+     "id": "s25c3",
+     "text": "無視して、自分たちだけで進める",
+     "value": "cooperation",
+     "branchContent": "グループの空気が悪くなり、発表もぎくしゃくしました。",
+     "reflection": "協力しないと、チームの力は出せません。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-26",
+  "title": "まけをみとめる",
+  "description": "試合で負けたとき",
+  "theme": "courage",
+  "gradeLevel": 5,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 270,
+  "weekNumber": 3,
+  "emoji": "⚽",
+  "content": {
+   "introduction": "サッカーのクラスマッチで、ほくとくんのチームは1点差で負けました。",
+   "mainNarrative": [
+    "ほくとくんはキャプテンで、さいごのシュートを外してしまいました。",
+    "みんなが、ほくとくんを見ています。"
+   ],
+   "dilemmaScene": "ほくとくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s26c1",
+     "text": "みんなに「ごめん。つぎはがんばろう」と言う",
+     "value": "courage",
+     "branchContent": "みんなは「ナイスファイト」と言ってくれました。",
+     "reflection": "負けを認めて次に進めるのは、強い人の姿勢です。"
+    },
+    {
+     "id": "s26c2",
+     "text": "審判のせいにする",
+     "value": "honesty",
+     "branchContent": "チームはもっと暗くなってしまいました。",
+     "reflection": "人のせいにすると、成長できません。"
+    },
+    {
+     "id": "s26c3",
+     "text": "みんなでふりかえりをして、課題を話し合う",
+     "value": "cooperation",
+     "branchContent": "つぎの練習では、チーム全員でパス練習をしました。",
+     "reflection": "負けを次にいかすことで、チームは強くなります。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-27",
+  "title": "みらいのせんたく",
+  "description": "受験とともだちのあいだで",
+  "theme": "responsibility",
+  "gradeLevel": 6,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 300,
+  "weekNumber": 1,
+  "emoji": "🎓",
+  "content": {
+   "introduction": "さくらさんは、中学受験をするつもりです。",
+   "mainNarrative": [
+    "でも、仲のよい友だちは、みんな地元の中学に進みます。",
+    "親は受験をすすめていますが、さくらさんは友だちと離れるのが不安です。"
+   ],
+   "dilemmaScene": "さくらさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s27c1",
+     "text": "親と友だちと、それぞれ自分の気持ちを正直に話す",
+     "value": "honesty",
+     "branchContent": "みんなが気持ちをわかってくれて、さくらさんは自分で決めることができました。",
+     "reflection": "自分の進路は、自分で考えて決めることが大切です。"
+    },
+    {
+     "id": "s27c2",
+     "text": "親の言うとおりにする",
+     "value": "responsibility",
+     "branchContent": "受験はしましたが、気持ちはもやもやしたままでした。",
+     "reflection": "人に決められると、あとで後悔することがあります。"
+    },
+    {
+     "id": "s27c3",
+     "text": "友だちに合わせて、受験をやめる",
+     "value": "cooperation",
+     "branchContent": "友だちと同じ学校へ行けましたが、本当にこれでよかったのか考えることもありました。",
+     "reflection": "友だちを大切にしつつ、自分の気持ちにも向き合いましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-28",
+  "title": "ほうどうされたこと",
+  "description": "ニュースをうのみにするな",
+  "theme": "honesty",
+  "gradeLevel": 6,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 300,
+  "weekNumber": 2,
+  "emoji": "📰",
+  "content": {
+   "introduction": "SNSで、「近くのお店がつぶれる」という投稿が広まっていました。",
+   "mainNarrative": [
+    "たくみくんは、そのお店が大好きでショックを受けました。",
+    "投稿はたくさんシェアされていますが、くわしい理由は書かれていません。"
+   ],
+   "dilemmaScene": "たくみくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s28c1",
+     "text": "お店に直接聞いたり、公式の情報を調べたりする",
+     "value": "honesty",
+     "branchContent": "お店は「つぶれません」と言い、投稿はうそだったと分かりました。",
+     "reflection": "情報は、出どころをたしかめることが大切です。"
+    },
+    {
+     "id": "s28c2",
+     "text": "すぐに友だちに知らせてシェアする",
+     "value": "responsibility",
+     "branchContent": "うその情報が広がり、お店は迷惑しました。",
+     "reflection": "たしかめずに広めると、人を傷つけることもあります。"
+    },
+    {
+     "id": "s28c3",
+     "text": "書かれたことを信じて、お店に行くのをやめる",
+     "value": "honesty",
+     "branchContent": "お店はつぶれておらず、たくみくんは後悔しました。",
+     "reflection": "うのみにせず、自分で考える力を持ちましょう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-29",
+  "title": "そつぎょうのおもいで",
+  "description": "さいごのクラスの出し物",
+  "theme": "cooperation",
+  "gradeLevel": 6,
+  "difficulty": 3,
+  "isPremium": false,
+  "durationSeconds": 300,
+  "weekNumber": 3,
+  "emoji": "🎉",
+  "content": {
+   "introduction": "そつぎょう前に、クラスで出し物をすることになりました。",
+   "mainNarrative": [
+    "意見がふたつに分かれて、クラスは話し合いでもめています。",
+    "はるかさんは、どちらの意見も大事だと思いました。"
+   ],
+   "dilemmaScene": "はるかさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s29c1",
+     "text": "ふたつの意見のよいところを合わせた案を出す",
+     "value": "cooperation",
+     "branchContent": "みんなが納得し、出し物は大成功でした。",
+     "reflection": "意見がちがうときは、いいとこ取りを考えてみましょう。"
+    },
+    {
+     "id": "s29c2",
+     "text": "多数決で決めて、負けた方にがまんしてもらう",
+     "value": "respect",
+     "branchContent": "決まりはしましたが、一部の子は不満そうでした。",
+     "reflection": "多数決のあとも、少数の意見を大切にしましょう。"
+    },
+    {
+     "id": "s29c3",
+     "text": "どちらも言いたくなくて、黙っている",
+     "value": "courage",
+     "branchContent": "けっきょくだれかが決めてしまい、はるかさんは言えなかったことを悔やみました。",
+     "reflection": "自分の考えを話す勇気も必要です。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ }
+]

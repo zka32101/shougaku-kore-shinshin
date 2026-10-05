@@ -69,10 +69,23 @@ final childProfileProvider =
 final currentChildProfileProvider = FutureProvider.autoDispose<ChildProfile?>(
   (ref) async {
     final childId = ref.watch(currentChildIdProvider);
-    if (childId == null) return null;
-    return ref.watch(childProfileProvider(childId).future);
+    // サーバー未接続でも学習できるよう、端末内の既定プロフィールにフォールバック
+    if (childId == null || childId.startsWith('local-child')) return _localChild();
+    try {
+      return await ref.watch(childProfileProvider(childId).future);
+    } catch (_) {
+      return _localChild();
+    }
   },
 );
+
+ChildProfile _localChild() => ChildProfile(
+      id: 'local-child',
+      parentId: 'local',
+      name: 'ユーザー',
+      grade: 3,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(0),
+    );
 
 /// 成長画面・レポート画面で使うエイリアス
 final selectedChildProvider = currentChildProfileProvider;

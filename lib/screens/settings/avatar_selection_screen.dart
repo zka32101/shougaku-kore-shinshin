@@ -56,7 +56,7 @@ class AvatarSelectionScreen extends ConsumerWidget {
               child: CircularProgressIndicator(),
             ),
             error: (error, stackTrace) => Center(
-              child: Text('エラー: $error'),
+              child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
             ),
           );
         },
@@ -64,7 +64,7 @@ class AvatarSelectionScreen extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
         error: (error, stackTrace) => Center(
-          child: Text('エラー: $error'),
+          child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
         ),
       ),
     );
@@ -94,7 +94,7 @@ class AvatarSelectionScreen extends ConsumerWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('エラー: $e'),
+                      content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
                       backgroundColor: Colors.red,
                     ),
                   );

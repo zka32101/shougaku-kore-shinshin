@@ -1,3 +1,4 @@
+import '../services/local_story_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/story.dart';
@@ -85,7 +86,12 @@ final storiesProvider = FutureProvider.autoDispose
         isPremium: filters.isPremium,
       );
       if (cached.isNotEmpty) return cached;
-      rethrow;
+      // 同梱ストーリーで代替
+      return LocalStoryService.stories(
+        theme: filters.theme,
+        gradeLevel: filters.gradeLevel,
+        isPremium: filters.isPremium,
+      );
     }
   },
 );
@@ -94,7 +100,11 @@ final storiesProvider = FutureProvider.autoDispose
 final weeklyThemeProvider = FutureProvider.autoDispose.family<List<Story>, int>(
   (ref, weekNumber) async {
     final apiService = ref.watch(apiServiceProvider);
-    return apiService.fetchWeeklyTheme(weekNumber);
+    try {
+      final list = await apiService.fetchWeeklyTheme(weekNumber);
+      if (list.isNotEmpty) return list;
+    } catch (_) {}
+    return LocalStoryService.weekly(weekNumber);
   },
 );
 
@@ -104,6 +114,10 @@ final storyDetailProvider = FutureProvider.autoDispose
   final apiService = ref.watch(apiServiceProvider);
   final hive = ref.read(hiveServiceProvider);
   try {
+    if (storyId.startsWith('local-story-') || storyId.startsWith('seed_')) {
+      final local = await LocalStoryService.detail(storyId);
+      if (local != null) return local;
+    }
     final story = await apiService.fetchStoryDetail(storyId);
     // 詳細（content 含む）をキャッシュ更新
     hive.cacheStories([story]).ignore();
@@ -111,6 +125,8 @@ final storyDetailProvider = FutureProvider.autoDispose
   } catch (_) {
     final cached = await hive.getCachedStory(storyId);
     if (cached != null) return cached;
+    final local = await LocalStoryService.detail(storyId);
+    if (local != null) return local;
     rethrow;
   }
 });

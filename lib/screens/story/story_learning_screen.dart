@@ -288,7 +288,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
-        body: Center(child: Text('エラー: $e')),
+        body: Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
       ),
       data: (story) => _buildStory(context, story),
     );

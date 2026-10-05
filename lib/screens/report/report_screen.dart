@@ -40,7 +40,7 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
       backgroundColor: _bgColor,
       body: childAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('エラー: $e')),
+        error: (e, _) => Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         data: (child) => child == null
             ? const Center(child: Text('子供プロフィールを作成してください'))
             : _buildReportContent(child.id),

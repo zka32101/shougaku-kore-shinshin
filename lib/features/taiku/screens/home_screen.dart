@@ -136,7 +136,7 @@ class _AppBar extends StatelessWidget {
             // 拡大表示(FlexibleSpaceBar が1.5倍)でも横幅を超えないよう、残り幅で省略表示
             const Expanded(
               child: Text(
-                '🏃 体験・体育コレ！',
+                '🏃 体育・健康',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -448,6 +448,8 @@ class _SmartRecommendCard extends ConsumerWidget {
       case 'disaster': return '防災';
       case 'nutrition': return '栄養';
       case 'career': return 'キャリア';
+      case 'safety': return '安全・防犯';
+      case 'health': return '健康';
       default: return theme;
     }
   }
@@ -580,6 +582,8 @@ class _ThemeStageGrid extends ConsumerWidget {
       case 'disaster': return '🛡️ 防災';
       case 'nutrition': return '🥗 栄養';
       case 'career': return '⭐ キャリア';
+      case 'safety': return '🚨 安全・防犯';
+      case 'health': return '🏥 健康';
       default: return theme;
     }
   }
