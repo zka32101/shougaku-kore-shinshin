@@ -272,11 +272,11 @@ class _StatsSection extends ConsumerWidget {
             );
           },
           loading: () => const CircularProgressIndicator(),
-          error: (error, _) => Text('エラー: $error'),
+          error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
         );
       },
       loading: () => const CircularProgressIndicator(),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
@@ -454,11 +454,11 @@ class _ProgressSection extends ConsumerWidget {
             );
           },
           loading: () => const CircularProgressIndicator(),
-          error: (error, _) => Text('エラー: $error'),
+          error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
         );
       },
       loading: () => const CircularProgressIndicator(),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
@@ -649,7 +649,7 @@ class _BadgesSection extends ConsumerWidget {
         );
       },
       loading: () => const CircularProgressIndicator(),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
@@ -782,7 +782,7 @@ class _VirtueScoresSection extends ConsumerWidget {
         );
       },
       loading: () => const CircularProgressIndicator(),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }

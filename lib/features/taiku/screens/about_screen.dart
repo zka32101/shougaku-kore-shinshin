@@ -48,7 +48,7 @@ class AboutScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          isLow ? '体験・体育コレ！ v2.0' : '体験・体育コレ！ — 小学生向け体育・保健学習アプリ',
+                          isLow ? '体育・健康 v2.0' : '体育・健康 — 小学生向け体育・保健学習アプリ',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withValues(alpha: 0.85),

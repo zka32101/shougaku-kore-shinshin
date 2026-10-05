@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/sport_encyclopedia.dart';
 import '../taiku_app.dart';
+import '../widgets/sport_radar_chart.dart';
 
 // ─── カテゴリフィルタ用 StateProvider ───
 
@@ -332,6 +333,27 @@ class SportDetailScreen extends StatelessWidget {
                             fontSize: 14,
                             color: Colors.grey.shade600,
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // 特徴レーダーチャート
+                  _Section(
+                    emoji: '🕸️',
+                    title: isLow ? 'とくちょう グラフ' : 'スポーツの特徴チャート',
+                    isLow: isLow,
+                    child: Column(
+                      children: [
+                        SportRadarChart(
+                          values: sportRadarValues(sport.id, sport.popularityScore),
+                        ),
+                        Text(
+                          isLow
+                              ? 'おおきいほど そのちからが つよいよ（5が いちばん）'
+                              : '外側ほど特徴が強い（最大5）。人気度・運動量・持久力・パワー・チームワーク・判断力で比べよう',
+                          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                         ),
                       ],
                     ),

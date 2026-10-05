@@ -18,7 +18,7 @@ class OnboardingScreen extends ConsumerWidget {
             children: [
               const SizedBox(height: 16),
               const Text(
-                'ようこそ！\n体験・体育コレ！へ',
+                'ようこそ！\n体育・健康へ',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

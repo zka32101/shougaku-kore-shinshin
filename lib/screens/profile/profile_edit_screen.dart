@@ -78,7 +78,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('エラー: $e')),
+          SnackBar(content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
         );
       }
     }

@@ -353,6 +353,7 @@ class _LibraryStoryCard extends StatefulWidget {
   static const _themeLabels = <String, String>{
     'kindness': '思いやり', 'honesty': '正直さ', 'responsibility': '責任感',
     'courage': '勇気', 'respect': '礼儀', 'cooperation': '協調性',
+    'friendship': '友情', 'family': '家族', 'self_discovery': '自分らしさ', 'society': '社会',
   };
   static const _themeEmojis = <String, String>{
     'kindness': '💜', 'honesty': '💛', 'responsibility': '💙',
@@ -507,7 +508,7 @@ class _ErrorView extends StatelessWidget {
   Widget build(BuildContext context) => Center(
     child: Padding(
       padding: const EdgeInsets.all(24),
-      child: Text('エラー: $error', style: const TextStyle(color: Colors.red)),
+      child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。', style: const TextStyle(color: Colors.red)),
     ),
   );
 }

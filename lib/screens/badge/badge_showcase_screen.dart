@@ -189,7 +189,7 @@ class _BadgeStatsSummary extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
@@ -247,7 +247,7 @@ class _BadgeCategorySection extends ConsumerWidget {
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 
@@ -590,7 +590,7 @@ class _BadgeCardState extends ConsumerState<_BadgeCard>
         );
       },
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('エラー: $error'),
+      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
