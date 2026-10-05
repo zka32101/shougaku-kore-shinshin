@@ -36,6 +36,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          indicatorColor: Colors.white,
           tabs: const [
             Tab(text: '設定'),
             Tab(text: '学習分析'),
