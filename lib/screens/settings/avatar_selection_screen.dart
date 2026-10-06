@@ -1,206 +1,121 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../models/avatar.dart';
-import '../../providers/avatar_provider.dart';
-import '../../providers/premium_provider.dart';
-import '../upgrade_screen.dart';
 
-/// アバター選択画面
-///
-/// アバターは単品課金をやめ、デフォルト以外は無料期間中または購読中のみ選べる。
+import '../../models/animal_avatar.dart';
+import '../../providers/local_avatar_provider.dart';
+import '../../widgets/avatar_display_widget.dart';
+
+/// アバター選択画面。最初の4種は無料、残りはコインで購入する。
 class AvatarSelectionScreen extends ConsumerWidget {
   const AvatarSelectionScreen({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final allAvatarsAsync = ref.watch(allAvatarsProvider);
-    final userAvatarInfoAsync = ref.watch(userAvatarInfoProvider);
-    final hasAccess = ref.watch(premiumProvider).hasAccess;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('アバターを選ぶ'),
-      ),
-      body: allAvatarsAsync.when(
-        data: (avatars) {
-          return userAvatarInfoAsync.when(
-            data: (userAvatarInfo) {
-              if (userAvatarInfo == null) {
-                return const Center(
-                  child: Text('アバター情報が見つかりません'),
-                );
-              }
-
-              return GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.0,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                ),
-                itemCount: avatars.length,
-                itemBuilder: (context, index) {
-                  final avatar = avatars[index];
-                  return _buildAvatarCard(
-                    context,
-                    ref,
-                    avatar,
-                    userAvatarInfo.selectedAvatarId == avatar.id,
-                    avatar.isDefault || hasAccess, // isOwned
-                  );
-                },
-              );
-            },
-            loading: () => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            error: (error, stackTrace) => Center(
-              child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
-            ),
-          );
-        },
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (error, stackTrace) => Center(
-          child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAvatarCard(
-    BuildContext context,
-    WidgetRef ref,
-    Avatar avatar,
-    bool isSelected,
-    bool isOwned,
-  ) {
-    return GestureDetector(
-      onTap: isOwned
-          ? () async {
-              try {
-                await ref.read(selectAvatarProvider(avatar.id).future);
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${avatar.name}に変更しました'),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              }
-            }
-          : () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const UpgradeScreen()),
-              ),
-      child: Card(
-        elevation: isSelected ? 8 : 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-          side: isSelected
-              ? const BorderSide(
-                  color: Colors.blue,
-                  width: 3,
-                )
-              : BorderSide.none,
-        ),
-        child: Stack(
+  Future<void> _onTap(BuildContext context, WidgetRef ref, AnimalAvatar a) async {
+    final st = ref.read(localAvatarProvider);
+    final notifier = ref.read(localAvatarProvider.notifier);
+    if (st.isOwned(a)) {
+      await notifier.select(a);
+      return;
+    }
+    final price = a.priceCoins ?? 0;
+    final enough = st.coins >= price;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('${a.name}を手に入れる？'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Avatar image
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.grey[200],
-                image: DecorationImage(
-                  image: AssetImage(avatar.imagePath),
-                  fit: BoxFit.cover,
-                  onError: (exception, stackTrace) {
-                    // Image not found, show placeholder
-                  },
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (avatar.imagePath.isEmpty) ...[
-                      const Icon(
-                        Icons.person,
-                        size: 48,
-                        color: Colors.grey,
-                      ),
-                      const SizedBox(height: 8),
-                    ],
-                    Text(
-                      avatar.name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black45,
-                            offset: Offset(1, 1),
-                            blurRadius: 3,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Selected indicator
-            if (isSelected)
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(4),
-                  child: const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-            // Locked indicator
-            if (!isOwned)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.black54,
-                  ),
-                  child: const Center(
-                    child: Icon(
-                      Icons.lock,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                  ),
+            AnimalAvatarImage(avatar: a, size: 96),
+            const SizedBox(height: 12),
+            Text('$priceコインを使うよ（いま ${st.coins}コイン）'),
+            if (!enough)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  'あと${price - st.coins}コイン たりないよ！\nお話をよむとコインがもらえるよ。',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
           ],
         ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('やめる')),
+          ElevatedButton(
+            onPressed: enough ? () => Navigator.pop(ctx, true) : null,
+            child: const Text('買う'),
+          ),
+        ],
+      ),
+    );
+    if (ok == true) {
+      await notifier.purchase(a);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final st = ref.watch(localAvatarProvider);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('アバターをえらぶ'),
+        actions: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Text('🪙 ${st.coins}',
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
+      ),
+      body: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          childAspectRatio: 0.78,
+        ),
+        itemCount: kAnimalAvatars.length,
+        itemBuilder: (context, i) {
+          final a = kAnimalAvatars[i];
+          final owned = st.isOwned(a);
+          final selected = st.selectedId == a.id;
+          return GestureDetector(
+            onTap: () => _onTap(context, ref, a),
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: selected ? Colors.blue : Colors.transparent,
+                          width: 3,
+                        ),
+                      ),
+                      child: AnimalAvatarImage(
+                        avatar: a,
+                        size: 64,
+                        opacity: owned ? 1 : 0.4,
+                      ),
+                    ),
+                    if (!owned) const Icon(Icons.lock, color: Colors.white, size: 22),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(a.name, style: const TextStyle(fontSize: 11), maxLines: 1),
+                if (!owned)
+                  Text('🪙 ${a.priceCoins}',
+                      style: const TextStyle(fontSize: 11, color: Colors.orange)),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
-

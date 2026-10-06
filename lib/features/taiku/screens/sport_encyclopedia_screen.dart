@@ -306,7 +306,7 @@ class SportDetailScreen extends StatelessWidget {
                     child: Image.asset(
                       'assets/explain/sport_${sport.id.replaceFirst('sp_', '')}.jpg',
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
                     ),
                   ),
                   const SizedBox(height: 16),
