@@ -68,6 +68,14 @@ class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
     await _save();
   }
 
+  /// コインをつかう（キャラのレベルアップなど）。足りなければ false
+  Future<bool> spendCoins(int amount) async {
+    if (amount <= 0 || state.coins < amount) return false;
+    state = state.copyWith(coins: state.coins - amount);
+    await _save();
+    return true;
+  }
+
   /// アバターを選ぶ（持っているものだけ）
   Future<bool> select(AnimalAvatar a) async {
     if (!state.isOwned(a)) return false;

@@ -14,6 +14,7 @@ import '../report/report_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../../features/geijutsu/geijutsu_app.dart' show GeijutsuModule;
 import '../badge/badge_showcase_screen.dart';
+import '../characters/character_collection_screen.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../checklist/achievement_checklist_screen.dart';
 import '../checklist/daily_record_screen.dart';
@@ -28,6 +29,7 @@ class HomeScreen extends ConsumerWidget {
       (icon: '📖', title: 'ストーリー', subtitle: '道徳の学習', screen: const PremiumGate(child: LibraryScreen())),
       (icon: '🏆', title: 'ランキング', subtitle: '成績を確認', screen: const RankingScreen()),
       (icon: '📈', title: 'ダッシュボード', subtitle: '学習統計', screen: const DashboardScreen()),
+      (icon: '🐾', title: 'キャラ図鑑', subtitle: 'キャラを そだてよう', screen: const CharacterCollectionScreen()),
       (icon: '🎖️', title: 'バッジ図鑑', subtitle: 'バッジを集める', screen: const BadgeShowcaseScreen()),
       (icon: '📊', title: 'レポート', subtitle: '成長を分析', screen: const ReportScreen()),
       (icon: '⚙️', title: '設定', subtitle: 'アプリ設定', screen: const SettingsScreen()),
