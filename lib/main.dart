@@ -19,11 +19,21 @@ import 'theme/app_theme.dart';
 import 'providers/theme_provider.dart';
 import 'providers/premium_provider.dart';
 import 'services/shinshin_purchase_service.dart';
+import 'widgets/startup_splash.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 初期化（Firebase・ローカル保存・課金）の間は組織ロゴ入りの起動画面を出す。
+  // 初期化が終わったら、下の本番の runApp で置き換わる。
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: StartupSplash(),
+    ),
+  );
 
   try {
     await Firebase.initializeApp(
