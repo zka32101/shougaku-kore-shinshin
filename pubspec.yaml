@@ -108,6 +108,7 @@ flutter:
     - assets/images/illustrations/
     - assets/images/parental_consent/
     - assets/stories/
+    - assets/explain/
     - assets/sounds/
     - assets/taiku/images/
     - assets/taiku/images/characters/

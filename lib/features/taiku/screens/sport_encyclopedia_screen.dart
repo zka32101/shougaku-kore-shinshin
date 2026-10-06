@@ -300,6 +300,16 @@ class SportDetailScreen extends StatelessWidget {
                   // 基本情報チップ行
                   _InfoChipRow(sport: sport, isLow: isLow),
                   const SizedBox(height: 16),
+                  // イラスト
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      'assets/explain/sport_${sport.id.replaceFirst('sp_', '')}.jpg',
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
 
                   // 説明
                   _Section(
