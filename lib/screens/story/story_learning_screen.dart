@@ -1,3 +1,4 @@
+import '../../providers/local_avatar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
@@ -228,6 +229,9 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
     }
 
     if (!mounted) return;
+
+    // ストーリーを読み終えるたびにコインがもらえる（アバター購入に使う）
+    ref.read(localAvatarProvider.notifier).earnCoins(AppConstants.coinsPerStory);
 
     // 子どもプロフィール（totalPoints）と進捗リストを無効化 → ホーム・成長画面で最新値を表示
     ref.invalidate(childProfileProvider(widget.childId));
@@ -1230,7 +1234,7 @@ class _ExplainImage extends StatelessWidget {
         child: Image.asset(
           asset,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+          errorBuilder: (_, _, _) => const SizedBox.shrink(),
         ),
       ),
     );

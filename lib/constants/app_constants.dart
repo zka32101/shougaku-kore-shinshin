@@ -1,5 +1,8 @@
 /// Application-wide constants for business logic and magic numbers
 class AppConstants {
+  /// ストーリーを1話読み終えたときにもらえるコイン（アバター購入に使う）
+  static const int coinsPerStory = 10;
+
   // Progress action types
   static const String actionStoryCompleted = 'story_completed';
   static const String actionProgressRecorded = 'progress_recorded';
