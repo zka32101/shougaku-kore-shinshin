@@ -359,6 +359,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
                               pages: pages,
                               controller: _pageController,
                               currentPage: _currentPage,
+                              storyId: story.id,
                               fadeAnim: _fadeAnim,
                               slideAnim: _slideAnim,
                             ),
@@ -495,6 +496,7 @@ class _NarrativePageView extends StatelessWidget {
   final List<String> pages;
   final PageController controller;
   final int currentPage;
+  final String storyId;
   final Animation<double> fadeAnim;
   final Animation<Offset> slideAnim;
 
@@ -502,6 +504,7 @@ class _NarrativePageView extends StatelessWidget {
     required this.pages,
     required this.controller,
     required this.currentPage,
+    required this.storyId,
     required this.fadeAnim,
     required this.slideAnim,
   });
@@ -523,6 +526,10 @@ class _NarrativePageView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (isIntro)
+                    _ExplainImage(
+                      asset: 'assets/explain/story_${storyId.split('-').last}.jpg',
+                    ),
                   if (isIntro)
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -1203,6 +1210,27 @@ class _StoryActionButtonState extends State<_StoryActionButton>
                     ],
                   ],
                 ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 説明用イラスト（無い場合は何も表示しない）
+class _ExplainImage extends StatelessWidget {
+  final String asset;
+  const _ExplainImage({required this.asset});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          asset,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => const SizedBox.shrink(),
         ),
       ),
     );
