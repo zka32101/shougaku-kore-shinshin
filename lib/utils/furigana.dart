@@ -60,11 +60,36 @@ class FuriganaPiece {
 /// 語→読みの辞書を使って、学年に合わせて「漢字（かんじ）」形式の断片に変換する。
 class FuriganaEngine {
   final Map<String, String> words;
+  late final Map<String, String> _lookup;
   late final int _maxLen;
 
   FuriganaEngine(this.words) {
+    // 活用形(悲しい→悲しく / 借りる→借りた など)にも読みを付けるため、
+    // 語尾1字を落とした語幹も引けるようにする。読みが一意に決まる語幹だけ使う。
+    final stems = <String, String?>{};
+    words.forEach((w, r) {
+      if (w.length < 2 || r.length < 2) return;
+      final last = w[w.length - 1];
+      if (KanjiGrade.isKanji(last)) return;
+      if (!r.endsWith(_toHira(last))) return;
+      final stem = w.substring(0, w.length - 1);
+      final stemReading = r.substring(0, r.length - _toHira(last).length);
+      if (KanjiGrade.maxOf(stem) == 0) return;
+      if (words.containsKey(stem)) return;
+      final prev = stems[stem];
+      if (stems.containsKey(stem) && prev != stemReading) {
+        stems[stem] = null; // 読みが割れる語幹は使わない
+      } else {
+        stems[stem] = stemReading;
+      }
+    });
+    _lookup = {
+      for (final e in stems.entries)
+        if (e.value != null && e.value!.isNotEmpty) e.key: e.value!,
+      ...words,
+    };
     var m = 1;
-    for (final k in words.keys) {
+    for (final k in _lookup.keys) {
       if (k.length > m) m = k.length;
     }
     _maxLen = m;
@@ -93,7 +118,7 @@ class FuriganaEngine {
       final maxEnd = (i + _maxLen) < text.length ? i + _maxLen : text.length;
       for (var end = maxEnd; end > i; end--) {
         final cand = text.substring(i, end);
-        if (words.containsKey(cand)) {
+        if (_lookup.containsKey(cand)) {
           hit = cand;
           break;
         }
@@ -105,7 +130,7 @@ class FuriganaEngine {
       }
       if (KanjiGrade.maxOf(hit) > userGrade) {
         flush();
-        out.addAll(splitRuby(hit, words[hit]!));
+        out.addAll(splitRuby(hit, _lookup[hit]!));
       } else {
         buf.write(hit);
       }
