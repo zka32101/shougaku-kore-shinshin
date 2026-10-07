@@ -9,6 +9,7 @@ import '../providers/taiku_providers.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/sibling_quest_provider.dart';
 import 'activity_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
   const ResultScreen({super.key});
@@ -97,8 +98,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 children: [
                   const SizedBox(height: 20),
                   // 結果表示
-                  Text(emoji,
-                      style: const TextStyle(fontSize: 72)),
+                  UkalabEmoji(emoji, size: 72),
                   const SizedBox(height: 12),
                   Text(
                     message,
@@ -644,7 +644,7 @@ class _StageSummaryCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(emoji, style: const TextStyle(fontSize: 15)),
+                UkalabEmoji(emoji, size: 15),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(

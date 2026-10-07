@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/taiku_questions.dart';
 import '../providers/taiku_providers.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // ─── ステージ導入テキスト（低学年・高学年） ───
 
@@ -472,8 +473,7 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
                       children: [
                         Row(
                           children: [
-                            Text(widget.emoji,
-                                style: const TextStyle(fontSize: 32)),
+                            UkalabEmoji(widget.emoji, size: 32),
                             const SizedBox(width: 10),
                             Expanded(
                               child: Column(

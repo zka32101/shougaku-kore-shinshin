@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../providers/app_providers.dart';
 import '../models/user_profile.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -245,7 +246,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(page.emoji, style: const TextStyle(fontSize: 96)),
+              UkalabEmoji(page.emoji, size: 96),
               const SizedBox(height: 32),
               Text(
                 page.title,

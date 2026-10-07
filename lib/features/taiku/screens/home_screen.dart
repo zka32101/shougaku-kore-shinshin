@@ -9,6 +9,7 @@ import '../providers/disaster_provider.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/parent_diary_provider.dart';
 import 'disaster_drill_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -338,7 +339,7 @@ class _SmartRecommendCard extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Text(emoji, style: const TextStyle(fontSize: 52)),
+                UkalabEmoji(emoji, size: 52),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -744,7 +745,7 @@ class _WeatherBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(weather.weatherEmoji, style: const TextStyle(fontSize: 24)),
+            UkalabEmoji(weather.weatherEmoji, size: 24),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -775,7 +776,7 @@ class _WeatherDetailSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(weather.weatherEmoji, style: const TextStyle(fontSize: 56)),
+          UkalabEmoji(weather.weatherEmoji, size: 56),
           const SizedBox(height: 8),
           Text(
             'きょうの空：${weather.weatherLabel}',
@@ -1007,7 +1008,7 @@ class _DiaryNotificationBanner extends ConsumerWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(m.emoji, style: const TextStyle(fontSize: 28)),
+                  UkalabEmoji(m.emoji, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -1265,7 +1266,7 @@ class _MiniThemeChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-        child: Text(emoji, style: const TextStyle(fontSize: 14)),
+        child: UkalabEmoji(emoji, size: 14),
       ),
     );
   }

@@ -7,6 +7,7 @@ import '../../data/achievement_checklist_data.dart';
 import '../../models/achievement_checklist.dart';
 import '../../providers/achievement_checklist_provider.dart';
 import '../../providers/child_provider.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 年齢（学年）に合わせて用意された「できたこと」チェックリスト画面
 class AchievementChecklistScreen extends ConsumerWidget {
@@ -130,7 +131,7 @@ class _CategorySection extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Text(category.emoji, style: const TextStyle(fontSize: 20)),
+              UkalabEmoji(category.emoji, size: 20),
               const SizedBox(width: AppStyles.paddingSmall),
               Text(
                 category.label,

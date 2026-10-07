@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class AchievementBadge extends StatelessWidget {
   final String title;
@@ -27,7 +28,7 @@ class AchievementBadge extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 32)),
+          UkalabEmoji(emoji, size: 32),
           const SizedBox(height: 8),
           Text(
             title,

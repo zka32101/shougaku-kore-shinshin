@@ -8,6 +8,7 @@ import '../../providers/progress_provider.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
 import '../story/story_learning_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 const _primaryColor = Color(0xFF9B59B6);
 const _bgColor = Color(0xFFF5F5F5);
@@ -434,7 +435,7 @@ class _LibraryStoryCardState extends State<_LibraryStoryCard> with SingleTickerP
               Container(
                 width: 48, height: 48,
                 decoration: BoxDecoration(color: color.withAlpha(25), borderRadius: BorderRadius.circular(10)),
-                child: Center(child: Text(emoji, style: const TextStyle(fontSize: 24))),
+                child: Center(child: UkalabEmoji(emoji, size: 24)),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -490,7 +491,7 @@ class _EmptyView extends StatelessWidget {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 56)),
+        UkalabEmoji(emoji, size: 56),
         const SizedBox(height: 16),
         Text(message,
             style: const TextStyle(fontSize: 15, color: _textSecondary),

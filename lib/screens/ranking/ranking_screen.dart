@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/ranking.dart';
 import 'ranking_list_screen.dart';
 import 'ranking_settings_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// ランキング画面 — ランキングタイプ選択画面
 /// 各種ランキングタイプを選択できるメイン画面
@@ -187,10 +188,7 @@ class _RankingTypeCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          icon,
-          style: const TextStyle(fontSize: 32),
-        ),
+        UkalabEmoji(icon, size: 32),
         const SizedBox(height: 8),
         Text(
           title,
@@ -227,10 +225,7 @@ class _RankingTypeCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              icon,
-              style: const TextStyle(fontSize: 32),
-            ),
+            UkalabEmoji(icon, size: 32),
             const Icon(
               Icons.arrow_forward_ios,
               size: 16,

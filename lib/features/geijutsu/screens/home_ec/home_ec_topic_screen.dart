@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // トピックデータ定義
 class _TopicData {
@@ -247,7 +248,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
               children: [
                 Row(
                   children: [
-                    Text(topic.emoji, style: const TextStyle(fontSize: 36)),
+                    UkalabEmoji(topic.emoji, size: 36),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -359,7 +360,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                 ...topic.activities.map((act) {
                   final isDone = _checked[act.id] ?? false;
                   return ListTile(
-                    leading: Text(act.emoji, style: const TextStyle(fontSize: 28)),
+                    leading: UkalabEmoji(act.emoji, size: 28),
                     title: Text(
                       act.title,
                       style: TextStyle(

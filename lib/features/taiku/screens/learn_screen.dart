@@ -10,6 +10,7 @@ import 'art/canvas_screen.dart';
 import 'music/free_piano_screen.dart';
 import 'music/composition_screen.dart';
 import 'home_ec/home_ec_hub_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // ─── まなぶ画面 ───
 
@@ -175,7 +176,7 @@ class _ThemeSection extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(group.emoji, style: const TextStyle(fontSize: 15)),
+              UkalabEmoji(group.emoji, size: 15),
               const SizedBox(width: 6),
               Text(
                 group.label,
@@ -333,7 +334,7 @@ class _StageCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(emoji, style: const TextStyle(fontSize: 20)),
+                UkalabEmoji(emoji, size: 20),
                 const Spacer(),
                 if (isCompleted)
                   Container(
@@ -509,7 +510,7 @@ class _MiniThemeChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 10)),
+          UkalabEmoji(emoji, size: 10),
           const SizedBox(width: 2),
           Text(
             label,

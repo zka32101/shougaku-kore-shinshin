@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/disaster_mission.dart';
 import '../providers/disaster_provider.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// ⑨ 防災の日ドリル画面（9/1・3/11）
 class DisasterDrillScreen extends ConsumerWidget {
@@ -65,7 +66,7 @@ class _MissionHeader extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(mission.emoji, style: const TextStyle(fontSize: 48)),
+          UkalabEmoji(mission.emoji, size: 48),
           const SizedBox(height: 8),
           Text(
             mission.title,
@@ -193,8 +194,7 @@ class _TaskCard extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text(task.emoji,
-                              style: const TextStyle(fontSize: 18)),
+                          UkalabEmoji(task.emoji, size: 18),
                           const SizedBox(width: 6),
                           Expanded(
                             child: Text(

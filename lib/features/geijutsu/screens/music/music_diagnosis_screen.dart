@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../models/music_profile.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class MusicDiagnosisScreen extends ConsumerStatefulWidget {
   const MusicDiagnosisScreen({super.key});
@@ -249,7 +250,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
             ),
             child: Column(
               children: [
-                Text(typeEmoji, style: const TextStyle(fontSize: 56)),
+                UkalabEmoji(typeEmoji, size: 56),
                 const SizedBox(height: 12),
                 const Text('あなたの音感タイプは…',
                     style: TextStyle(color: Colors.white70, fontSize: 14)),

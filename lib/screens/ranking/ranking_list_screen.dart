@@ -5,6 +5,7 @@ import '../../providers/ranking_provider.dart';
 import '../../services/ranking_service.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// ランキング表示画面
 /// ユーザーのランキング順位と周辺のプレイヤーを表示
@@ -328,10 +329,7 @@ class _RankingTileState extends State<_RankingTile>
                 ),
                 child: Center(
                   child: rankIcon != null
-                      ? Text(
-                          rankIcon,
-                          style: const TextStyle(fontSize: 18),
-                        )
+                      ? UkalabEmoji(rankIcon, size: 18)
                       : Text(
                           '${widget.entry.rank}',
                           style: const TextStyle(

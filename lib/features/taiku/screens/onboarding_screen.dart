@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../taiku_app.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class OnboardingScreen extends ConsumerWidget {
   const OnboardingScreen({super.key});
@@ -143,7 +144,7 @@ class _FeatureItem extends StatelessWidget {
               color: color.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Center(child: Text(emoji, style: const TextStyle(fontSize: 22))),
+            child: Center(child: UkalabEmoji(emoji, size: 22)),
           ),
           const SizedBox(width: 12),
           Expanded(
