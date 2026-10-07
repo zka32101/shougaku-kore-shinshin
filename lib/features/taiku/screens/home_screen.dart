@@ -339,7 +339,7 @@ class _SmartRecommendCard extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                UkalabEmoji(emoji, size: 52),
+                _stageIcon(primaryStage, emoji, 52),
                 const SizedBox(width: 16),
                 Expanded(
                   child: Column(
@@ -671,10 +671,7 @@ class _StageCard extends StatelessWidget {
             Stack(
               alignment: Alignment.topRight,
               children: [
-                Text(isUnlocked ? emoji : '🔒',
-                    style: TextStyle(
-                        fontSize:
-                            grade == GradeLevel.low ? 28 : 22)),
+                _stageIcon(stageNum, emoji, grade == GradeLevel.low ? 28 : 22),
                 if (isCompleted)
                   const Positioned(
                     top: -2,
@@ -1269,4 +1266,18 @@ class _MiniThemeChip extends StatelessWidget {
       ),
     );
   }
+}
+
+/// ステージのアイコン。端末の絵文字フォントに無く「□」になりやすいものは
+/// Material アイコンで描く。それ以外は絵文字（共通アイコンに置換できるもの含む）。
+Widget _stageIcon(int stageNum, String emoji, double size) {
+  const icons = <int, IconData>{
+    16: Icons.warning_amber_rounded,
+    20: Icons.savings,
+  };
+  final icon = icons[stageNum];
+  if (icon != null) {
+    return Icon(icon, size: size + 2, color: const Color(0xFFF57F17));
+  }
+  return UkalabEmoji(emoji, size: size);
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shougaku_kore_doutoku/widgets/scroll_fill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,7 @@ class OnboardingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: ScrollFill(
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

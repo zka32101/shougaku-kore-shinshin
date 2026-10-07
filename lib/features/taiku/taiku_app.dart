@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shougaku_kore_doutoku/widgets/module_tab_strip.dart';
+import 'package:shougaku_kore_doutoku/widgets/shell_route_observer.dart';
 import '../literacy_core/literacy_core.dart';
 import 'screens/album_screen.dart';
 import 'screens/badge_screen.dart';
@@ -75,7 +77,10 @@ class TaikuColors {
 /// 独立アプリだった頃の MaterialApp を、入れ子の Navigator に置き換えたもの。
 /// 体育側の画面は pushNamed('/quiz') などの名前付きルートをそのまま使える。
 class TaikuModule extends ConsumerStatefulWidget {
-  const TaikuModule({super.key});
+  /// アプリ全体の下部ナビを全画面ページで隠すための見張り役（任意）
+  final ShellRouteObserver? observer;
+
+  const TaikuModule({super.key, this.observer});
 
   @override
   ConsumerState<TaikuModule> createState() => _TaikuModuleState();
@@ -111,6 +116,7 @@ class _TaikuModuleState extends ConsumerState<TaikuModule> {
         child: Navigator(
           key: _navKey,
           initialRoute: '/',
+          observers: [if (widget.observer != null) widget.observer!],
           onGenerateRoute: _onGenerateRoute,
         ),
       ),
@@ -160,59 +166,31 @@ class _RootShellState extends ConsumerState<RootShell> {
         }
       },
       child: Scaffold(
-        body: IndexedStack(index: _tab, children: _screens),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _tab,
-          onTap: (i) {
-            setState(() => _tab = i);
-            ref.read(activeTabProvider.notifier).state = i;
-          },
-          selectedItemColor: color,
-          unselectedItemColor: Colors.grey,
-          backgroundColor: Colors.white,
-          type: BottomNavigationBarType.fixed,
-          elevation: 8,
-          // 6タブで幅が狭く、ラベルが「…」で省略されないよう選択/非選択で同じ大きさにする
-          selectedFontSize: 10,
-          unselectedFontSize: 10,
-          items: [
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              activeIcon: Icon(Icons.home),
-              label: 'ホーム',
+        // アプリ全体の下部ナビと二重にならないよう、内側の切り替えは画面上部に置く
+        body: Column(
+          children: [
+            ModuleTabStrip(
+              color: color,
+              index: _tab,
+              onTap: (i) {
+                setState(() => _tab = i);
+                ref.read(activeTabProvider.notifier).state = i;
+              },
+              tabs: [
+                const ModuleTab(Icons.home, 'ホーム'),
+                const ModuleTab(Icons.menu_book, 'まなぶ'),
+                const ModuleTab(Icons.emoji_events, 'バッジ'),
+                const ModuleTab(Icons.photo_library, 'きろく'),
+                ModuleTab(Icons.family_restroom, '保護者', badge: unreadCount),
+                const ModuleTab(Icons.settings, '設定'),
+              ],
             ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book_outlined),
-              activeIcon: Icon(Icons.menu_book),
-              label: 'まなぶ',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.emoji_events_outlined),
-              activeIcon: Icon(Icons.emoji_events),
-              label: 'バッジ',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.photo_library_outlined),
-              activeIcon: Icon(Icons.photo_library),
-              label: 'きろく',
-            ),
-            BottomNavigationBarItem(
-              icon: Badge(
-                label: Text('$unreadCount'),
-                isLabelVisible: unreadCount > 0,
-                child: const Icon(Icons.family_restroom_outlined),
+            Expanded(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: IndexedStack(index: _tab, children: _screens),
               ),
-              activeIcon: Badge(
-                label: Text('$unreadCount'),
-                isLabelVisible: unreadCount > 0,
-                child: const Icon(Icons.family_restroom),
-              ),
-              label: '保護者',
-            ),
-            const BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
-              activeIcon: Icon(Icons.settings),
-              label: '設定',
             ),
           ],
         ),

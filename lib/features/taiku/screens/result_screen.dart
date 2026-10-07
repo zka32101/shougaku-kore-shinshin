@@ -10,6 +10,7 @@ import '../providers/child_profiles_provider.dart';
 import '../providers/sibling_quest_provider.dart';
 import 'activity_screen.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/scroll_fill.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
   const ResultScreen({super.key});
@@ -92,7 +93,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
       body: Stack(
         children: [
           SafeArea(
-            child: Padding(
+            child: ScrollFill(
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
