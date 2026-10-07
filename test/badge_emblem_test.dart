@@ -37,4 +37,20 @@ void main() {
     expect(find.byType(Image), findsWidgets);
     expect(tester.takeException(), isNull);
   });
+
+  test('体育のステージバッジ(stage_N_clear)は番号が取れ、他のバッジは null', () {
+    expect(BadgeEmblem.stageLabelOf('stage_1_clear'), '1');
+    expect(BadgeEmblem.stageLabelOf('stage_21_clear'), '21');
+    expect(BadgeEmblem.stageLabelOf('streak_3'), isNull);
+    expect(BadgeEmblem.stageLabelOf('stage_x_clear'), isNull);
+  });
+
+  testWidgets('ステージバッジは番号を重ねて表示する', (tester) async {
+    await tester.pumpWidget(const MaterialApp(
+      home: Scaffold(body: BadgeEmblem(badgeId: 'stage_12_clear', fallbackEmoji: '🏁', size: 48)),
+    ));
+    await tester.pump();
+    expect(find.text('12'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }
