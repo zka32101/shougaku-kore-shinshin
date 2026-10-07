@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_core/shared_core.dart' show AnalyticsDashboard;
+import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
+import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, requireParentalGate;
 import '../../providers/audio_provider.dart';
 import '../../providers/locale_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -325,6 +326,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               Uri.parse('https://sites.google.com/view/yourwishapps'),
               mode: LaunchMode.externalApplication,
             ),
+          ),
+          CrossPromoSection(
+            currentAppId: 'com.yourwish.shougakukore.shinshin',
+            currentCategory: '小学コレ',
+            beforeOpenStore: (context) => requireParentalGate(context),
           ),
               const SizedBox(height: 24),
             ],
