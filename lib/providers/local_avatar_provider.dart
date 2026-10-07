@@ -6,11 +6,15 @@ import '../models/animal_avatar.dart';
 /// コインと動物アバター（所有・選択）の状態。端末内（SharedPreferences）に保存する。
 class LocalAvatarState {
   final int coins;
+
+  /// これまでにもらったコインの合計(つかっても減らない)。キャラの解放条件に使う。
+  final int totalEarned;
   final Set<int> ownedIds;
   final int selectedId;
 
   const LocalAvatarState({
     this.coins = 0,
+    this.totalEarned = 0,
     this.ownedIds = const {},
     this.selectedId = 1,
   });
@@ -19,12 +23,17 @@ class LocalAvatarState {
 
   AnimalAvatar get selected => animalAvatarById(selectedId);
 
-  LocalAvatarState copyWith({int? coins, Set<int>? ownedIds, int? selectedId}) =>
-      LocalAvatarState(
-        coins: coins ?? this.coins,
-        ownedIds: ownedIds ?? this.ownedIds,
-        selectedId: selectedId ?? this.selectedId,
-      );
+  LocalAvatarState copyWith({
+    int? coins,
+    int? totalEarned,
+    Set<int>? ownedIds,
+    int? selectedId,
+  }) => LocalAvatarState(
+    coins: coins ?? this.coins,
+    totalEarned: totalEarned ?? this.totalEarned,
+    ownedIds: ownedIds ?? this.ownedIds,
+    selectedId: selectedId ?? this.selectedId,
+  );
 }
 
 class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
@@ -33,14 +42,29 @@ class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
   }
 
   static const _kCoins = 'local_avatar_coins';
+  static const _kTotalEarned = 'local_avatar_total_earned';
   static const _kOwned = 'local_avatar_owned';
   static const _kSelected = 'local_avatar_selected';
 
   Future<void> _load() async {
     try {
       final p = await SharedPreferences.getInstance();
+      final coins = p.getInt(_kCoins) ?? 0;
+      final owned = (p.getStringList(_kOwned) ?? const <String>[])
+          .map(int.tryParse)
+          .whereType<int>()
+          .toSet();
+      // 既存ユーザー(保存なし)は、いま持っているコイン+買ったアバター代から推定して引き継ぐ
+      final total =
+          p.getInt(_kTotalEarned) ??
+          (coins +
+              owned.fold<int>(
+                0,
+                (sum, id) => sum + (animalAvatarById(id).priceCoins ?? 0),
+              ));
       state = LocalAvatarState(
-        coins: p.getInt(_kCoins) ?? 0,
+        totalEarned: total,
+        coins: coins,
         ownedIds: (p.getStringList(_kOwned) ?? const <String>[])
             .map(int.tryParse)
             .whereType<int>()
@@ -56,6 +80,7 @@ class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
     try {
       final p = await SharedPreferences.getInstance();
       await p.setInt(_kCoins, state.coins);
+      await p.setInt(_kTotalEarned, state.totalEarned);
       await p.setStringList(_kOwned, state.ownedIds.map((e) => '$e').toList());
       await p.setInt(_kSelected, state.selectedId);
     } catch (_) {}
@@ -64,7 +89,10 @@ class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
   /// コインをふやす（ストーリーを読み終えたときなど）
   Future<void> earnCoins(int amount) async {
     if (amount <= 0) return;
-    state = state.copyWith(coins: state.coins + amount);
+    state = state.copyWith(
+      coins: state.coins + amount,
+      totalEarned: state.totalEarned + amount,
+    );
     await _save();
   }
 
@@ -101,5 +129,5 @@ class LocalAvatarNotifier extends StateNotifier<LocalAvatarState> {
 
 final localAvatarProvider =
     StateNotifierProvider<LocalAvatarNotifier, LocalAvatarState>(
-  (ref) => LocalAvatarNotifier(),
-);
+      (ref) => LocalAvatarNotifier(),
+    );
