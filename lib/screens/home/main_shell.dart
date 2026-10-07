@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/taiku/providers/album_provider.dart';
+import '../../features/taiku/screens/activity_screen.dart' show recoverLostPhotoMemory;
 import '../characters/character_collection_screen.dart';
 import '../library/library_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
@@ -33,6 +36,23 @@ class _MainShellState extends State<MainShell> {
         HomeSection.geijutsu => _geijutsuObs,
         _ => null,
       };
+
+  @override
+  void initState() {
+    super.initState();
+    // 撮影中に端末がアプリを終了していたら、撮った写真をアルバムへ保存し直す
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final container = ProviderScope.containerOf(context);
+      final saved =
+          await recoverLostPhotoMemory(container.read(albumProvider.notifier));
+      if (saved && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('アルバムに保存したよ！📷')),
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {

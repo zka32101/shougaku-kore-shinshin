@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shougaku_kore_doutoku/widgets/photo_source_chooser.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/activity_catalog.dart';
@@ -205,7 +207,20 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     );
     if (source == null || !context.mounted) return;
 
+    // 撮影中に端末がアプリを終了しても、起動時に写真を拾えるよう保存先の情報を残す
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _pendingKey,
+      jsonEncode({
+        'activityId': activity.id,
+        'activityTitle': activity.title,
+        'theme': theme,
+        'stage': widget.stage,
+      }),
+    );
+    if (!context.mounted) return;
     final XFile? file = await pickPhotoWithMessage(context, source);
+    await prefs.remove(_pendingKey);
     if (file == null) return;
 
     final memory = ActivityMemory(
@@ -490,5 +505,33 @@ class _ActivityCardState extends State<_ActivityCard> {
         ],
       ),
     );
+  }
+}
+
+const _pendingKey = 'pending_photo_memory';
+
+/// 撮影中にアプリのプロセスが終了した場合、起動時に写真をアルバムへ保存し直す。
+/// 保存したら true を返す。
+Future<bool> recoverLostPhotoMemory(AlbumNotifier album) async {
+  try {
+    final lost = await ImagePicker().retrieveLostData();
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_pendingKey);
+    await prefs.remove(_pendingKey);
+    final file = lost.file ?? (lost.files?.isNotEmpty == true ? lost.files!.first : null);
+    if (lost.isEmpty || file == null || raw == null) return false;
+    final m = jsonDecode(raw) as Map<String, dynamic>;
+    await album.addMemory(ActivityMemory(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      activityId: m['activityId'] as String,
+      activityTitle: m['activityTitle'] as String,
+      theme: m['theme'] as String,
+      relatedStage: m['stage'] as int,
+      completedAt: DateTime.now(),
+      imagePath: file.path,
+    ));
+    return true;
+  } catch (_) {
+    return false;
   }
 }
