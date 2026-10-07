@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../literacy_core/literacy_core.dart';
 
 /// 体験・体育コレ！問題データ（11ステージ）
@@ -20,6 +22,47 @@ class TaikuQuestion extends LiteracyQuestion {
     super.hasVisualSupport,
     required this.theme,
   }) : super(subject: 'taiku');
+
+  /// 選択肢の並びを rnd でシャッフルした問題を返す。
+  ///
+  /// 正解は「元の正解の選択肢」の新しい位置から求め直す（インデックスではなく
+  /// 選択肢そのものを追跡する）ので、シャッフル後も正解判定は変わらない。
+  /// 「どちらも〜」「上のどれも〜」のように他の選択肢を参照する選択肢を
+  /// 含む問題は、意味が変わらないよう並びを変えない。
+  TaikuQuestion withShuffledChoices(Random rnd) {
+    if (choices.length < 2 || _referencesOtherChoices(choices)) return this;
+    final order = List<int>.generate(choices.length, (i) => i)..shuffle(rnd);
+    return TaikuQuestion(
+      id: id,
+      stage: stage,
+      gradeLevel: gradeLevel,
+      contentType: contentType,
+      difficultyRank: difficultyRank,
+      questionText: questionText,
+      choices: [for (final i in order) choices[i]],
+      correctIndex: order.indexOf(correctIndex),
+      feedbackCorrect: feedbackCorrect,
+      feedbackIncorrect: feedbackIncorrect,
+      hintText: hintText,
+      explanationDetail: explanationDetail,
+      hasVisualSupport: hasVisualSupport,
+      theme: theme,
+    );
+  }
+}
+
+final _refChoice = RegExp(r'^(どちらも|りょうほう|両方|上の|うえの|ぜんぶ(せいかい|ただしい)|すべて(正|ただ))');
+bool _referencesOtherChoices(List<String> choices) =>
+    choices.any(_refChoice.hasMatch);
+
+/// アプリ起動ごとに変わるシャッフル用の種（同じ起動中は同じ並びで安定）。
+int taikuShuffleSeed = Random().nextInt(1 << 30);
+
+/// 正解の位置が先頭に偏らないよう、問題ごとに選択肢を並べ替える。
+/// 並びは (seed, 問題ID) で決まるので、同じ起動中は同じ問題が毎回同じ並びになる。
+TaikuQuestion shuffledForDisplay(TaikuQuestion q, {int? seed}) {
+  final s = (seed ?? taikuShuffleSeed) ^ q.id.hashCode;
+  return q.withShuffledChoices(Random(s));
 }
 
 // ─── ステージ1：スポーツのルール（低学年・sports）───
@@ -5460,7 +5503,7 @@ const _allStageQuestions = <int, List<TaikuQuestion>>{
 
 /// 指定ステージの全問題を取得
 List<TaikuQuestion> getQuestionsForStage(int stage) {
-  return _allStageQuestions[stage] ?? [];
+  return [for (final q in _allStageQuestions[stage] ?? const <TaikuQuestion>[]) shuffledForDisplay(q)];
 }
 
 /// 学年グループごとに表示するステージリスト
@@ -5477,5 +5520,5 @@ List<int> stagesForGrade(GradeLevel grade) {
 
 /// 全ステージの問題を1つのリストで返す（まちがいノート用）
 List<TaikuQuestion> get allStageQuestions {
-  return _allStageQuestions.values.expand((q) => q).toList();
+  return _allStageQuestions.values.expand((q) => q).map(shuffledForDisplay).toList();
 }

@@ -450,10 +450,6 @@ class _LibraryStoryCardState extends State<_LibraryStoryCard> with SingleTickerP
                         _Tag(label: label, color: color),
                         const SizedBox(width: 6),
                         _Tag(label: '${(widget.story.durationSeconds / 60).round()}分', color: _textSecondary),
-                        if (widget.story.isPremium) ...[
-                          const SizedBox(width: 6),
-                          const _Tag(label: 'Premium', color: Color(0xFFF39C12)),
-                        ],
                       ],
                     ),
                   ],

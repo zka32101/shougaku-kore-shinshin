@@ -98,31 +98,7 @@ class _ChoiceGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 低学年: 2x2グリッド  中・高学年: 縦リスト
-    if (level == LiteracyUILevel.simple) {
-      return GridView.count(
-        crossAxisCount: 2,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1.6,
-        children: List.generate(
-          question.choices.length,
-          (i) => _ChoiceButton(
-            text: question.choices[i],
-            index: i,
-            level: level,
-            grade: question.gradeLevel,
-            correctIndex: question.correctIndex,
-            selectedIndex: selectedIndex,
-            isAnswered: isAnswered,
-            onTap: () => onChoiceSelected(i),
-          ),
-        ),
-      );
-    }
-
+    // 全学年: 縦1列（長い選択肢も切れずに全文を読めるよう、高さは文字量に合わせて伸びる）
     return Column(
       children: List.generate(
         question.choices.length,
@@ -188,6 +164,7 @@ class _ChoiceButton extends StatelessWidget {
     return GestureDetector(
       onTap: isAnswered ? null : onTap,
       child: AnimatedContainer(
+        constraints: const BoxConstraints(minHeight: 56),
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(
           horizontal: level == LiteracyUILevel.simple ? 16 : 14,
@@ -224,7 +201,7 @@ class _ChoiceButton extends StatelessWidget {
                   fontSize: LiteracyTypography.choiceTextSize(grade),
                   fontWeight: FontWeight.w500,
                 ),
-                textAlign: level == LiteracyUILevel.simple ? TextAlign.center : TextAlign.left,
+                textAlign: TextAlign.left,
               ),
             ),
             if (isAnswered && index == correctIndex)

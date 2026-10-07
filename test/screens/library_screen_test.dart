@@ -103,11 +103,11 @@ void main() {
         expect(find.text('勇気の話'), findsOneWidget);
       });
 
-      testWidgets('premium story shows Premium tag', (tester) async {
+      testWidgets('premium story shows no Premium tag (no locks)', (tester) async {
         final story = _makeStory(isPremium: true);
         await tester.pumpWidget(_wrap(weeklyStories: [story]));
         await tester.pumpAndSettle();
-        expect(find.text('Premium'), findsOneWidget);
+        expect(find.text('Premium'), findsNothing);
       });
     });
 

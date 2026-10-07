@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shougaku_kore_doutoku/widgets/photo_source_chooser.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/activity_catalog.dart';
 import '../data/activity_memory.dart';
@@ -195,40 +196,17 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     TaikuActivity activity,
     String theme,
   ) async {
-    final take = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('📷 しゃしんをとろう！',
-            textAlign: TextAlign.center),
-        content: Text(
-          '「${activity.title}」を\nアルバムに保存しますか？',
-          textAlign: TextAlign.center,
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('あとで'),
-          ),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.camera_alt),
-            label: const Text('とる！'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () => Navigator.pop(context, true),
-          ),
-        ],
-      ),
+    // ダイアログは自分の context で閉じる（入れ子 Navigator の画面 context で pop すると
+    // 画面側が閉じてしまい、「とる」が反応しなくなる）
+    final source = await showPhotoSourceDialog(
+      context,
+      title: '📷 しゃしんをのこそう！',
+      message: '「${activity.title}」を\nアルバムに保存しますか？',
     );
+    if (source == null || !context.mounted) return;
 
-    if (take != true) return;
-
-    final picker = ImagePicker();
-    final XFile? file =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+    final XFile? file = await pickPhotoWithMessage(context, source);
+    if (file == null) return;
 
     final memory = ActivityMemory(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -237,7 +215,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       theme: theme,
       relatedStage: widget.stage,
       completedAt: DateTime.now(),
-      imagePath: file?.path,
+      imagePath: file.path,
     );
 
     await ref.read(albumProvider.notifier).addMemory(memory);

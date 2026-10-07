@@ -257,18 +257,18 @@ class _MemoryCard extends ConsumerWidget {
   void _showDeleteDialog(BuildContext context, WidgetRef ref) {
     showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dctx) => AlertDialog(
         title: const Text('記録を削除'),
         content: Text('「${memory.activityTitle}」の記録を削除しますか？'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dctx),
             child: const Text('キャンセル'),
           ),
           TextButton(
             onPressed: () {
               ref.read(albumProvider.notifier).removeMemory(memory.id);
-              Navigator.pop(context);
+              Navigator.pop(dctx);
             },
             child: const Text('削除', style: TextStyle(color: Colors.red)),
           ),

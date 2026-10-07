@@ -46,5 +46,17 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- 写真をとる（カメラ）／アルバムからえらぶ（フォトピッカー）。
+             Android 11+ のパッケージ可視性で、カメラアプリが見えず起動できないのを防ぐ -->
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE"/>
+        </intent>
+        <intent>
+            <action android:name="android.provider.action.PICK_IMAGES"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT"/>
+            <data android:mimeType="image/*"/>
+        </intent>
     </queries>
 </manifest>

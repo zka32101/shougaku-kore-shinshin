@@ -558,9 +558,8 @@ class _ThemeStageGrid extends ConsumerWidget {
                 childAspectRatio: grade == GradeLevel.low ? 1.3 : 1.1,
                 children: themeStages.map((stageNum) {
                   final stageProgress = progress?.stages[stageNum];
-                  final isUnlocked =
-                      progress?.isStageUnlocked(stageNum) ??
-                          stageNum == stages.first;
+                  // ロックなし：すべてのステージを最初から遊べる
+                  const isUnlocked = true;
                   final isCompleted = stageProgress?.isCompleted ?? false;
 
                   return _StageCard(

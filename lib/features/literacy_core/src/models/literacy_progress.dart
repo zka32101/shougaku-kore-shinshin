@@ -25,10 +25,8 @@ class LiteracyProgress {
     return 12;
   }
 
-  bool isStageUnlocked(int stageNumber) {
-    if (stageNumber == 1) return true;
-    return stages[stageNumber - 1]?.isCompleted ?? false;
-  }
+  /// すべてのステージを最初から遊べる（ロックしない）。
+  bool isStageUnlocked(int stageNumber) => true;
 
   /// 今週の学習時間（分）
   int get weeklyMinutes {
