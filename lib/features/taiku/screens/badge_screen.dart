@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../taiku_app.dart';
 import '../providers/mistake_note_provider.dart';
 import '../providers/taiku_providers.dart';
+import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
 import 'activity_screen.dart';
 import 'characters_screen.dart';
 import 'mistake_note_screen.dart';
@@ -181,10 +182,10 @@ class _BadgeCard extends StatelessWidget {
                       0.2126, 0.7152, 0.0722, 0, 0,
                       0, 0, 0, 0.4, 0,
                     ]),
-              child: Text(
-                badge.emoji,
-                style: TextStyle(
-                    fontSize: isAcquired ? 32 : 28),
+              child: BadgeEmblem(
+                badgeId: badge.id,
+                fallbackEmoji: badge.emoji,
+                size: isAcquired ? 38 : 34,
               ),
             ),
             const SizedBox(height: 4),
