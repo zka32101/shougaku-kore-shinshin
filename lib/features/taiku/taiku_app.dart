@@ -112,7 +112,7 @@ class _TaikuModuleState extends ConsumerState<TaikuModule> {
       data: LiteracyTheme.buildFor(grade, subjectColor: TaikuColors.primary),
       // 体育モジュール内で戻れるうちは内側を pop、トップなら道徳側へ戻る
       child: NavigatorPopHandler(
-        onPopWithResult: (_) => _navKey.currentState?.maybePop(),
+        onPopWithResult: (_) {}, // 戻る処理は MainShell が担当（二重 pop 防止）
         child: Navigator(
           key: _navKey,
           initialRoute: '/',
