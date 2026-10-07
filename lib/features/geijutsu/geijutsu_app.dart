@@ -4,8 +4,6 @@ import 'package:shougaku_kore_doutoku/widgets/module_tab_strip.dart';
 import 'package:shougaku_kore_doutoku/widgets/shell_route_observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/app_providers.dart';
-import 'screens/splash_screen.dart';
-import 'screens/onboarding_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/badge_screen.dart';
 import 'screens/parent_dashboard_screen.dart';
@@ -22,7 +20,6 @@ import 'screens/home_ec/home_ec_topic_screen.dart';
 import 'screens/music/music_hub_screen.dart';
 import 'screens/music/free_piano_screen.dart';
 import 'screens/music/theme_compose_screen.dart';
-import 'screens/profile_select_screen.dart';
 import 'screens/memory_screen.dart';
 import 'theme/app_theme.dart';
 
@@ -51,16 +48,8 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
 
     switch (settings.name) {
       case '/':
-        return page((_) => const SplashScreen());
-      case '/onboarding':
-        return page((_) => const OnboardingScreen());
       case '/home':
         return page((_) => const RootShell());
-      case '/profile-select':
-        return page((context) {
-          final isSwitch = ModalRoute.of(context)?.settings.arguments == true;
-          return ProfileSelectScreen(isSwitch: isSwitch);
-        });
       case '/memories':
         final tab = settings.arguments is int ? settings.arguments as int : 0;
         return page((_) => MemoryScreen(initialTab: tab));
@@ -120,7 +109,7 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
             onPopWithResult: (_) {}, // 戻る処理は MainShell が担当（二重 pop 防止）
             child: Navigator(
               key: _navKey,
-              initialRoute: '/',
+              initialRoute: '/', // '/home' だと '/' と二重に積まれるため '/' を直接ホームにする
               observers: [if (widget.observer != null) widget.observer!],
               onGenerateRoute: _onGenerateRoute,
             ),

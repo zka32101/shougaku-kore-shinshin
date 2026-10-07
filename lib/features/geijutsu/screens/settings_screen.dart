@@ -94,7 +94,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
           SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: AnalyticsDashboard(
-              userName: ref.watch(profileProvider).active?.name ?? 'ユーザー',
+              userName: ref.watch(geijutsuDisplayProvider).name,
               totalQuestions: 0,
               averageAccuracy: 0.0,
               totalTimeSpent: Duration.zero,
@@ -132,24 +132,11 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
 class _ProfileTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileState = ref.watch(profileProvider);
-    final active = profileState.active;
+    final d = ref.watch(geijutsuDisplayProvider);
     return ListTile(
-      leading: Text(
-        active?.avatarEmoji ?? '🧒',
-        style: const TextStyle(fontSize: 28),
-      ),
-      title: Text(
-        active?.name ?? 'プロフィールなし',
-        style: const TextStyle(fontWeight: FontWeight.bold),
-      ),
-      subtitle: Text('${profileState.profiles.length}人が利用中'),
-      trailing: const Icon(Icons.swap_horiz),
-      onTap: () => Navigator.pushNamed(
-        context,
-        '/profile-select',
-        arguments: true,
-      ),
+      leading: Text(d.avatarEmoji, style: const TextStyle(fontSize: 28)),
+      title: Text(d.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: const Text('プロフィールはアプリ全体の設定で変更できます'),
     );
   }
 }
