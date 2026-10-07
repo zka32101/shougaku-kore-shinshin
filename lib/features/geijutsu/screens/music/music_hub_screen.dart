@@ -31,6 +31,15 @@ class _MusicHubScreenState extends ConsumerState<MusicHubScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('これまでのつくった曲を ふりかえる'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, '/memories', arguments: 1),
+            ),
+          ),
+          const SizedBox(height: 12),
           // なぜ音楽を学ぶの？
           GestureDetector(
             onTap: () => setState(() => _whyExpanded = !_whyExpanded),

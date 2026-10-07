@@ -75,6 +75,18 @@ class HomeScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
+                Card(
+                  child: ListTile(
+                    key: const Key('openMemories'),
+                    leading: const Text('📚', style: TextStyle(fontSize: 28)),
+                    title: const Text('ふりかえり',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: const Text('これまでの作品・曲・記録を見かえそう'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.pushNamed(context, '/memories'),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 _SubjectCard(
                   emoji: '🎨',
                   title: '図工',
