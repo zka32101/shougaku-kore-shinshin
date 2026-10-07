@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_profile.dart';
@@ -8,6 +9,7 @@ import '../models/artwork.dart';
 import '../models/composition.dart';
 import '../models/home_challenge.dart';
 import '../models/badge.dart';
+import '../../taiku/providers/child_profiles_provider.dart';
 
 /// GeijutsuModule が表示前に初期化する（独立アプリ時代は ProviderScope の
 /// override で注入していたが、統合アプリでは入れ子スコープを使わない）。
@@ -27,10 +29,38 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   static const _profilesKey = 'profiles';
   static const _activeIdKey = 'activeProfileId';
   ProfileNotifier(this._prefs) : super(ProfileState.empty()) { _load(); }
+
+  /// 芸術側のプロフィールは「データ保存キー(ID)」としてだけ内部で使う。
+  /// 画面には出さず、名前・アバターはアプリ全体の現在プロフィールを表示する。
+  /// - 既存プロフィールがあれば、最後に使っていたもの(activeProfileId)を、
+  ///   無効なら先頭を使う。既存データ(`<id>_...`)はそのまま引き継がれる。
+  /// - 1つも無ければ内部用の既定プロフィールを自動作成する。
   void _load() {
     final s = _prefs.getString(_profilesKey);
-    final profiles = s != null ? ProfileState.profilesFromJson(s) : <UserProfile>[];
-    final activeId = _prefs.getString(_activeIdKey) ?? '';
+    var profiles = <UserProfile>[];
+    if (s != null) {
+      try {
+        profiles = ProfileState.profilesFromJson(s);
+      } catch (_) {}
+    }
+    if (profiles.isEmpty) {
+      profiles = [
+        UserProfile(
+          id: const Uuid().v4(),
+          name: 'ユーザー',
+          avatarEmoji: '🧒',
+          createdAt: DateTime.now(),
+          grade: 0,
+        ),
+      ];
+      _prefs.setString(
+          _profilesKey, jsonEncode(profiles.map((e) => e.toJson()).toList()));
+    }
+    var activeId = _prefs.getString(_activeIdKey) ?? '';
+    if (!profiles.any((p) => p.id == activeId)) {
+      activeId = profiles.first.id;
+      _prefs.setString(_activeIdKey, activeId);
+    }
     state = ProfileState(profiles: profiles, activeId: activeId);
   }
   Future<void> addProfile(UserProfile p) async {
@@ -60,6 +90,23 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 }
 final profileProvider = StateNotifierProvider<ProfileNotifier, ProfileState>((ref) {
   return ProfileNotifier(ref.watch(sharedPrefsProvider));
+});
+
+/// 芸術画面で表示する名前とアバター(絵文字)。アプリ全体の現在プロフィールから取る。
+class GeijutsuDisplay {
+  final String name;
+  final String avatarEmoji;
+  const GeijutsuDisplay(this.name, this.avatarEmoji);
+}
+
+final geijutsuDisplayProvider = Provider<GeijutsuDisplay>((ref) {
+  final child = ref.watch(currentChildProfileProvider);
+  final name = child?.name.trim() ?? '';
+  final emoji = child?.emoji ?? '';
+  return GeijutsuDisplay(
+    name.isEmpty ? 'ユーザー' : name,
+    emoji.isEmpty ? '🧒' : emoji,
+  );
 });
 
 // ---- 設定 ----

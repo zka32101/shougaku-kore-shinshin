@@ -10,7 +10,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
-    final activeProfile = ref.watch(profileProvider).active;
+    final display = ref.watch(geijutsuDisplayProvider);
     final artMonth = settings['currentArtMonth'] as int? ?? 1;
     final musicStage = settings['currentMusicStage'] as int? ?? 1;
     final homeMonth = settings['currentHomeMonth'] as int? ?? 1;
@@ -43,10 +43,8 @@ class HomeScreen extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
-                            if (activeProfile != null) ...[
-                              UkalabEmoji(activeProfile.avatarEmoji, size: 28),
-                              const SizedBox(width: 8),
-                            ],
+                            UkalabEmoji(display.avatarEmoji, size: 28),
+                            const SizedBox(width: 8),
                             const Text(
                               '小学コレ！芸術',
                               style: TextStyle(
@@ -59,9 +57,7 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          activeProfile != null
-                              ? '${activeProfile.name} ・ バッジ ${badges.items.length}個'
-                              : 'バッジ: ${badges.items.length}個獲得',
+                          '${display.name} ・ バッジ ${badges.items.length}個',
                           style: const TextStyle(color: Colors.white70, fontSize: 14),
                         ),
                       ],
