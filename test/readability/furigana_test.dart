@@ -68,4 +68,12 @@ void main() {
     expect(find.textContaining('友達（ともだち）', findRichText: true), findsOneWidget);
     expect(find.textContaining('協力（きょうりょく）', findRichText: true), findsOneWidget);
   });
+
+  test('活用形(悲しく)にも、語幹から読みが付く', () {
+    final e = FuriganaEngine({'悲しい': 'かなしい', '借りる': 'かりる'});
+    expect(e.convert('悲しくなった', 2).map((p) => p.toString()).join(),
+        '悲(かな)しくなった');
+    expect(e.convert('本を借りた', 2).map((p) => p.toString()).join(),
+        '本を借(か)りた');
+  });
 }

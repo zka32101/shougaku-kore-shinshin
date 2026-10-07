@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -190,6 +191,14 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
       theme: lightTheme(),
       darkTheme: darkTheme(),
       themeMode: _themeModeToBrightness(brightness),
+      // ステータスバーの時計・電池は、明るい画面では濃い色、暗い画面では白にする
+      // (AppBar を持つ画面は AppBar 側の指定が優先される)
+      builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+        value: Theme.of(context).brightness == Brightness.light
+            ? SystemUiOverlayStyle.dark
+            : SystemUiOverlayStyle.light,
+        child: child ?? const SizedBox.shrink(),
+      ),
       home: const SplashScreen(),
       routes: {
         '/home': (context) => const MainShell(),
