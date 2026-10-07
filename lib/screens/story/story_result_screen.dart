@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../widgets/furigana_text.dart';
+import '../home/home_screen.dart' show HomeSection;
+import '../home/shell_navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
 import '../../utils/animation_constants.dart';
@@ -168,7 +171,7 @@ class _StoryResultScreenState extends ConsumerState<StoryResultScreen>
                       delay: Duration(milliseconds: 700),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
+                        child: FuriganaText(
                           widget.storyTitle,
                           style: const TextStyle(
                             fontSize: 18,
@@ -289,9 +292,12 @@ class _StoryResultScreenState extends ConsumerState<StoryResultScreen>
                                 backgroundColor: Colors.white,
                                 foregroundColor: Colors.blue.shade600,
                                 onPressed: () {
-                                  Navigator.of(context).pushNamedAndRemoveUntil(
-                                    '/home',
-                                    (route) => false,
+                                  // 下のナビのホームタブへ。いまの状態(各タブ)は保ったまま戻る
+                                  shellSectionRequest.value = HomeSection.home;
+                                  Navigator.of(context).popUntil(
+                                    (route) =>
+                                        route.settings.name == '/home' ||
+                                        route.isFirst,
                                   );
                                 },
                               ),

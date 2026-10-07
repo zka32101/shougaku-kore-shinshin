@@ -163,7 +163,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                   ),
           ),
 
-          // ホームへ戻るボタン
+          // たいいくのトップへ戻るボタン
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
@@ -180,7 +180,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                   onPressed: () =>
                       Navigator.of(context).pushReplacementNamed('/home'),
                   child: Text(
-                    grade == GradeLevel.low ? 'ホームへ' : 'ホームに戻る',
+                    grade == GradeLevel.low ? 'たいいくの トップへ' : 'たいいくのトップに戻る',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

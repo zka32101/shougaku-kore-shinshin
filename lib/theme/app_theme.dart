@@ -12,6 +12,7 @@ ThemeData lightTheme() {
 
   return ThemeData(
     useMaterial3: true,
+    fontFamily: 'BIZUDPGothic',
     colorScheme: colorScheme,
     brightness: Brightness.light,
 
@@ -164,6 +165,7 @@ ThemeData darkTheme() {
 
   return ThemeData(
     useMaterial3: true,
+    fontFamily: 'BIZUDPGothic',
     colorScheme: colorScheme,
     brightness: Brightness.dark,
 

@@ -76,6 +76,14 @@ final storiesProvider = FutureProvider.autoDispose
         isPremium: filters.isPremium,
       );
       // キャッシュ更新（ブロックしない）
+      if (stories.isEmpty) {
+        // サーバーが空を返した場合も同梱ストーリーで代替
+        return await LocalStoryService.stories(
+          theme: filters.theme,
+          gradeLevel: filters.gradeLevel,
+          isPremium: filters.isPremium,
+        );
+      }
       hive.cacheStories(stories).ignore();
       return stories;
     } catch (_) {
@@ -130,3 +138,9 @@ final storyDetailProvider = FutureProvider.autoDispose
     rethrow;
   }
 });
+
+/// ライブラリ用: 端末内に同梱した全ストーリー(学年・テーマで絞り込める)。
+/// ネットワークには依存しない。
+final allLocalStoriesProvider = FutureProvider<List<Story>>(
+  (ref) => LocalStoryService.stories(),
+);

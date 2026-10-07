@@ -68,6 +68,15 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          Card(
+            child: ListTile(
+              leading: const Icon(Icons.history),
+              title: const Text('これまでの家庭科の記録を ふりかえる'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, '/memories', arguments: 2),
+            ),
+          ),
+          const SizedBox(height: 12),
           // なぜ家庭科を学ぶの？
           GestureDetector(
             onTap: () => setState(() => _whyExpanded = !_whyExpanded),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 // 小学コレ！芸術 - 虹色テーマ
 const kPrimaryColor = Color(0xFFFF6B35);   // オレンジ（創造性）
@@ -50,6 +49,7 @@ const List<Map<String, dynamic>> kMonthColors = [
 ThemeData buildAppTheme() {
   final base = ThemeData(
     useMaterial3: true,
+    fontFamily: 'BIZUDPGothic',
     colorScheme: ColorScheme.fromSeed(
       seedColor: kPrimaryColor,
       primary: kPrimaryColor,
@@ -87,13 +87,13 @@ ThemeData buildAppTheme() {
   );
 
   return base.copyWith(
-    textTheme: GoogleFonts.notoSansJpTextTheme(base.textTheme).copyWith(
-      headlineLarge: GoogleFonts.notoSansJp(fontSize: 28, fontWeight: FontWeight.bold, color: kTextDark),
-      headlineMedium: GoogleFonts.notoSansJp(fontSize: 22, fontWeight: FontWeight.bold, color: kTextDark),
-      headlineSmall: GoogleFonts.notoSansJp(fontSize: 18, fontWeight: FontWeight.bold, color: kTextDark),
-      bodyLarge: GoogleFonts.notoSansJp(fontSize: 16, color: kTextDark),
-      bodyMedium: GoogleFonts.notoSansJp(fontSize: 14, color: kTextDark),
-      bodySmall: GoogleFonts.notoSansJp(fontSize: 12, color: kTextMuted),
+    textTheme: base.textTheme.apply(fontFamily: 'BIZUDPGothic').copyWith(
+      headlineLarge: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 28, fontWeight: FontWeight.bold, color: kTextDark),
+      headlineMedium: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 22, fontWeight: FontWeight.bold, color: kTextDark),
+      headlineSmall: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 18, fontWeight: FontWeight.bold, color: kTextDark),
+      bodyLarge: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 16, color: kTextDark),
+      bodyMedium: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 14, color: kTextDark),
+      bodySmall: const TextStyle(fontFamily: 'BIZUDPGothic', fontSize: 12, color: kTextMuted),
     ),
   );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import '../enums/grade_level.dart';
 import '../models/literacy_question.dart';
 import '../theme/literacy_colors.dart';
@@ -64,7 +65,7 @@ class _LowGradeFeedback extends StatelessWidget {
             style: const TextStyle(fontSize: 64),
           ),
           const SizedBox(height: 12),
-          Text(
+          FuriganaText(
             feedback.mainText,
             style: TextStyle(
               fontSize: LiteracyTypography.feedbackTextSize(GradeLevel.low),
@@ -126,7 +127,7 @@ class _MidGradeFeedback extends StatelessWidget {
                 size: 28,
               ),
               const SizedBox(width: 8),
-              Text(
+              FuriganaText(
                 feedback.mainText,
                 style: TextStyle(
                   fontSize: LiteracyTypography.feedbackTextSize(GradeLevel.mid),
@@ -144,8 +145,8 @@ class _MidGradeFeedback extends StatelessWidget {
                 color: Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Text(
-                feedback.explanation!,
+              child: FuriganaText(
+                feedback.explanation!, glossary: true,
                 style: const TextStyle(fontSize: 14, color: Color(0xFF555555)),
               ),
             ),
@@ -204,7 +205,7 @@ class _HighGradeFeedback extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
+          FuriganaText(
             feedback.mainText,
             style: const TextStyle(fontSize: 14, color: Color(0xFF2C3E50)),
           ),
@@ -215,8 +216,8 @@ class _HighGradeFeedback extends StatelessWidget {
               style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey),
             ),
             const SizedBox(height: 4),
-            Text(
-              feedback.explanation!,
+            FuriganaText(
+              feedback.explanation!, glossary: true,
               style: const TextStyle(fontSize: 13, color: Color(0xFF555555), height: 1.5),
             ),
           ],

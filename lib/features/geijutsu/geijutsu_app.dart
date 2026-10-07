@@ -23,6 +23,7 @@ import 'screens/music/music_hub_screen.dart';
 import 'screens/music/free_piano_screen.dart';
 import 'screens/music/theme_compose_screen.dart';
 import 'screens/profile_select_screen.dart';
+import 'screens/memory_screen.dart';
 import 'theme/app_theme.dart';
 
 /// 小学コレ！芸術モジュール（小学コレ！心身に統合）
@@ -60,6 +61,9 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
           final isSwitch = ModalRoute.of(context)?.settings.arguments == true;
           return ProfileSelectScreen(isSwitch: isSwitch);
         });
+      case '/memories':
+        final tab = settings.arguments is int ? settings.arguments as int : 0;
+        return page((_) => MemoryScreen(initialTab: tab));
       case '/badges':
         return page((_) => const BadgeScreen());
       case '/parent':
@@ -148,7 +152,7 @@ class _RootShellState extends ConsumerState<RootShell> {
             index: _tab,
             onTap: (i) => setState(() => _tab = i),
             tabs: const [
-              ModuleTab(Icons.home, 'ホーム'),
+              ModuleTab(Icons.palette, 'げいじゅつ'),
               ModuleTab(Icons.star, 'バッジ'),
               ModuleTab(Icons.family_restroom, '保護者'),
               ModuleTab(Icons.settings, '設定'),

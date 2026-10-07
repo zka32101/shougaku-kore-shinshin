@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/taiku_questions.dart';
@@ -497,7 +498,7 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
+                                  FuriganaText(
                                     widget.title,
                                     style: const TextStyle(
                                       color: Colors.white,
@@ -645,7 +646,7 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
+                        FuriganaText(
                           '📌 $term',
                           style: TextStyle(
                             fontSize: 11,
@@ -671,8 +672,8 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
                       const SizedBox(height: 4),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 260),
-                        child: Text(
-                          def,
+                        child: FuriganaText(
+                          def, glossary: true,
                           style: const TextStyle(
                             fontSize: 10.5,
                             color: Colors.white,
@@ -740,7 +741,7 @@ class _StageIntroCard extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(
+            child: FuriganaText(
               text,
               style: TextStyle(
                 fontSize: isLow ? 13 : 12.5,
@@ -897,8 +898,8 @@ class _PointCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // トピック（問題文の短縮版）
-                Text(
-                  question.questionText,
+                FuriganaText(
+                  question.questionText, glossary: true,
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey.shade500,
@@ -923,7 +924,7 @@ class _PointCard extends StatelessWidget {
                           color: Colors.green.shade600, size: 12),
                       const SizedBox(width: 4),
                       Expanded(
-                        child: Text(
+                        child: FuriganaText(
                           question.choices[question.correctIndex],
                           style: TextStyle(
                             fontSize: 12,
@@ -938,8 +939,8 @@ class _PointCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 // 解説
                 if (question.explanationDetail != null)
-                  Text(
-                    question.explanationDetail!,
+                  FuriganaText(
+                    question.explanationDetail!, glossary: true,
                     style: TextStyle(
                       fontSize: isLow ? 12 : 12,
                       color: Colors.grey.shade800,
@@ -1089,8 +1090,8 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(
-                        q.questionText,
+                      child: FuriganaText(
+                        q.questionText, glossary: true,
                         style: TextStyle(
                           fontSize: widget.isLow ? 12 : 12,
                           color: Colors.grey.shade800,
@@ -1145,7 +1146,7 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                Text(
+                                FuriganaText(
                                   q.choices[q.correctIndex],
                                   style: TextStyle(
                                     fontSize: 13,
@@ -1186,7 +1187,7 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                             ),
                             const SizedBox(width: 6),
                             Expanded(
-                              child: Text(
+                              child: FuriganaText(
                                 q.choices[ci],
                                 style: TextStyle(
                                   fontSize: 12,
@@ -1218,8 +1219,8 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                             Icon(Icons.info_outline, color: color, size: 14),
                             const SizedBox(width: 6),
                             Expanded(
-                              child: Text(
-                                q.explanationDetail!,
+                              child: FuriganaText(
+                                q.explanationDetail!, glossary: true,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.shade700,

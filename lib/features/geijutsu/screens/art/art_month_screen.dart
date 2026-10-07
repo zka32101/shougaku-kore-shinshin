@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../models/artwork.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
+import '../memory_screen.dart';
 
 class ArtMonthScreen extends ConsumerWidget {
   final int month;
@@ -43,12 +45,17 @@ class ArtMonthScreen extends ConsumerWidget {
                         Text(
                           '$month月: $colorName',
                           style: const TextStyle(
-                            color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           keywords,
-                          style: const TextStyle(color: Colors.white70, fontSize: 14),
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 14,
+                          ),
                         ),
                       ],
                     ),
@@ -61,11 +68,19 @@ class ArtMonthScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                _ColorInfoCard(colorName: colorName, color: color, month: month),
+                _ColorInfoCard(
+                  colorName: colorName,
+                  color: color,
+                  month: month,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   '4つのレベルに挑戦しよう',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 _LevelCard(
@@ -76,9 +91,16 @@ class ArtMonthScreen extends ConsumerWidget {
                   badge: '$colorNameの探検家',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 0),
-                  onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
-                    'month': month, 'level': 1, 'color': colorName, 'colorHex': colorData['hex'],
-                  }),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/art/canvas',
+                    arguments: {
+                      'month': month,
+                      'level': 1,
+                      'color': colorName,
+                      'colorHex': colorData['hex'],
+                    },
+                  ),
                 ),
                 const SizedBox(height: 8),
                 _LevelCard(
@@ -89,9 +111,16 @@ class ArtMonthScreen extends ConsumerWidget {
                   badge: '$colorNameの表現者',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 1),
-                  onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
-                    'month': month, 'level': 2, 'color': colorName, 'colorHex': colorData['hex'],
-                  }),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/art/canvas',
+                    arguments: {
+                      'month': month,
+                      'level': 2,
+                      'color': colorName,
+                      'colorHex': colorData['hex'],
+                    },
+                  ),
                 ),
                 const SizedBox(height: 8),
                 _LevelCard(
@@ -102,9 +131,16 @@ class ArtMonthScreen extends ConsumerWidget {
                   badge: '対比の大師',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 2),
-                  onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
-                    'month': month, 'level': 3, 'color': colorName, 'colorHex': colorData['hex'],
-                  }),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/art/canvas',
+                    arguments: {
+                      'month': month,
+                      'level': 3,
+                      'color': colorName,
+                      'colorHex': colorData['hex'],
+                    },
+                  ),
                 ),
                 const SizedBox(height: 8),
                 _LevelCard(
@@ -115,33 +151,69 @@ class ArtMonthScreen extends ConsumerWidget {
                   badge: '$colorNameの哲学者',
                   color: color,
                   isCompleted: monthArtworks.any((a) => a.level.index == 3),
-                  onTap: () => Navigator.pushNamed(context, '/art/canvas', arguments: {
-                    'month': month, 'level': 4, 'color': colorName, 'colorHex': colorData['hex'],
-                  }),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    '/art/canvas',
+                    arguments: {
+                      'month': month,
+                      'level': 4,
+                      'color': colorName,
+                      'colorHex': colorData['hex'],
+                    },
+                  ),
                 ),
                 const SizedBox(height: 24),
                 if (monthArtworks.isNotEmpty) ...[
                   Text(
                     '今月の作品 (${monthArtworks.length})',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  ...monthArtworks.map((a) => _ArtworkTile(artwork: a, color: color)),
+                  ...monthArtworks.map(
+                    (a) => _ArtworkTile(
+                      artwork: a,
+                      color: color,
+                      onTap: () => showMemoryDetail(
+                        context,
+                        artMemories(ArtworkCollection([a])).first,
+                        color,
+                      ),
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/memories', arguments: 0),
+                    icon: const Icon(Icons.history),
+                    label: const Text('ほかの月の作品も ふりかえる'),
+                  ),
                 ],
                 const SizedBox(height: 16),
                 if (month < 12)
                   OutlinedButton.icon(
                     onPressed: () {
-                      ref.read(settingsProvider.notifier).setCurrentArtMonth(month + 1);
-                      Navigator.pushReplacementNamed(context, '/art/month', arguments: month + 1);
+                      ref
+                          .read(settingsProvider.notifier)
+                          .setCurrentArtMonth(month + 1);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        '/art/month',
+                        arguments: month + 1,
+                      );
                     },
                     icon: const Icon(Icons.arrow_forward),
-                    label: Text('次の月: Month ${month + 1}「${kMonthColors[month]['name']}」へ'),
+                    label: Text(
+                      '次の月: Month ${month + 1}「${kMonthColors[month]['name']}」へ',
+                    ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: color,
                       side: BorderSide(color: color),
                       minimumSize: const Size(double.infinity, 48),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                   ),
               ]),
@@ -158,7 +230,11 @@ class _ColorInfoCard extends StatelessWidget {
   final Color color;
   final int month;
 
-  const _ColorInfoCard({required this.colorName, required this.color, required this.month});
+  const _ColorInfoCard({
+    required this.colorName,
+    required this.color,
+    required this.month,
+  });
 
   static const _colorFacts = [
     ['トマト・イチゴ・薔薇', '日本の正月、中国の幸運、インドのヘナ', '情熱・エネルギー・行動・焦り'],
@@ -190,7 +266,11 @@ class _ColorInfoCard extends StatelessWidget {
         children: [
           Text(
             '「$colorName」を知ろう',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
           const SizedBox(height: 8),
           _FactRow('代表物', facts[0], color),
@@ -221,7 +301,14 @@ class _FactRow extends StatelessWidget {
               color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Text(label, style: TextStyle(fontSize: 11, color: color, fontWeight: FontWeight.bold)),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                color: color,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(width: 8),
           Expanded(child: Text(value, style: const TextStyle(fontSize: 13))),
@@ -242,9 +329,14 @@ class _LevelCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const _LevelCard({
-    required this.level, required this.title, required this.description,
-    required this.duration, required this.badge, required this.color,
-    required this.isCompleted, required this.onTap,
+    required this.level,
+    required this.title,
+    required this.description,
+    required this.duration,
+    required this.badge,
+    required this.color,
+    required this.isCompleted,
+    required this.onTap,
   });
 
   @override
@@ -257,7 +349,12 @@ class _LevelCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: isCompleted ? Border.all(color: color, width: 2) : null,
-          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8)],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 8,
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -274,7 +371,9 @@ class _LevelCard extends StatelessWidget {
                     : Text(
                         'Lv$level',
                         style: TextStyle(
-                          color: color, fontWeight: FontWeight.bold, fontSize: 13,
+                          color: color,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
                         ),
                       ),
               ),
@@ -284,17 +383,35 @@ class _LevelCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
                   const SizedBox(height: 4),
-                  Text(description, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                  Text(
+                    description,
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(Icons.schedule, size: 12, color: Colors.grey[500]),
                       const SizedBox(width: 4),
-                      Text(duration, style: TextStyle(fontSize: 11, color: Colors.grey[500])),
+                      Text(
+                        duration,
+                        style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                      ),
                       const SizedBox(width: 8),
-                      Text('⭐ $badge', style: const TextStyle(fontSize: 11, color: Colors.orange)),
+                      Text(
+                        '⭐ $badge',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.orange,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -315,56 +432,70 @@ class _LevelCard extends StatelessWidget {
 class _ArtworkTile extends StatelessWidget {
   final dynamic artwork;
   final Color color;
+  final VoidCallback? onTap;
 
-  const _ArtworkTile({required this.artwork, required this.color});
+  const _ArtworkTile({required this.artwork, required this.color, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Text(
-            artwork.imagePath != null ? '🖼️' : '📷',
-            style: const TextStyle(fontSize: 32),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  artwork.title.isEmpty ? '作品 Lv${artwork.level.index + 1}' : artwork.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                if (artwork.description.isNotEmpty)
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
+        ),
+        child: Row(
+          children: [
+            Text(
+              artwork.imagePath != null ? '🖼️' : '📷',
+              style: const TextStyle(fontSize: 32),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    artwork.description,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    artwork.title.isEmpty
+                        ? '作品 Lv${artwork.level.index + 1}'
+                        : artwork.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
-              ],
+                  if (artwork.description.isNotEmpty)
+                    Text(
+                      artwork.description,
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                'Lv${artwork.level.index + 1}',
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ),
-            child: Text(
-              'Lv${artwork.level.index + 1}',
-              style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

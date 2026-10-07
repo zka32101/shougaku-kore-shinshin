@@ -44,7 +44,7 @@ void main() {
         expect(practice, findsOneWidget);
         await tester.scrollUntilVisible(practice, 100,
             scrollable: find.byType(Scrollable).first);
-        final home = find.textContaining('ホーム');
+        final home = find.textContaining('トップ');
         await tester.scrollUntilVisible(home, 100,
             scrollable: find.byType(Scrollable).first);
         expect(home, findsOneWidget);

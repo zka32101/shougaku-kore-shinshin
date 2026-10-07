@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_core/shared_core.dart' show BaseCharacter;
 
 import '../../data/shinshin_characters.dart';
+import '../../data/shinshin_unlocks.dart';
 import '../../providers/character_provider.dart';
 import '../../providers/local_avatar_provider.dart';
 
@@ -20,8 +21,12 @@ class CharacterCollectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final st = ref.watch(shinshinCharacterProvider);
     final coins = ref.watch(localAvatarProvider.select((s) => s.coins));
+    final cleared = storiesClearedFromCoins(
+      ref.watch(localAvatarProvider.select((s) => s.totalEarned)),
+    );
+    final unlocked = unlockedCount(cleared, st.levelOf);
     return Scaffold(
-      appBar: AppBar(title: const Text('キャラ図鑑')),
+      appBar: AppBar(title: const Text('キャラずかん')),
       backgroundColor: const Color(0xFFF7F9FC),
       body: Column(
         children: [
@@ -31,12 +36,16 @@ class CharacterCollectionScreen extends ConsumerWidget {
               children: [
                 const Icon(Icons.monetization_on, color: Colors.amber),
                 const SizedBox(width: 6),
-                Text('$coins コイン',
-                    key: const Key('coinBalance'),
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  '$coins コイン',
+                  key: const Key('coinBalance'),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const Spacer(),
-                Text('${kShinshinCharacters.length}たい',
-                    style: const TextStyle(color: Colors.black54)),
+                Text(
+                  'みつけた $unlocked / ${kShinshinCharacters.length}たい',
+                  style: const TextStyle(color: Colors.black54),
+                ),
               ],
             ),
           ),
@@ -47,23 +56,43 @@ class CharacterCollectionScreen extends ConsumerWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 14,
                 crossAxisSpacing: 14,
-                childAspectRatio: 0.85,
+                childAspectRatio: 0.8,
               ),
               itemCount: kShinshinCharacters.length,
               itemBuilder: (context, i) {
                 final c = kShinshinCharacters[i];
+                final isUnlocked = isCharacterUnlocked(
+                  c.id,
+                  storiesCleared: cleared,
+                  level: st.levelOf(c.id),
+                );
                 return _CharacterTile(
                   character: c,
                   level: st.levelOf(c.id),
-                  onTap: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(20))),
-                    builder: (_) => _CharacterDetailSheet(characterId: c.id),
-                  ),
+                  locked: !isUnlocked,
+                  lockHint: unlockHint(c.id, cleared),
+                  onTap: !isUnlocked
+                      ? () => ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'まだ ひみつ！\n${unlockHint(c.id, cleared)}',
+                              ),
+                            ),
+                          )
+                      : () => showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (_) =>
+                              _CharacterDetailSheet(characterId: c.id),
+                        ),
                 );
               },
             ),
@@ -80,8 +109,15 @@ class _CharacterTile extends StatelessWidget {
   final BaseCharacter character;
   final int level;
   final VoidCallback onTap;
-  const _CharacterTile(
-      {required this.character, required this.level, required this.onTap});
+  final bool locked;
+  final String lockHint;
+  const _CharacterTile({
+    required this.character,
+    required this.level,
+    required this.onTap,
+    this.locked = false,
+    this.lockHint = '',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +132,9 @@ class _CharacterTile extends StatelessWidget {
           border: isMax ? Border.all(color: Colors.amber, width: 2) : null,
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withValues(alpha: 0.06), blurRadius: 8),
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 8,
+            ),
           ],
         ),
         child: Column(
@@ -104,34 +142,75 @@ class _CharacterTile extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8),
-                child: Image.asset(
-                  character.imageAssetForLevel(level)!,
-                  fit: BoxFit.contain,
-                  width: double.infinity,
+                child: locked
+                    ? ColorFiltered(
+                        colorFilter: const ColorFilter.mode(
+                          Color(0xFF9AA5B1),
+                          BlendMode.srcIn,
+                        ),
+                        child: Image.asset(
+                          character.imageAssetForLevel(1)!,
+                          fit: BoxFit.contain,
+                          width: double.infinity,
+                        ),
+                      )
+                    : Image.asset(
+                        character.imageAssetForLevel(level)!,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                      ),
+              ),
+            ),
+            if (locked)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: Column(
+                  children: [
+                    const Text(
+                      '???',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black45,
+                      ),
+                    ),
+                    Text(
+                      lockHint,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        character.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      _levelLabel(level),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: isMax
+                            ? Colors.amber.shade800
+                            : Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(character.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(_levelLabel(level),
-                      style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: isMax
-                              ? Colors.amber.shade800
-                              : Theme.of(context).colorScheme.primary)),
-                ],
-              ),
-            ),
           ],
         ),
       ),
@@ -172,13 +251,16 @@ class _CharacterDetailSheet extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Center(
-            child: Text(c.name,
-                style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            child: Text(
+              c.name,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
           ),
           Center(
-            child: Text('担当：${c.subject}',
-                style: const TextStyle(color: Colors.black54, fontSize: 13)),
+            child: Text(
+              '担当：${c.subject}',
+              style: const TextStyle(color: Colors.black54, fontSize: 13),
+            ),
           ),
           const SizedBox(height: 8),
           Center(
@@ -196,12 +278,15 @@ class _CharacterDetailSheet extends ConsumerWidget {
                     ),
                   ),
                 const SizedBox(width: 8),
-                Text(_levelLabel(lv),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: lv >= kShinshinMaxLevel
-                            ? Colors.amber.shade800
-                            : primary)),
+                Text(
+                  _levelLabel(lv),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: lv >= kShinshinMaxLevel
+                        ? Colors.amber.shade800
+                        : primary,
+                  ),
+                ),
               ],
             ),
           ),
@@ -219,10 +304,13 @@ class _CharacterDetailSheet extends ConsumerWidget {
           if (cost == null)
             Center(
               key: const Key('maxLabel'),
-              child: Text('✨ MAXレベル！',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.amber.shade800)),
+              child: Text(
+                '✨ MAXレベル！',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber.shade800,
+                ),
+              ),
             )
           else ...[
             SizedBox(
@@ -239,9 +327,11 @@ class _CharacterDetailSheet extends ConsumerWidget {
             if (shortage != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text(shortage,
-                    key: const Key('shortageText'),
-                    style: const TextStyle(color: Colors.black54)),
+                child: Text(
+                  shortage,
+                  key: const Key('shortageText'),
+                  style: const TextStyle(color: Colors.black54),
+                ),
               ),
           ],
         ],
@@ -251,7 +341,11 @@ class _CharacterDetailSheet extends ConsumerWidget {
 }
 
 Future<void> _confirmAndLevelUp(
-    BuildContext context, WidgetRef ref, BaseCharacter c, int lv) async {
+  BuildContext context,
+  WidgetRef ref,
+  BaseCharacter c,
+  int lv,
+) async {
   final next = lv + 1;
   final cost = shinshinLevelUpCost(next)!;
   final messenger = ScaffoldMessenger.of(context);
@@ -262,20 +356,27 @@ Future<void> _confirmAndLevelUp(
       content: Text('$costコインを つかうよ'),
       actions: [
         TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('やめる')),
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('やめる'),
+        ),
         ElevatedButton(
-            key: const Key('confirmLevelUp'),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('そだてる')),
+          key: const Key('confirmLevelUp'),
+          onPressed: () => Navigator.pop(ctx, true),
+          child: const Text('そだてる'),
+        ),
       ],
     ),
   );
   if (ok != true) return;
   final err = await ref.read(shinshinCharacterProvider.notifier).levelUp(c.id);
-  messenger.showSnackBar(SnackBar(
-      content: Text(err ??
-          (next >= kShinshinMaxLevel
-              ? '✨ ${c.name}が MAX レベルになったよ！'
-              : '${c.name}が Lv.$next になったよ！'))));
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        err ??
+            (next >= kShinshinMaxLevel
+                ? '✨ ${c.name}が MAX レベルになったよ！'
+                : '${c.name}が Lv.$next になったよ！'),
+      ),
+    ),
+  );
 }

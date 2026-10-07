@@ -177,7 +177,7 @@ class _RootShellState extends ConsumerState<RootShell> {
                 ref.read(activeTabProvider.notifier).state = i;
               },
               tabs: [
-                const ModuleTab(Icons.home, 'ホーム'),
+                const ModuleTab(Icons.directions_run, 'たいいく'),
                 const ModuleTab(Icons.menu_book, 'まなぶ'),
                 const ModuleTab(Icons.emoji_events, 'バッジ'),
                 const ModuleTab(Icons.photo_library, 'きろく'),
