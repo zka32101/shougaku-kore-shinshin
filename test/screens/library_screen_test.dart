@@ -5,8 +5,7 @@ import 'package:shougaku_kore_doutoku/models/child_profile.dart';
 import 'package:shougaku_kore_doutoku/models/story.dart';
 import 'package:shougaku_kore_doutoku/providers/child_provider.dart';
 import 'package:shougaku_kore_doutoku/providers/progress_provider.dart';
-import 'package:shougaku_kore_doutoku/providers/story_provider.dart'; // weeklyThemeProvider
-import 'package:shougaku_kore_doutoku/providers/story_provider_fs.dart'; // storiesFsProvider
+import 'package:shougaku_kore_doutoku/providers/story_provider.dart'; // allLocalStoriesProvider
 import 'package:shougaku_kore_doutoku/screens/library/library_screen.dart';
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
@@ -25,13 +24,14 @@ Story _makeStory({
   String title = 'テストストーリー',
   String theme = 'kindness',
   bool isPremium = false,
+  int gradeLevel = 3,
 }) {
   return Story.fromJson({
     'id': id,
     'title': title,
     'description': '説明',
     'theme': theme,
-    'gradeLevel': 3,
+    'gradeLevel': gradeLevel,
     'difficulty': 1,
     'isPremium': isPremium,
     'content': null,
@@ -45,7 +45,6 @@ Story _makeStory({
 
 Widget _wrap({
   ChildProfile? child,
-  List<Story>? weeklyStories,
   List<Story>? allStories,
   List<Story>? completedStories,
 }) {
@@ -54,11 +53,8 @@ Widget _wrap({
       selectedChildProvider.overrideWith(
         (ref) => Future.value(child),
       ),
-      weeklyThemeProvider.overrideWith(
-        (ref, _) => Future.value(weeklyStories ?? []),
-      ),
-      storiesFsProvider.overrideWith(
-        (ref, _) => Future.value(allStories ?? []),
+      allLocalStoriesProvider.overrideWith(
+        (ref) => Future.value(allStories ?? []),
       ),
       completedStoriesProvider.overrideWith(
         (ref, _) => Future.value(completedStories ?? []),
@@ -74,74 +70,80 @@ Widget _wrap({
 
 void main() {
   group('LibraryScreen', () {
-    testWidgets('shows AppBar with title "ライブラリ"', (tester) async {
+    testWidgets('shows AppBar with title', (tester) async {
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
-      expect(find.text('ライブラリ'), findsOneWidget);
+      expect(find.text('どうとく ストーリー'), findsOneWidget);
     });
 
-    testWidgets('shows three tabs: 今週 / テーマ / 完了済み', (tester) async {
+    testWidgets('shows two tabs: ぜんぶ / クリアしたお話', (tester) async {
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
-      expect(find.text('今週'), findsOneWidget);
-      expect(find.text('テーマ'), findsOneWidget);
-      expect(find.text('完了済み'), findsOneWidget);
+      expect(find.text('ぜんぶ'), findsWidgets);
+      expect(find.text('クリアしたお話'), findsOneWidget);
     });
 
-    group('Weekly tab', () {
-      testWidgets('shows empty view when no weekly stories', (tester) async {
-        await tester.pumpWidget(_wrap(weeklyStories: []));
+    group('All tab', () {
+      testWidgets('shows empty view when no stories', (tester) async {
+        await tester.pumpWidget(_wrap(allStories: []));
         await tester.pumpAndSettle();
-        expect(find.text('今週のストーリーはまだありません'), findsOneWidget);
+        expect(find.text('この条件のお話はまだないよ'), findsOneWidget);
       });
 
-      testWidgets('shows stories when weeklyThemeProvider has data', (tester) async {
-        final stories = [_makeStory(title: '友情の話'), _makeStory(id: 'story-2', title: '勇気の話')];
-        await tester.pumpWidget(_wrap(weeklyStories: stories));
+      testWidgets('shows every story with its grade band tag', (tester) async {
+        final stories = [
+          _makeStory(title: '友情の話', gradeLevel: 1),
+          _makeStory(id: 'story-2', title: '勇気の話', gradeLevel: 6),
+        ];
+        await tester.pumpWidget(_wrap(allStories: stories));
         await tester.pumpAndSettle();
         expect(find.text('友情の話'), findsOneWidget);
         expect(find.text('勇気の話'), findsOneWidget);
+        expect(find.text('低学年'), findsWidgets);
+        expect(find.text('高学年'), findsWidgets);
       });
 
       testWidgets('premium story shows no Premium tag (no locks)', (tester) async {
         final story = _makeStory(isPremium: true);
-        await tester.pumpWidget(_wrap(weeklyStories: [story]));
+        await tester.pumpWidget(_wrap(allStories: [story]));
         await tester.pumpAndSettle();
         expect(find.text('Premium'), findsNothing);
       });
-    });
 
-    group('Theme tab', () {
-      testWidgets('shows theme filter chips', (tester) async {
+      testWidgets('has grade and theme filter chips', (tester) async {
         await tester.pumpWidget(_wrap());
         await tester.pumpAndSettle();
-
-        // Tap the テーマ tab
-        await tester.tap(find.text('テーマ'));
-        await tester.pumpAndSettle();
-
-        expect(find.text('すべて'), findsOneWidget);
+        expect(find.text('低学年(1-2年)'), findsOneWidget);
+        expect(find.text('中学年(3-4年)'), findsOneWidget);
+        expect(find.text('高学年(5-6年)'), findsOneWidget);
         expect(find.text('思いやり'), findsOneWidget);
-        expect(find.text('正直さ'), findsOneWidget);
-        expect(find.text('責任感'), findsOneWidget);
         expect(find.text('勇気'), findsOneWidget);
       });
 
-      testWidgets('shows empty view when no themed stories', (tester) async {
-        await tester.pumpWidget(_wrap(allStories: []));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('テーマ'));
-        await tester.pumpAndSettle();
-        expect(find.text('このテーマのストーリーはありません'), findsOneWidget);
-      });
-
-      testWidgets('shows stories in theme tab', (tester) async {
-        final stories = [_makeStory(title: '思いやりのストーリー', theme: 'kindness')];
+      testWidgets('grade chip filters the list', (tester) async {
+        final stories = [
+          _makeStory(title: 'ひくい', gradeLevel: 1),
+          _makeStory(id: 'story-2', title: 'たかい', gradeLevel: 6),
+        ];
         await tester.pumpWidget(_wrap(allStories: stories));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('テーマ'));
+        await tester.tap(find.text('高学年(5-6年)'));
         await tester.pumpAndSettle();
-        expect(find.text('思いやりのストーリー'), findsOneWidget);
+        expect(find.text('たかい'), findsOneWidget);
+        expect(find.text('ひくい'), findsNothing);
+      });
+
+      testWidgets('theme chip filters the list', (tester) async {
+        final stories = [
+          _makeStory(title: '思いやりのお話', theme: 'kindness'),
+          _makeStory(id: 'story-2', title: '勇気のお話', theme: 'courage'),
+        ];
+        await tester.pumpWidget(_wrap(allStories: stories));
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(FilterChip, '勇気'));
+        await tester.pumpAndSettle();
+        expect(find.text('勇気のお話'), findsOneWidget);
+        expect(find.text('思いやりのお話'), findsNothing);
       });
     });
 
@@ -149,7 +151,7 @@ void main() {
       testWidgets('shows no-child message when child is null', (tester) async {
         await tester.pumpWidget(_wrap(child: null));
         await tester.pumpAndSettle();
-        await tester.tap(find.text('完了済み'));
+        await tester.tap(find.text('クリアしたお話'));
         await tester.pumpAndSettle();
         expect(find.text('お子さんを選択してください'), findsOneWidget);
       });
@@ -159,7 +161,7 @@ void main() {
           _wrap(child: _testChild, completedStories: []),
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.text('完了済み'));
+        await tester.tap(find.text('クリアしたお話'));
         await tester.pumpAndSettle();
         expect(find.textContaining('まだ完了したストーリーはありません'), findsOneWidget);
       });
@@ -172,7 +174,7 @@ void main() {
           _wrap(child: _testChild, completedStories: completed),
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.text('完了済み'));
+        await tester.tap(find.text('クリアしたお話'));
         await tester.pumpAndSettle();
         expect(find.text('完了済みストーリー'), findsOneWidget);
       });

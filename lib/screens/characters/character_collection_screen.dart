@@ -26,7 +26,7 @@ class CharacterCollectionScreen extends ConsumerWidget {
     );
     final unlocked = unlockedCount(cleared, st.levelOf);
     return Scaffold(
-      appBar: AppBar(title: const Text('キャラ図鑑')),
+      appBar: AppBar(title: const Text('キャラずかん')),
       backgroundColor: const Color(0xFFF7F9FC),
       body: Column(
         children: [

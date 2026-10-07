@@ -210,8 +210,8 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                           },
                           child: Text(
                             grade == GradeLevel.low
-                                ? 'ホームへ'
-                                : 'ホームに戻る',
+                                ? 'たいいくの トップへ'
+                                : 'たいいくのトップに戻る',
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold),
                           ),

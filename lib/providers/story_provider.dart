@@ -108,14 +108,11 @@ final storiesProvider = FutureProvider.autoDispose
 final weeklyThemeProvider = FutureProvider.autoDispose.family<List<Story>, int>(
   (ref, weekNumber) async {
     final apiService = ref.watch(apiServiceProvider);
-    // 同梱データを最優先（道徳は端末内化済み。サーバー側のIDだと詳細が開けないため）
-    final local = await LocalStoryService.weekly(weekNumber);
-    if (local.isNotEmpty) return local;
     try {
-      return await apiService.fetchWeeklyTheme(weekNumber);
-    } catch (_) {
-      return const <Story>[];
-    }
+      final list = await apiService.fetchWeeklyTheme(weekNumber);
+      if (list.isNotEmpty) return list;
+    } catch (_) {}
+    return LocalStoryService.weekly(weekNumber);
   },
 );
 

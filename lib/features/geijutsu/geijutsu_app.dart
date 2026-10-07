@@ -152,7 +152,7 @@ class _RootShellState extends ConsumerState<RootShell> {
             index: _tab,
             onTap: (i) => setState(() => _tab = i),
             tabs: const [
-              ModuleTab(Icons.home, 'ホーム'),
+              ModuleTab(Icons.palette, 'げいじゅつ'),
               ModuleTab(Icons.star, 'バッジ'),
               ModuleTab(Icons.family_restroom, '保護者'),
               ModuleTab(Icons.settings, '設定'),

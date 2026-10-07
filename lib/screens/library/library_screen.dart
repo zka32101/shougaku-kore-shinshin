@@ -51,7 +51,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
             pinned: true,
             backgroundColor: _primaryColor,
             title: const Text(
-              'ライブラリ',
+              'どうとく ストーリー',
               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             bottom: TabBar(

@@ -8,6 +8,7 @@ import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../../features/geijutsu/geijutsu_app.dart' show GeijutsuModule;
 import '../../widgets/shell_route_observer.dart';
 import 'home_screen.dart';
+import 'shell_navigation.dart';
 
 /// アプリ全体の土台。いつも下に表示されるナビゲーションバーで、
 /// ホーム／どうとく／たいいく／げいじゅつ／キャラ をワンタップで切り替えられる。
@@ -37,9 +38,17 @@ class _MainShellState extends State<MainShell> {
         _ => null,
       };
 
+  void _onShellRequest() {
+    final s = shellSectionRequest.value;
+    if (s == null) return;
+    shellSectionRequest.value = null;
+    if (mounted) _select(s);
+  }
+
   @override
   void initState() {
     super.initState();
+    shellSectionRequest.addListener(_onShellRequest);
     // 撮影中に端末がアプリを終了していたら、撮った写真をアルバムへ保存し直す
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
@@ -56,6 +65,7 @@ class _MainShellState extends State<MainShell> {
 
   @override
   void dispose() {
+    shellSectionRequest.removeListener(_onShellRequest);
     _taikuObs.dispose();
     _geijutsuObs.dispose();
     super.dispose();
