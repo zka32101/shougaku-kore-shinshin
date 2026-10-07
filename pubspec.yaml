@@ -101,6 +101,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons_common/
     - assets/branding/
     - assets/images/
     - assets/images/avatars/

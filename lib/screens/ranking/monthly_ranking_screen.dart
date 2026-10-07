@@ -4,6 +4,7 @@ import '../../models/ranking.dart';
 import '../../providers/ranking_provider.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 月間ランキング画面
 /// 4つのグループ化オプション付きランキング表示
@@ -278,10 +279,7 @@ class _RankingTileState extends State<_RankingTile>
                 ),
                 child: Center(
                   child: rankIcon != null
-                      ? Text(
-                          rankIcon,
-                          style: const TextStyle(fontSize: 20),
-                        )
+                      ? UkalabEmoji(rankIcon, size: 20)
                       : Text(
                           '${widget.entry.rank}',
                           style: const TextStyle(
@@ -300,10 +298,7 @@ class _RankingTileState extends State<_RankingTile>
                   children: [
                     Row(
                       children: [
-                        Text(
-                          widget.entry.avatarEmoji,
-                          style: const TextStyle(fontSize: 18),
-                        ),
+                        UkalabEmoji(widget.entry.avatarEmoji, size: 18),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(

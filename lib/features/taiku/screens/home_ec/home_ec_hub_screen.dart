@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/home_ec.dart';
 import '../stage_learn_screen.dart';
 import 'home_ec_topic_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeEcHubScreen extends ConsumerWidget {
   const HomeEcHubScreen({super.key});
@@ -125,10 +126,7 @@ class _TopicCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              topic.emoji,
-              style: const TextStyle(fontSize: 40),
-            ),
+            UkalabEmoji(topic.emoji, size: 40),
             const SizedBox(height: 8),
             Text(
               topic.name,

@@ -7,6 +7,7 @@ import '../../constants/app_styles.dart';
 import '../../models/achievement_checklist.dart';
 import '../../models/daily_effort_record.dart';
 import '../../providers/daily_effort_record_provider.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 「今日、やさしくできた」など、日々の取り組みを自由に記録できる画面
 class DailyRecordScreen extends ConsumerWidget {
@@ -171,7 +172,7 @@ class _RecordCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(record.category.emoji, style: const TextStyle(fontSize: 24)),
+          UkalabEmoji(record.category.emoji, size: 24),
           const SizedBox(width: AppStyles.paddingSmall),
           Expanded(
             child: Column(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -43,8 +44,7 @@ class HomeScreen extends ConsumerWidget {
                         Row(
                           children: [
                             if (activeProfile != null) ...[
-                              Text(activeProfile.avatarEmoji,
-                                  style: const TextStyle(fontSize: 28)),
+                              UkalabEmoji(activeProfile.avatarEmoji, size: 28),
                               const SizedBox(width: 8),
                             ],
                             const Text(
@@ -188,7 +188,7 @@ class _SubjectCard extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Text(emoji, style: const TextStyle(fontSize: 48)),
+                  UkalabEmoji(emoji, size: 48),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -317,7 +317,7 @@ class _StatChip extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 24)),
+            UkalabEmoji(emoji, size: 24),
             const SizedBox(height: 4),
             Text(
               count.toString(),

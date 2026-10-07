@@ -19,6 +19,7 @@ import '../dashboard/dashboard_screen.dart';
 import '../checklist/achievement_checklist_screen.dart';
 import '../checklist/daily_record_screen.dart';
 import '../../widgets/premium_gate.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -192,10 +193,7 @@ class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderS
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    widget.icon,
-                    style: const TextStyle(fontSize: 40),
-                  ),
+                  UkalabEmoji(widget.icon, size: 40),
                   const SizedBox(height: AppStyles.paddingMedium),
                   Text(
                     widget.title,

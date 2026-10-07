@@ -5,6 +5,7 @@ import '../../providers/child_provider.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
 import 'profile_edit_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class ProfileManagementScreen extends ConsumerWidget {
   const ProfileManagementScreen({super.key});
@@ -216,10 +217,7 @@ class _ProfileCardState extends State<ProfileCard>
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child: Text(
-                  widget.profile.avatarEmoji,
-                  style: const TextStyle(fontSize: 28),
-                ),
+                child: UkalabEmoji(widget.profile.avatarEmoji, size: 28),
               ),
             ),
             title: Text(

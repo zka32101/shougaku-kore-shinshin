@@ -4,6 +4,7 @@ import '../../models/child_profile.dart';
 import '../../providers/child_provider.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 const _primaryColor = Color(0xFF9B59B6);
 
@@ -143,7 +144,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
                               ),
                             ),
                             child: Center(
-                              child: Text(emoji, style: const TextStyle(fontSize: 34)),
+                              child: UkalabEmoji(emoji, size: 34),
                             ),
                           ),
                         );

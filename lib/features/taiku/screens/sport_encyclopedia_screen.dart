@@ -4,6 +4,7 @@ import '../../literacy_core/literacy_core.dart';
 import '../data/sport_encyclopedia.dart';
 import '../taiku_app.dart';
 import '../widgets/sport_radar_chart.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // ─── カテゴリフィルタ用 StateProvider ───
 
@@ -209,8 +210,7 @@ class _SportCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(sport.emoji,
-                style: const TextStyle(fontSize: 40)),
+            UkalabEmoji(sport.emoji, size: 40),
             const SizedBox(height: 8),
             Text(
               sport.name,
@@ -479,8 +479,7 @@ class _DetailAppBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 30),
-                Text(sport.emoji,
-                    style: const TextStyle(fontSize: 56)),
+                UkalabEmoji(sport.emoji, size: 56),
                 const SizedBox(height: 4),
               ],
             ),
@@ -619,7 +618,7 @@ class _Section extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 18)),
+              UkalabEmoji(emoji, size: 18),
               const SizedBox(width: 6),
               Text(
                 title,

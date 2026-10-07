@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../taiku_app.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 学習進捗ダッシュボード画面
 /// 3つのゲーム（AITruth, CrimeQuiz, SafetyRisk）の成績を総合スコア、
@@ -304,7 +305,7 @@ class _ScoreEvaluation extends StatelessWidget {
 
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 18)),
+        UkalabEmoji(emoji, size: 18),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
@@ -579,7 +580,7 @@ class _GameScoreRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
+          UkalabEmoji(emoji, size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -756,7 +757,7 @@ class _WeaknessItem extends StatelessWidget {
 
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 20)),
+        UkalabEmoji(emoji, size: 20),
         const SizedBox(width: 12),
         Expanded(
           child: Column(

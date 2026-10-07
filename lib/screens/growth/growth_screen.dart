@@ -6,6 +6,7 @@ import '../../providers/progress_provider.dart';
 import '../../models/child_profile.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 const _primaryColor = Color(0xFF9B59B6);
 const _bgColor = Color(0xFFF5F5F5);
@@ -70,10 +71,7 @@ class _GrowthContent extends ConsumerWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 16),
-              child: Text(
-                child.avatarEmoji,
-                style: const TextStyle(fontSize: 28),
-              ),
+              child: UkalabEmoji(child.avatarEmoji, size: 28),
             ),
           ],
         ),
@@ -443,7 +441,7 @@ class _VirtueDetailListState extends State<_VirtueDetailList>
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   children: [
-                    Text(v.emoji, style: const TextStyle(fontSize: 20)),
+                    UkalabEmoji(v.emoji, size: 20),
                     const SizedBox(width: 10),
                     SizedBox(
                       width: 60,

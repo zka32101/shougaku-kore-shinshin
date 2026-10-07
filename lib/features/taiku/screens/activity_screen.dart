@@ -8,6 +8,7 @@ import '../data/taiku_questions.dart';
 import '../taiku_app.dart';
 import '../providers/album_provider.dart';
 import '../providers/taiku_providers.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 実体験カタログ画面 — ステージクリア後または単体で表示
 class ActivityScreen extends ConsumerStatefulWidget {
@@ -293,7 +294,7 @@ class _DifficultyTabs extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Text(d.emoji, style: const TextStyle(fontSize: 16)),
+                      UkalabEmoji(d.emoji, size: 16),
                       const SizedBox(height: 2),
                       Text(
                         d.label,
@@ -369,8 +370,7 @@ class _ActivityCardState extends State<_ActivityCard> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Text(widget.activity.emoji,
-                      style: const TextStyle(fontSize: 28)),
+                  UkalabEmoji(widget.activity.emoji, size: 28),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(

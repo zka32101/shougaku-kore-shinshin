@@ -4,6 +4,7 @@ import '../../literacy_core/literacy_core.dart';
 import '../taiku_app.dart';
 import '../providers/taiku_providers.dart';
 import 'stage_learn_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // ─── 全般説明画面（まなびのぜんたいマップ）───
 
@@ -415,7 +416,7 @@ class _HeaderChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 12)),
+          UkalabEmoji(emoji, size: 12),
           const SizedBox(width: 3),
           Text(
             label,
@@ -580,7 +581,7 @@ class _ThemeOverviewCard extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Text(headerEmoji, style: const TextStyle(fontSize: 28)),
+                UkalabEmoji(headerEmoji, size: 28),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -779,7 +780,7 @@ class _StageRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(info.emoji, style: const TextStyle(fontSize: 16)),
+            UkalabEmoji(info.emoji, size: 16),
             const SizedBox(width: 8),
             Expanded(
               child: Text(

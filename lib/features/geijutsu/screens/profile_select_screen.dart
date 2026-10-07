@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../providers/app_providers.dart';
 import '../models/user_profile.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class ProfileSelectScreen extends ConsumerStatefulWidget {
   final bool isSwitch;
@@ -273,7 +274,7 @@ class _ProfileSelectScreenState extends ConsumerState<ProfileSelectScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(profile.avatarEmoji, style: const TextStyle(fontSize: 52)),
+                              UkalabEmoji(profile.avatarEmoji, size: 52),
                               const SizedBox(height: 8),
                               Text(
                                 profile.name,

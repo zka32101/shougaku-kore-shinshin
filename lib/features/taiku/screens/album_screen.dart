@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/activity_memory.dart';
 import '../providers/album_provider.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// ② 体験アルバム画面
 class AlbumScreen extends ConsumerWidget {
@@ -196,10 +197,7 @@ class _MemoryCard extends ConsumerWidget {
                       width: double.infinity,
                       color: _themeColor.withValues(alpha: 0.15),
                       child: Center(
-                        child: Text(
-                          memory.themeEmoji,
-                          style: const TextStyle(fontSize: 40),
-                        ),
+                        child: UkalabEmoji(memory.themeEmoji, size: 40),
                       ),
                     ),
             ),

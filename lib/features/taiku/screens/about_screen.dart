@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../taiku_app.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 「このアプリについて」説明画面 — 充実した説明と美しいUI
 class AboutScreen extends ConsumerWidget {
@@ -269,7 +270,7 @@ class _FeatureItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 20)),
+          UkalabEmoji(emoji, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -341,7 +342,7 @@ class _ThemeRow extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
+          UkalabEmoji(emoji, size: 16),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -426,7 +427,7 @@ class _FlowStep extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text(emoji, style: const TextStyle(fontSize: 16)),
+          UkalabEmoji(emoji, size: 16),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -519,7 +520,7 @@ class _ParentFeature extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
+          UkalabEmoji(emoji, size: 18),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -654,7 +655,7 @@ class _SectionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 22)),
+              UkalabEmoji(emoji, size: 22),
               const SizedBox(width: 8),
               Text(
                 title,

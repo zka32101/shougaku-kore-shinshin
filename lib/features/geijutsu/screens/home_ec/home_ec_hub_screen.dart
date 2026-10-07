@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeEcHubScreen extends ConsumerStatefulWidget {
   const HomeEcHubScreen({super.key});
@@ -227,7 +228,7 @@ class _WhyItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(icon, style: const TextStyle(fontSize: 18)),
+          UkalabEmoji(icon, size: 18),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -251,7 +252,7 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 24)),
+        UkalabEmoji(emoji, size: 24),
         const SizedBox(height: 4),
         Text(value,
             style: const TextStyle(
@@ -301,7 +302,7 @@ class _MenuCard extends StatelessWidget {
                 color: color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Center(child: Text(emoji, style: const TextStyle(fontSize: 28))),
+              child: Center(child: UkalabEmoji(emoji, size: 28)),
             ),
             const SizedBox(width: 14),
             Expanded(

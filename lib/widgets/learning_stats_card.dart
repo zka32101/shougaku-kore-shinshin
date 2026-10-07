@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/analytics_model.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class LearningStatsCard extends StatelessWidget {
   final MonthlyStats monthlyStats;
@@ -142,10 +143,7 @@ class _StatsTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            icon,
-            style: const TextStyle(fontSize: 24),
-          ),
+          UkalabEmoji(icon, size: 24),
           const SizedBox(height: 4),
           Text(
             title,

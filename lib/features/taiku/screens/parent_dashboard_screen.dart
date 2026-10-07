@@ -10,6 +10,7 @@ import '../providers/parent_diary_provider.dart';
 import '../data/sibling_quest.dart';
 import '../data/child_profile.dart';
 import '../data/parent_diary.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class ParentDashboardScreen extends ConsumerWidget {
   const ParentDashboardScreen({super.key});
@@ -316,7 +317,7 @@ class _ThemeButton extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 24)),
+            UkalabEmoji(emoji, size: 24),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -505,7 +506,7 @@ class _ThemeProgressBar extends StatelessWidget {
 
     return Row(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 14)),
+        UkalabEmoji(emoji, size: 14),
         const SizedBox(width: 6),
         SizedBox(
           width: 60,
@@ -890,7 +891,7 @@ class _ActivityItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 20)),
+          UkalabEmoji(emoji, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -1001,7 +1002,7 @@ class _RoadmapStep extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 24)),
+          UkalabEmoji(emoji, size: 24),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -1164,7 +1165,7 @@ class _HighlightStat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(emoji, style: const TextStyle(fontSize: 26)),
+        UkalabEmoji(emoji, size: 26),
         const SizedBox(height: 4),
         Text(
           value,
@@ -1314,7 +1315,7 @@ class _QuestTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(quest.emoji, style: const TextStyle(fontSize: 20)),
+              UkalabEmoji(quest.emoji, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -1363,8 +1364,7 @@ class _QuestTile extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 4),
               child: Row(
                 children: [
-                  Text(profile.emoji,
-                      style: const TextStyle(fontSize: 14)),
+                  UkalabEmoji(profile.emoji, size: 14),
                   const SizedBox(width: 6),
                   Text(profile.name,
                       style: const TextStyle(fontSize: 12)),
@@ -1573,7 +1573,7 @@ class _ParentDiaryCardState extends ConsumerState<_ParentDiaryCard> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(m.emoji, style: const TextStyle(fontSize: 20)),
+                    UkalabEmoji(m.emoji, size: 20),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(m.message,

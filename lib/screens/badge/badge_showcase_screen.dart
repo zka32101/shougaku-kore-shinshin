@@ -9,6 +9,7 @@ import '../../utils/animation_constants.dart';
 import '../../constants/app_colors.dart';
 import '../../widgets/common_states.dart';
 import '../../widgets/animations/index.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// バッジ図鑑画面 — 獲得可能なすべてのバッジと進捗を表示
 class BadgeShowcaseScreen extends ConsumerWidget {
@@ -616,10 +617,7 @@ class _BadgeDetailDialog extends StatelessWidget {
       backgroundColor: AppColors.bgSecondary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Center(
-        child: Text(
-          badge.emoji,
-          style: const TextStyle(fontSize: 48),
-        ),
+        child: UkalabEmoji(badge.emoji, size: 48),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
