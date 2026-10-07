@@ -1,5 +1,6 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import '../../../widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/activity_catalog.dart';
@@ -648,7 +649,7 @@ class _StageSummaryCard extends StatelessWidget {
                 UkalabEmoji(emoji, size: 15),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: FuriganaText(
                     text,
                     style: TextStyle(
                       fontSize: isLow ? 12 : 11.5,

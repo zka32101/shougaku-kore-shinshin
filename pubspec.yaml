@@ -109,6 +109,7 @@ flutter:
     - assets/images/illustrations/
     - assets/images/parental_consent/
     - assets/stories/
+    - assets/furigana/
     - assets/avatars/
     - assets/characters/
     - assets/explain/

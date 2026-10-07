@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
 import '../../utils/animation_constants.dart';
@@ -168,7 +169,7 @@ class _StoryResultScreenState extends ConsumerState<StoryResultScreen>
                       delay: Duration(milliseconds: 700),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
+                        child: FuriganaText(
                           widget.storyTitle,
                           style: const TextStyle(
                             fontSize: 18,

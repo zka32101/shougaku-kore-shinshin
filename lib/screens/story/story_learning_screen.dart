@@ -1,5 +1,6 @@
 import '../../providers/local_avatar_provider.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
 import '../../providers/story_provider.dart';
@@ -449,7 +450,7 @@ class _StoryHeader extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      FuriganaText(
                         story.title,
                         style: const TextStyle(
                           color: Colors.white,
@@ -578,8 +579,8 @@ class _NarrativePageView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  Text(
-                    pages[index],
+                  FuriganaText(
+                    pages[index], glossary: true,
                     style: const TextStyle(
                       fontSize: AppStyles.fontSizeLargeTitle,
                       height: 2.0,
@@ -648,8 +649,8 @@ class _ChoiceView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    story.content?.dilemmaScene ?? '',
+                  FuriganaText(
+                    story.content?.dilemmaScene ?? '', glossary: true,
                     style: const TextStyle(
                       fontSize: AppStyles.fontSizeLarge,
                       height: 1.8,
@@ -756,7 +757,7 @@ class _BranchingStoryView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      Text(
+                      FuriganaText(
                         choice.text,
                         style: const TextStyle(
                           fontSize: AppStyles.fontSizeMedium,
@@ -811,8 +812,8 @@ class _BranchingStoryView extends StatelessWidget {
               ),
 
               // 分岐ストーリーテキスト
-              Text(
-                choice.branchContent,
+              FuriganaText(
+                choice.branchContent, glossary: true,
                 style: const TextStyle(
                   fontSize: AppStyles.fontSizeLarge,
                   height: 2.0,
@@ -914,7 +915,7 @@ class _ReflectionView extends StatelessWidget {
                         color: AppColors.primary
                             .withAlpha(AppConstants.alphaDark)),
                   ),
-                  child: Text(
+                  child: FuriganaText(
                     choice.text,
                     style: const TextStyle(
                       fontSize: AppStyles.fontSizeTitle,
@@ -958,8 +959,8 @@ class _ReflectionView extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        choice.reflection,
+                      FuriganaText(
+                        choice.reflection, glossary: true,
                         style: const TextStyle(
                           fontSize: AppStyles.fontSizeMedium,
                           color: AppColors.reflectionText,

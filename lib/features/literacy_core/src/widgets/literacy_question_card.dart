@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import '../enums/grade_level.dart';
 import '../enums/literacy_ui_level.dart';
 import '../models/literacy_question.dart';
@@ -68,8 +69,8 @@ class _QuestionText extends StatelessWidget {
           ),
         ],
       ),
-      child: Text(
-        question.questionText,
+      child: FuriganaText(
+        question.questionText, glossary: true,
         style: TextStyle(
           fontSize: LiteracyTypography.questionTextSize(question.gradeLevel),
           fontWeight: FontWeight.w600,
@@ -195,7 +196,7 @@ class _ChoiceButton extends StatelessWidget {
               const SizedBox(width: 10),
             ],
             Expanded(
-              child: Text(
+              child: FuriganaText(
                 text,
                 style: TextStyle(
                   fontSize: LiteracyTypography.choiceTextSize(grade),
