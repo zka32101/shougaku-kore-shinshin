@@ -106,17 +106,60 @@ class BadgeEmblem extends StatelessWidget {
   /// バッジIDに対応する意匠名。なければ null。
   static String? emblemOf(String badgeId) => emblemMap[badgeId];
 
+  static final RegExp _stageId = RegExp(r'^stage_(\d+)_clear$');
+
+  /// 体育のステージバッジ（stage_N_clear）は、同じ意匠が並ぶので番号 N を重ねて区別する。
+  /// 該当しなければ null。
+  static String? stageLabelOf(String badgeId) => _stageId.firstMatch(badgeId)?.group(1);
+
   @override
   Widget build(BuildContext context) {
     final name = emblemMap[badgeId];
     if (name == null) return UkalabEmoji(fallbackEmoji, size: size);
-    return Image.asset(
+    final image = Image.asset(
       'assets/badges/badge_$name.webp',
       width: size,
       height: size,
       fit: BoxFit.contain,
       excludeFromSemantics: true,
       errorBuilder: (context, error, stackTrace) => UkalabEmoji(fallbackEmoji, size: size),
+    );
+    final label = stageLabelOf(badgeId);
+    if (label == null) return image;
+    // 右下に小さな丸で番号を重ねる
+    final d = size * 0.42;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned.fill(child: image),
+          Positioned(
+            right: -size * 0.04,
+            bottom: -size * 0.04,
+            child: Container(
+              width: d,
+              height: d,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: const Color(0xFF16B79A), width: size * 0.04 < 1 ? 1 : size * 0.04),
+              ),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: d * (label.length > 1 ? 0.5 : 0.62),
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF0F7F6B),
+                  height: 1,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
