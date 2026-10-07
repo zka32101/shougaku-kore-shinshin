@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'screens/home/home_screen.dart';
+import 'screens/home/main_shell.dart';
 import 'screens/subscription/trial_status_screen.dart';
 import 'screens/subscription/subscription_screen.dart';
 import 'screens/settings/avatar_selection_screen.dart';
@@ -192,7 +192,7 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
       themeMode: _themeModeToBrightness(brightness),
       home: const SplashScreen(),
       routes: {
-        '/home': (context) => const HomeScreen(),
+        '/home': (context) => const MainShell(),
         '/child-registration': (context) => const ChildRegistrationScreen(),
         '/trial_status': (context) => const TrialStatusScreen(),
         '/subscription': (context) => const SubscriptionScreen(),

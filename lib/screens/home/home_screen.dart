@@ -4,9 +4,6 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
 import '../../utils/sound_effects_utils.dart';
-import '../../utils/accessibility_utils.dart';
-import '../../utils/animation_constants.dart';
-import '../../widgets/animations/index.dart';
 import '../ranking/ranking_screen.dart';
 import '../settings/settings_screen.dart';
 import '../library/library_screen.dart';
@@ -18,26 +15,63 @@ import '../characters/character_collection_screen.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../checklist/achievement_checklist_screen.dart';
 import '../checklist/daily_record_screen.dart';
-import '../../widgets/premium_gate.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
+/// 下のナビゲーションバー／ホームのボタンから切り替えるセクション。
+/// [MainShell] のタブ番号と同じ並び。
+enum HomeSection { home, doutoku, taiku, geijutsu, characters }
+
+/// ホーム画面。大きく読みやすいボタンで、いつでも目的の場所へ行ける。
+///
+/// [onSelectSection] が渡されたとき（[MainShell] 内）は、どうとく／たいいく／げいじゅつ／
+/// キャラずかんを下のナビのタブとして開く。渡されないとき（単体表示・テスト）は
+/// 画面を push する。
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key});
+  final ValueChanged<HomeSection>? onSelectSection;
+
+  const HomeScreen({super.key, this.onSelectSection});
+
+  void _open(BuildContext context, HomeSection section, Widget fallback) {
+    final cb = onSelectSection;
+    if (cb != null) {
+      cb(section);
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => fallback));
+    }
+  }
+
+  void _push(BuildContext context, Widget screen) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final menuItems = [
-      (icon: '📖', title: 'ストーリー', subtitle: '道徳の学習', screen: const PremiumGate(child: LibraryScreen())),
-      (icon: '🏆', title: 'ランキング', subtitle: '成績を確認', screen: const RankingScreen()),
-      (icon: '📈', title: 'ダッシュボード', subtitle: '学習統計', screen: const DashboardScreen()),
-      (icon: '🐾', title: 'キャラ図鑑', subtitle: 'キャラを そだてよう', screen: const CharacterCollectionScreen()),
-      (icon: '🎖️', title: 'バッジ図鑑', subtitle: 'バッジを集める', screen: const BadgeShowcaseScreen()),
-      (icon: '📊', title: 'レポート', subtitle: '成長を分析', screen: const ReportScreen()),
-      (icon: '⚙️', title: '設定', subtitle: 'アプリ設定', screen: const SettingsScreen()),
-      (icon: '⛹️', title: '体育・健康', subtitle: 'スポーツ・防災・栄養', screen: const PremiumGate(child: TaikuModule())),
-      (icon: '🎨', title: '芸術', subtitle: '図工・音楽・家庭科', screen: const PremiumGate(child: GeijutsuModule())),
-      (icon: '✅', title: 'できたことチェック', subtitle: '成長を確認', screen: const AchievementChecklistScreen()),
-      (icon: '📝', title: 'きょうのきろく', subtitle: '日々の取り組み', screen: const DailyRecordScreen()),
+    final learn = <_HomeItem>[
+      _HomeItem('📖', 'どうとく ストーリー', '道徳の学習', const Color(0xFF1E88E5),
+          () => _open(context, HomeSection.doutoku, const LibraryScreen())),
+      _HomeItem('⛹️', 'たいいく・けんこう', 'スポーツ・防災・栄養', const Color(0xFFE64A19),
+          () => _open(context, HomeSection.taiku, const TaikuModule())),
+      _HomeItem('🎨', 'げいじゅつ', '図工・音楽・家庭科', const Color(0xFFD81B60),
+          () => _open(context, HomeSection.geijutsu, const GeijutsuModule())),
+    ];
+    final more = <_HomeItem>[
+      _HomeItem('🐾', 'キャラずかん', 'キャラを そだてよう', const Color(0xFF43A047),
+          () => _open(context, HomeSection.characters,
+              const CharacterCollectionScreen())),
+      _HomeItem('🎖️', 'バッジ', 'バッジを集める', const Color(0xFFF9A825),
+          () => _push(context, const BadgeShowcaseScreen())),
+      _HomeItem('🏆', 'ランキング', '成績を確認', const Color(0xFF8E24AA),
+          () => _push(context, const RankingScreen())),
+      _HomeItem('📊', 'ほごしゃ レポート', '成長を分析', const Color(0xFF00897B),
+          () => _push(context, const ReportScreen())),
+      _HomeItem('📈', 'ダッシュボード', '学習統計', const Color(0xFF3949AB),
+          () => _push(context, const DashboardScreen())),
+      _HomeItem('✅', 'できたことチェック', '成長を確認', const Color(0xFF6D4C41),
+          () => _push(context, const AchievementChecklistScreen())),
+      _HomeItem('📝', 'きょうのきろく', '日々の取り組み', const Color(0xFF546E7A),
+          () => _push(context, const DailyRecordScreen())),
+      _HomeItem('⚙️', 'せってい', 'アプリ設定', const Color(0xFF757575),
+          () => _push(context, const SettingsScreen())),
     ];
 
     return Scaffold(
@@ -47,167 +81,128 @@ class HomeScreen extends ConsumerWidget {
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
       ),
-      body: AnimatedFadeInScale(
-        duration: AnimationDurations.medium,
-        beginScale: 0.95,
-        endScale: 1.0,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Avatar panel in header
-                AnimatedSlideIn(
-                  direction: SlideDirection.fromBottom,
-                  duration: AnimationDurations.medium,
-                  delay: Duration(milliseconds: 100),
-                  child: const AvatarPanel(
-                    userName: 'ユーザー',
-                  ),
-                ),
-                const SizedBox(height: 32),
-
-                // Main menu grid
-                GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    // 長いサブタイトル（例: スポーツ・防災・栄養）でも収まる高さ
-                    childAspectRatio: 0.78,
-                  ),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: menuItems.length,
-                  itemBuilder: (context, index) {
-                    final item = menuItems[index];
-                    return AnimatedSlideIn(
-                      direction: SlideDirection.fromBottom,
-                      duration: AnimationDurations.medium,
-                      delay: Duration(milliseconds: 200 + (index * 75)),
-                      child: _MenuCard(
-                        icon: item.icon,
-                        title: item.title,
-                        subtitle: item.subtitle,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => item.screen),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 32),
-              ],
-            ),
-          ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+          children: [
+            // アバター（コインつき）ヘッダー
+            const AvatarPanel(userName: 'ユーザー'),
+            const SizedBox(height: 20),
+            const _SectionLabel('まなぶ'),
+            for (final item in learn)
+              _HomeButton(item: item, height: 96, titleSize: 22),
+            const SizedBox(height: 12),
+            const _SectionLabel('ひろげる・ふりかえる'),
+            for (final item in more)
+              _HomeButton(item: item, height: 72, titleSize: 18),
+          ],
         ),
       ),
     );
   }
 }
 
-/// ホーム画面のメニューカード
-class _MenuCard extends ConsumerStatefulWidget {
+class _HomeItem {
   final String icon;
   final String title;
   final String subtitle;
+  final Color color;
   final VoidCallback onTap;
+  const _HomeItem(this.icon, this.title, this.subtitle, this.color, this.onTap);
+}
 
-  const _MenuCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
+class _SectionLabel extends StatelessWidget {
+  final String text;
+  const _SectionLabel(this.text);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(bottom: 8, left: 4),
+        child: Text(
+          text,
+          style: AppStyles.headingSmall.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+}
+
+/// 横いっぱいの大きなボタン（絵 ＋ ラベル ＋ 説明）
+class _HomeButton extends ConsumerWidget {
+  final _HomeItem item;
+  final double height;
+  final double titleSize;
+
+  const _HomeButton({
+    required this.item,
+    required this.height,
+    required this.titleSize,
   });
 
   @override
-  ConsumerState<_MenuCard> createState() => _MenuCardState();
-}
-
-class _MenuCardState extends ConsumerState<_MenuCard> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: AnimationDurations.short,
-      vsync: this,
-    );
-
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _controller, curve: AnimationCurves.snappyEasing),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _onTapDown(TapDownDetails details) {
-    _controller.forward();
-  }
-
-  void _onTapUp(TapUpDetails details) {
-    _controller.reverse();
-    _handleTap();
-  }
-
-  void _onTapCancel() {
-    _controller.reverse();
-  }
-
-  void _handleTap() {
-    // メニュー選択音を再生
-    SoundEffectsUtils(ref).playButtonTapSound();
-    widget.onTap();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: _scaleAnimation,
-      child: GestureDetector(
-        onTapDown: _onTapDown,
-        onTapUp: _onTapUp,
-        onTapCancel: _onTapCancel,
-        child: AccessibilityUtils.semanticButton(
-          label: widget.title,
-          hint: widget.subtitle,
-          onPressed: _handleTap,
-          child: Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
-              side: const BorderSide(color: AppColors.border),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(AppStyles.paddingMedium),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Semantics(
+        button: true,
+        label: item.title,
+        hint: item.subtitle,
+        child: Material(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+            onTap: () {
+              SoundEffectsUtils(ref).playButtonTapSound();
+              item.onTap();
+            },
+            child: Container(
+              constraints: BoxConstraints(minHeight: height),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+                border: Border.all(
+                    color: item.color.withValues(alpha: 0.5), width: 2),
+              ),
+              child: Row(
                 children: [
-                  UkalabEmoji(widget.icon, size: 40),
-                  const SizedBox(height: AppStyles.paddingMedium),
-                  Text(
-                    widget.title,
-                    style: AppStyles.headingSmall.copyWith(
-                      color: AppColors.textPrimary,
+                  Container(
+                    width: height * 0.62,
+                    height: height * 0.62,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: item.color.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
                     ),
-                    textAlign: TextAlign.center,
+                    child: UkalabEmoji(item.icon, size: height * 0.4),
                   ),
-                  const SizedBox(height: AppStyles.paddingSmall),
-                  Text(
-                    widget.subtitle,
-                    style: AppStyles.bodySmall,
-                    textAlign: TextAlign.center,
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          item.title,
+                          style: TextStyle(
+                            fontSize: titleSize,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          item.subtitle,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
+                  Icon(Icons.chevron_right, color: item.color, size: 30),
                 ],
               ),
             ),

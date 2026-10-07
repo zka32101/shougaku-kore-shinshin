@@ -86,14 +86,14 @@ class MistakeNoteScreen extends ConsumerWidget {
       BuildContext context, WidgetRef ref, String profileId, bool isLow) {
     showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dctx) => AlertDialog(
         title: Text(isLow ? 'ぜんぶ けす？' : 'まちがいノートをリセット'),
         content: Text(isLow
             ? 'ぜんぶの まちがいを けしますか？'
             : 'すべての間違いを削除しますか？'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dctx),
             child: const Text('キャンセル'),
           ),
           TextButton(
@@ -101,7 +101,7 @@ class MistakeNoteScreen extends ConsumerWidget {
               ref
                   .read(mistakeNoteProvider.notifier)
                   .clearAll(profileId);
-              Navigator.pop(context);
+              Navigator.pop(dctx);
             },
             child: Text(isLow ? 'けす' : '削除',
                 style: const TextStyle(color: Colors.red)),

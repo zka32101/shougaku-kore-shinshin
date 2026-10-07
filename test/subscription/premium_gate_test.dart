@@ -75,15 +75,12 @@ void main() {
       expect(find.byType(UpgradeScreen), findsNothing);
     });
 
-    testWidgets('shows paywall after the trial when not subscribed',
+    testWidgets('never locks content, even after the trial (no lock policy)',
         (tester) async {
       final c = await _load(daysSinceFirstLaunch: 15);
       await tester.pumpWidget(app(c));
-      expect(find.text('STORY CONTENT'), findsNothing);
-      expect(find.byType(UpgradeScreen), findsOneWidget);
-      expect(find.text('無料期間は終了しました'), findsOneWidget);
-      expect(find.text('¥2,400 / 年'), findsOneWidget);
-      expect(find.text('¥300 / 月'), findsOneWidget);
+      expect(find.text('STORY CONTENT'), findsOneWidget);
+      expect(find.byType(UpgradeScreen), findsNothing);
     });
   });
 }

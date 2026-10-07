@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/ranking.dart';
 import 'ranking_list_screen.dart';
@@ -19,6 +20,12 @@ class RankingScreen extends ConsumerWidget {
           title: const Text('ランキング'),
           backgroundColor: Colors.white,
           foregroundColor: const Color(0xFF2C2C2C),
+          titleTextStyle: const TextStyle(
+            color: Color(0xFF2C2C2C),
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
           actions: [
             IconButton(

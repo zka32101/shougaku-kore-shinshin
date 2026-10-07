@@ -264,13 +264,13 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             icon: const Icon(Icons.delete_outline),
             onPressed: () => showDialog(
               context: context,
-              builder: (_) => AlertDialog(
+              builder: (dctx) => AlertDialog(
                 title: const Text('全消去'),
                 content: const Text('全てのストロークを消しますか？'),
                 actions: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('キャンセル')),
+                  TextButton(onPressed: () => Navigator.pop(dctx), child: const Text('キャンセル')),
                   TextButton(
-                    onPressed: () { setState(() => _strokes.clear()); Navigator.pop(context); },
+                    onPressed: () { setState(() => _strokes.clear()); Navigator.pop(dctx); },
                     child: const Text('消す', style: TextStyle(color: Colors.red)),
                   ),
                 ],

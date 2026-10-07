@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// ヘルプ画面 — よくある質問（FAQ）と使い方ガイド
 /// 商用利用OK画像を多数統合
@@ -12,6 +13,12 @@ class HelpScreen extends StatelessWidget {
         title: const Text('ヘルプ'),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2C2C2C),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF2C2C2C),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
       ),
       body: ListView(

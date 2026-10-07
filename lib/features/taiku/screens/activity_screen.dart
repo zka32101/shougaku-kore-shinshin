@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shougaku_kore_doutoku/widgets/photo_source_chooser.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../data/activity_catalog.dart';
 import '../data/activity_memory.dart';
@@ -195,40 +198,30 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     TaikuActivity activity,
     String theme,
   ) async {
-    final take = await showDialog<bool>(
-      context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('📷 しゃしんをとろう！',
-            textAlign: TextAlign.center),
-        content: Text(
-          '「${activity.title}」を\nアルバムに保存しますか？',
-          textAlign: TextAlign.center,
-        ),
-        actionsAlignment: MainAxisAlignment.center,
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('あとで'),
-          ),
-          ElevatedButton.icon(
-            icon: const Icon(Icons.camera_alt),
-            label: const Text('とる！'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4CAF50),
-              foregroundColor: Colors.white,
-            ),
-            onPressed: () => Navigator.pop(context, true),
-          ),
-        ],
-      ),
+    // ダイアログは自分の context で閉じる（入れ子 Navigator の画面 context で pop すると
+    // 画面側が閉じてしまい、「とる」が反応しなくなる）
+    final source = await showPhotoSourceDialog(
+      context,
+      title: '📷 しゃしんをのこそう！',
+      message: '「${activity.title}」を\nアルバムに保存しますか？',
     );
+    if (source == null || !context.mounted) return;
 
-    if (take != true) return;
-
-    final picker = ImagePicker();
-    final XFile? file =
-        await picker.pickImage(source: ImageSource.camera, imageQuality: 80);
+    // 撮影中に端末がアプリを終了しても、起動時に写真を拾えるよう保存先の情報を残す
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(
+      _pendingKey,
+      jsonEncode({
+        'activityId': activity.id,
+        'activityTitle': activity.title,
+        'theme': theme,
+        'stage': widget.stage,
+      }),
+    );
+    if (!context.mounted) return;
+    final XFile? file = await pickPhotoWithMessage(context, source);
+    await prefs.remove(_pendingKey);
+    if (file == null) return;
 
     final memory = ActivityMemory(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -237,7 +230,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       theme: theme,
       relatedStage: widget.stage,
       completedAt: DateTime.now(),
-      imagePath: file?.path,
+      imagePath: file.path,
     );
 
     await ref.read(albumProvider.notifier).addMemory(memory);
@@ -512,5 +505,33 @@ class _ActivityCardState extends State<_ActivityCard> {
         ],
       ),
     );
+  }
+}
+
+const _pendingKey = 'pending_photo_memory';
+
+/// 撮影中にアプリのプロセスが終了した場合、起動時に写真をアルバムへ保存し直す。
+/// 保存したら true を返す。
+Future<bool> recoverLostPhotoMemory(AlbumNotifier album) async {
+  try {
+    final lost = await ImagePicker().retrieveLostData();
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_pendingKey);
+    await prefs.remove(_pendingKey);
+    final file = lost.file ?? (lost.files?.isNotEmpty == true ? lost.files!.first : null);
+    if (lost.isEmpty || file == null || raw == null) return false;
+    final m = jsonDecode(raw) as Map<String, dynamic>;
+    await album.addMemory(ActivityMemory(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      activityId: m['activityId'] as String,
+      activityTitle: m['activityTitle'] as String,
+      theme: m['theme'] as String,
+      relatedStage: m['stage'] as int,
+      completedAt: DateTime.now(),
+      imagePath: file.path,
+    ));
+    return true;
+  } catch (_) {
+    return false;
   }
 }

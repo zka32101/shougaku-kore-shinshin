@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:shougaku_kore_doutoku/widgets/photo_source_chooser.dart';
 import 'package:uuid/uuid.dart';
 import '../../providers/app_providers.dart';
 import '../../models/home_challenge.dart';
@@ -312,9 +312,9 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
   ];
 
   Future<void> _pickPhoto() async {
-    final xfile = await ImagePicker().pickImage(
-      source: ImageSource.gallery, maxWidth: 800, imageQuality: 80,
-    );
+    final source = await showPhotoSourceDialog(context);
+    if (source == null || !mounted) return;
+    final xfile = await pickPhotoWithMessage(context, source);
     if (xfile != null) setState(() => _photoPaths.add(xfile.path));
   }
 
@@ -465,9 +465,9 @@ class _FashionTabState extends ConsumerState<_FashionTab> {
   }
 
   Future<void> _pickPhoto() async {
-    final xfile = await ImagePicker().pickImage(
-      source: ImageSource.gallery, maxWidth: 800, imageQuality: 80,
-    );
+    final source = await showPhotoSourceDialog(context);
+    if (source == null || !mounted) return;
+    final xfile = await pickPhotoWithMessage(context, source);
     if (xfile != null) setState(() => _photoPaths.add(xfile.path));
   }
 

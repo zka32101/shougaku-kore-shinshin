@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/activity_memory.dart';
 import '../providers/album_provider.dart';
@@ -20,6 +21,12 @@ class AlbumScreen extends ConsumerWidget {
         title: const Text('体験アルバム 📷'),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2D3748),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF2D3748),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
         actions: [
           Padding(
@@ -257,18 +264,18 @@ class _MemoryCard extends ConsumerWidget {
   void _showDeleteDialog(BuildContext context, WidgetRef ref) {
     showDialog<void>(
       context: context,
-      builder: (_) => AlertDialog(
+      builder: (dctx) => AlertDialog(
         title: const Text('記録を削除'),
         content: Text('「${memory.activityTitle}」の記録を削除しますか？'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dctx),
             child: const Text('キャンセル'),
           ),
           TextButton(
             onPressed: () {
               ref.read(albumProvider.notifier).removeMemory(memory.id);
-              Navigator.pop(context);
+              Navigator.pop(dctx);
             },
             child: const Text('削除', style: TextStyle(color: Colors.red)),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/ranking.dart';
 import '../../providers/ranking_provider.dart';
@@ -58,6 +59,12 @@ class _MonthlyRankingScreenState extends ConsumerState<MonthlyRankingScreen>
         title: const Text('ランキング'),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2C2C2C),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF2C2C2C),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
