@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// プライバシーポリシー画面
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -11,6 +12,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
         title: const Text('プライバシーポリシー'),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2C2C2C),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF2C2C2C),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
       ),
       body: SingleChildScrollView(

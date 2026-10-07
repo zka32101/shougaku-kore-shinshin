@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 /// 画面上部に置く、横並びの切り替えタブ。
 ///
@@ -20,59 +21,69 @@ class ModuleTabStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      elevation: 2,
-      child: SafeArea(
-        bottom: false,
-        child: SizedBox(
-          height: 52,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            itemCount: tabs.length,
-            separatorBuilder: (_, _) => const SizedBox(width: 6),
-            itemBuilder: (context, i) {
-              final t = tabs[i];
-              final selected = i == index;
-              return Semantics(
-                button: true,
-                selected: selected,
-                label: t.label,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () => onTap(i),
-                  child: Container(
-                    constraints: const BoxConstraints(minHeight: 40, minWidth: 64),
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: selected ? color : color.withValues(alpha: 0.08),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Badge(
-                          label: Text('${t.badge}'),
-                          isLabelVisible: t.badge > 0,
-                          child: Icon(t.icon,
-                              size: 20, color: selected ? Colors.white : color),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          t.label,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: selected ? Colors.white : color,
+    // 白い背景なので、ステータスバーの時計・電池は濃い色にする
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: Material(
+        color: Colors.white,
+        elevation: 2,
+        child: SafeArea(
+          bottom: false,
+          child: SizedBox(
+            height: 52,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+              itemCount: tabs.length,
+              separatorBuilder: (_, _) => const SizedBox(width: 6),
+              itemBuilder: (context, i) {
+                final t = tabs[i];
+                final selected = i == index;
+                return Semantics(
+                  button: true,
+                  selected: selected,
+                  label: t.label,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () => onTap(i),
+                    child: Container(
+                      constraints: const BoxConstraints(
+                        minHeight: 40,
+                        minWidth: 64,
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: selected ? color : color.withValues(alpha: 0.08),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Badge(
+                            label: Text('${t.badge}'),
+                            isLabelVisible: t.badge > 0,
+                            child: Icon(
+                              t.icon,
+                              size: 20,
+                              color: selected ? Colors.white : color,
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 6),
+                          Text(
+                            t.label,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: selected ? Colors.white : color,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

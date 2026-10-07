@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/activity_memory.dart';
 import '../providers/album_provider.dart';
@@ -20,6 +21,12 @@ class AlbumScreen extends ConsumerWidget {
         title: const Text('体験アルバム 📷'),
         backgroundColor: Colors.white,
         foregroundColor: const Color(0xFF2D3748),
+        titleTextStyle: const TextStyle(
+          color: Color(0xFF2D3748),
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
         actions: [
           Padding(
