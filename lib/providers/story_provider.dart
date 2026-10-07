@@ -76,6 +76,14 @@ final storiesProvider = FutureProvider.autoDispose
         isPremium: filters.isPremium,
       );
       // キャッシュ更新（ブロックしない）
+      if (stories.isEmpty) {
+        // サーバーが空を返した場合も同梱ストーリーで代替
+        return await LocalStoryService.stories(
+          theme: filters.theme,
+          gradeLevel: filters.gradeLevel,
+          isPremium: filters.isPremium,
+        );
+      }
       hive.cacheStories(stories).ignore();
       return stories;
     } catch (_) {
@@ -100,11 +108,14 @@ final storiesProvider = FutureProvider.autoDispose
 final weeklyThemeProvider = FutureProvider.autoDispose.family<List<Story>, int>(
   (ref, weekNumber) async {
     final apiService = ref.watch(apiServiceProvider);
+    // 同梱データを最優先（道徳は端末内化済み。サーバー側のIDだと詳細が開けないため）
+    final local = await LocalStoryService.weekly(weekNumber);
+    if (local.isNotEmpty) return local;
     try {
-      final list = await apiService.fetchWeeklyTheme(weekNumber);
-      if (list.isNotEmpty) return list;
-    } catch (_) {}
-    return LocalStoryService.weekly(weekNumber);
+      return await apiService.fetchWeeklyTheme(weekNumber);
+    } catch (_) {
+      return const <Story>[];
+    }
   },
 );
 
@@ -130,3 +141,9 @@ final storyDetailProvider = FutureProvider.autoDispose
     rethrow;
   }
 });
+
+/// ライブラリ用: 端末内に同梱した全ストーリー(学年・テーマで絞り込める)。
+/// ネットワークには依存しない。
+final allLocalStoriesProvider = FutureProvider<List<Story>>(
+  (ref) => LocalStoryService.stories(),
+);

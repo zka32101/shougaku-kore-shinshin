@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
 import '../../providers/story_provider.dart'; // weeklyThemeProvider
-import '../../providers/story_provider_fs.dart'; // storiesFsProvider
+import '../../utils/grade_band.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/progress_provider.dart';
 import '../../utils/animation_constants.dart';
@@ -27,11 +27,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String? _selectedTheme;
+  GradeBand? _selectedBand;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -59,9 +60,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
               labelColor: Colors.white,
               unselectedLabelColor: Colors.white70,
               tabs: const [
-                Tab(text: '今週'),
-                Tab(text: 'テーマ'),
-                Tab(text: '完了済み'),
+                Tab(text: 'ぜんぶ'),
+                Tab(text: 'クリアしたお話'),
               ],
             ),
           ),
@@ -69,10 +69,11 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
         body: TabBarView(
           controller: _tabController,
           children: [
-            _WeeklyTab(),
-            _ThemeTab(
+            _AllStoriesTab(
               selectedTheme: _selectedTheme,
+              selectedBand: _selectedBand,
               onThemeChanged: (t) => setState(() => _selectedTheme = t),
+              onBandChanged: (b) => setState(() => _selectedBand = b),
             ),
             const _CompletedTab(),
           ],
@@ -82,26 +83,18 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
   }
 }
 
-class _WeeklyTab extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final now = DateTime.now();
-    final weekNum = (now.difference(DateTime(now.year, 1, 1)).inDays ~/ 7) + 1;
-    final storiesAsync = ref.watch(weeklyThemeProvider(weekNum));
-    return storiesAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator(color: _primaryColor)),
-      error: (e, _) => _ErrorView(error: e.toString()),
-      data: (stories) => stories.isEmpty
-          ? const _EmptyView(message: '今週のストーリーはまだありません')
-          : _StoryList(stories: stories),
-    );
-  }
-}
-
-class _ThemeTab extends ConsumerWidget {
+/// 全ストーリー一覧(学年目安・テーマで絞り込み)。同梱データなのでオフラインでも出る。
+class _AllStoriesTab extends ConsumerWidget {
   final String? selectedTheme;
+  final GradeBand? selectedBand;
   final ValueChanged<String?> onThemeChanged;
-  const _ThemeTab({required this.selectedTheme, required this.onThemeChanged});
+  final ValueChanged<GradeBand?> onBandChanged;
+  const _AllStoriesTab({
+    required this.selectedTheme,
+    required this.selectedBand,
+    required this.onThemeChanged,
+    required this.onBandChanged,
+  });
 
   static const _themes = <(String, String?)>[
     ('すべて', null),
@@ -113,57 +106,81 @@ class _ThemeTab extends ConsumerWidget {
     ('協調性', 'cooperation'),
   ];
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final storiesAsync = ref.watch(
-      storiesFsProvider((theme: selectedTheme, gradeLevel: null, isPremium: null)),
-    );
-    return Column(
-      children: [
-        Container(
-          color: _cardColor,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(_themes.length, (index) {
-                final t = _themes[index];
-                final isSelected = t.$2 == selectedTheme;
-                return AnimatedSlideIn(
-                  direction: SlideDirection.fromLeft,
-                  duration: AnimationDurations.medium,
-                  delay: Duration(milliseconds: 100 + (index * 50)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: FilterChip(
-                      label: Text(t.$1),
-                      selected: isSelected,
-                      onSelected: (_) => onThemeChanged(t.$2),
-                      selectedColor: _primaryColor.withAlpha(40),
-                      checkmarkColor: _primaryColor,
-                      labelStyle: TextStyle(
-                        color: isSelected ? _primaryColor : _textSecondary,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
+  Widget _chipRow(List<Widget> chips) => Container(
+        color: _cardColor,
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(children: chips),
+        ),
+      );
+
+  Widget _chip(String label, bool selected, VoidCallback onTap) => Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: FilterChip(
+          label: Text(label),
+          selected: selected,
+          onSelected: (_) => onTap(),
+          selectedColor: _primaryColor.withAlpha(40),
+          checkmarkColor: _primaryColor,
+          labelStyle: TextStyle(
+            color: selected ? _primaryColor : _textSecondary,
+            fontSize: 12,
           ),
         ),
+      );
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final storiesAsync = ref.watch(allLocalStoriesProvider);
+    return Column(
+      children: [
+        _chipRow([
+          _chip('ぜんぶ', selectedBand == null, () => onBandChanged(null)),
+          for (final b in GradeBand.values)
+            _chip(b.rangeLabel, selectedBand == b, () => onBandChanged(b)),
+        ]),
+        _chipRow([
+          for (final t in _themes)
+            _chip(t.$1, t.$2 == selectedTheme, () => onThemeChanged(t.$2)),
+        ]),
         Expanded(
           child: storiesAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator(color: _primaryColor)),
+            loading: () => const Center(
+                child: CircularProgressIndicator(color: _primaryColor)),
             error: (e, _) => _ErrorView(error: e.toString()),
-            data: (stories) => stories.isEmpty
-                ? const _EmptyView(message: 'このテーマのストーリーはありません')
-                : _StoryList(stories: stories),
+            data: (all) {
+              final stories = filterStories(
+                all,
+                theme: selectedTheme,
+                band: selectedBand,
+              );
+              return stories.isEmpty
+                  ? const _EmptyView(message: 'この条件のお話はまだないよ')
+                  : _StoryList(stories: stories);
+            },
           ),
         ),
       ],
     );
   }
+}
+
+/// 学年帯・テーマでストーリーを絞り込む(学年→テーマ順の並び)。
+List<Story> filterStories(
+  List<Story> all, {
+  String? theme,
+  GradeBand? band,
+}) {
+  final list = [
+    for (final s in all)
+      if ((theme == null || s.theme == theme) &&
+          (band == null || gradeBandOf(s.gradeLevel) == band))
+        s,
+  ];
+  list.sort((a, b) => a.gradeLevel.compareTo(b.gradeLevel));
+  return list;
 }
 
 class _CompletedTab extends ConsumerWidget {
@@ -288,6 +305,8 @@ class _CompletedStoryCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
+                        _Tag(label: gradeBandLabel(story.gradeLevel), color: _textPrimary),
+                        const SizedBox(width: 6),
                         _Tag(label: story.theme, color: themeColor),
                         const SizedBox(width: 6),
                         _Tag(
@@ -447,6 +466,8 @@ class _LibraryStoryCardState extends State<_LibraryStoryCard> with SingleTickerP
                     const SizedBox(height: 4),
                     Row(
                       children: [
+                        _Tag(label: gradeBandLabel(widget.story.gradeLevel), color: _textPrimary),
+                        const SizedBox(width: 6),
                         _Tag(label: label, color: color),
                         const SizedBox(width: 6),
                         _Tag(label: '${(widget.story.durationSeconds / 60).round()}分', color: _textSecondary),

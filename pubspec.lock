@@ -793,7 +793,7 @@ packages:
     source: hosted
     version: "2.2.0"
   google_fonts:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_fonts
       sha256: ba03d03bcaa2f6cb7bd920e3b5027181db75ab524f8891c8bc3aa603885b8055
@@ -1294,7 +1294,7 @@ packages:
     source: hosted
     version: "1.6.0"
   purchases_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: purchases_flutter
       sha256: "298ab75a5353281d5dba407eb9e06b7c328e2744b2028b344ac789b57f860537"

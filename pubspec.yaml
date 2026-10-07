@@ -74,7 +74,6 @@ dependencies:
   http: ^1.1.0
   uuid: ^4.5.1
   path_provider: ^2.1.1
-  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -118,13 +117,13 @@ flutter:
     - assets/taiku/images/characters/
     - assets/taiku/audio/piano/
 
-  # fonts:
-  #   - family: NotoSansJP
-  #     fonts:
-  #       - asset: assets/fonts/NotoSansJP-Regular.ttf
-  #       - asset: assets/fonts/NotoSansJP-Bold.ttf
-  #         weight: 700
-  # TODO: Download NotoSansJP fonts from Google Fonts and place in assets/fonts/
+  fonts:
+    # BIZ UDPゴシック (SIL OFL 1.1)。ユニバーサルデザインの日本語字形。オフラインでも確実に表示するため同梱。
+    - family: BIZUDPGothic
+      fonts:
+        - asset: assets/fonts/BIZUDPGothic-Regular.ttf
+        - asset: assets/fonts/BIZUDPGothic-Bold.ttf
+          weight: 700
 
 flutter_launcher_icons:
   android: true

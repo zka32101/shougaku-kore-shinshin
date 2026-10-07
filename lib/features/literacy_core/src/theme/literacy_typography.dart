@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../enums/grade_level.dart';
 import '../enums/literacy_ui_level.dart';
+
+/// アプリ共通の同梱フォント(BIZ UDPゴシック)
+const String kAppFontFamily = 'BIZUDPGothic';
 
 /// フレームワーク §4: 学年別タイポグラフィ
 class LiteracyTypography {
@@ -13,10 +15,14 @@ class LiteracyTypography {
     final color = const Color(0xFF2C3E50);
     final muted = const Color(0xFF7F8C8D);
 
-    // 低学年は丸みのあるフォント、高学年はコンパクト
-    final fontFamily = grade == GradeLevel.low
-        ? GoogleFonts.mPlusRounded1c
-        : GoogleFonts.notoSansJp;
+    // 全学年で同梱の UD フォント(BIZ UDPゴシック)を使う
+    TextStyle fontFamily({double? fontSize, FontWeight? fontWeight, Color? color}) =>
+        TextStyle(
+          fontFamily: kAppFontFamily,
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: color,
+        );
 
     return TextTheme(
       displayLarge: fontFamily(fontSize: base + 14, fontWeight: FontWeight.bold, color: color),
