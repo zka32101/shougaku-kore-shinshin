@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoService;
 import 'firebase_options.dart';
 import 'screens/home/main_shell.dart';
 import 'screens/subscription/trial_status_screen.dart';
@@ -73,6 +74,11 @@ void main() async {
     );
     return;
   }
+
+  // クロスプロモーション（他アプリ紹介）。失敗しても起動は止めない
+  try {
+    await CrossPromoService.init();
+  } catch (_) {}
 
   // ローカル保存（設定・進捗）。失敗してもアプリは起動を続ける
   try {

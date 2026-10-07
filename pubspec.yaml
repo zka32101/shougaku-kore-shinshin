@@ -23,6 +23,10 @@ dependencies:
     git:
       url: https://github.com/zka32101/shared_core.git
       ref: main
+  cross_promo_kit:
+    git:
+      url: https://github.com/zka32101/cross_promo_kit.git
+      ref: main
 
   # Firebase
   firebase_core: ^4.0.0
