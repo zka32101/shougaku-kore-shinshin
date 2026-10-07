@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
 import '../models/badge.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
 
 class BadgeScreen extends ConsumerWidget {
   const BadgeScreen({super.key});
@@ -145,6 +146,7 @@ class _BadgeSection extends StatelessWidget {
               final def = defs[i];
               final isEarned = earnedIds.contains(def['id']);
               return _BadgeTile(
+                badgeId: def['id']!,
                 emoji: def['emoji']!,
                 name: def['name']!,
                 isEarned: isEarned,
@@ -159,13 +161,14 @@ class _BadgeSection extends StatelessWidget {
 }
 
 class _BadgeTile extends StatelessWidget {
+  final String badgeId;
   final String emoji;
   final String name;
   final bool isEarned;
   final Color color;
 
   const _BadgeTile({
-    required this.emoji, required this.name,
+    required this.badgeId, required this.emoji, required this.name,
     required this.isEarned, required this.color,
   });
 
@@ -183,10 +186,10 @@ class _BadgeTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            isEarned ? emoji : '🔒',
-            style: const TextStyle(fontSize: 30),
-          ),
+          if (isEarned)
+            BadgeEmblem(badgeId: badgeId, fallbackEmoji: emoji, size: 36)
+          else
+            const Text('🔒', style: TextStyle(fontSize: 30)),
           const SizedBox(height: 6),
           Text(
             name,

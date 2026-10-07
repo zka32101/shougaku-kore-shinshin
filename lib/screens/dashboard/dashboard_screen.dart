@@ -11,7 +11,7 @@ import '../../constants/app_constants.dart';
 import '../../widgets/common_states.dart';
 import '../../utils/animation_constants.dart';
 import '../../widgets/animations/index.dart';
-import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
 
 /// ダッシュボード画面 — 子どもの学習進捗を視覚的に表示
 /// 統計情報、バッジ、アクティビティ、成長トレンドを表示
@@ -620,7 +620,7 @@ class _BadgesSection extends ConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          UkalabEmoji(badgeDef.emoji, size: 32),
+                          BadgeEmblem(badgeId: badgeDef.id, fallbackEmoji: badgeDef.emoji, size: 38),
                           const SizedBox(height: 4),
                           SizedBox(
                             width: 60,
