@@ -145,4 +145,36 @@ void main() {
     expect(find.text('こんにちは'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets('背景つきのときだけ、上端に暗い帯(ステータスバー用)と見出しの白地が出る', (tester) async {
+    final c = (await tester.runAsync(() => _container(prefs: {'decor_owned': ['bg_space']})))!;
+    late BuildContext inner;
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: c,
+      child: MaterialApp(
+        builder: (context, child) => DecorBackdrop(child: child!),
+        home: Scaffold(body: Builder(builder: (ctx) {
+          inner = ctx;
+          return const Text('x');
+        })),
+      ),
+    ));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('decor_status_scrim')), findsNothing);
+    expect(DecorScope.chipBg(inner), Colors.transparent);
+    await tester.runAsync(() => c.read(decorProvider.notifier).equip(decorItemById('bg_space')!));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('decor_status_scrim')), findsOneWidget);
+    expect(DecorScope.chipBg(inner).a > 0.5, true);
+  });
+
+  testWidgets('DecorFrame: 28px のアバターにはフレームが出る(小さすぎると出ない)', (tester) async {
+    Widget app(double size) => MaterialApp(
+          home: DecorScope(hasBackground: false, frameAsset: 'assets/shop/frame_star.webp', child: DecorFrame(size: size, child: const SizedBox())),
+        );
+    await tester.pumpWidget(app(28));
+    expect(find.byType(Image), findsOneWidget);
+    await tester.pumpWidget(app(20));
+    expect(find.byType(Image), findsNothing);
+  });
 }
