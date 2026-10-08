@@ -78,11 +78,12 @@ class AvatarSelectionScreen extends ConsumerWidget {
           GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
+        // 高さは固定（画面幅で比率が変わると下が溢れるため）。
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
-          childAspectRatio: 0.78,
+          mainAxisExtent: 116,
         ),
         itemCount: kAnimalAvatars.length,
         itemBuilder: (context, i) {
@@ -141,13 +142,13 @@ class _DecorShop extends ConsumerWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('${item.name}を手に入れる？'),
+        title: Text('「${item.name}」を買う？（🪙${item.coinCost}）'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 96, width: 96, child: Image.asset(item.thumb, fit: BoxFit.cover)),
             const SizedBox(height: 12),
-            Text('${item.coinCost}コインを使うよ（いま $coinsコイン）'),
+            Text('「${item.name}」に ${item.coinCost}コインを使うよ（いま $coinsコイン）'),
             if (!enough)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -166,8 +167,13 @@ class _DecorShop extends ConsumerWidget {
       ),
     );
     if (ok == true) {
+      // 購入のみ。つけるのは「きせかえをえらぶ」から（誤タップで勝手に着替わらないように）。
       final bought = await ref.read(decorProvider.notifier).purchase(item);
-      if (bought) await ref.read(decorProvider.notifier).equip(item);
+      if (bought && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('「${item.name}」を買ったよ！「きせかえをえらぶ」でつけてね')),
+        );
+      }
     }
   }
 
@@ -199,6 +205,7 @@ class _DecorShop extends ConsumerWidget {
           children: [
             for (final item in items)
               InkWell(
+                key: ValueKey('decor_shop_${item.id}'),
                 onTap: owned.contains(item.id) ? null : () => _buy(context, ref, item),
                 borderRadius: BorderRadius.circular(12),
                 child: SizedBox(
