@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -25,7 +26,7 @@ class AchievementChecklistScreen extends ConsumerWidget {
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
       ),
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
       body: childAsync.when(
         data: (child) {
           final grade = child?.grade ?? 1;

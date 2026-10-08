@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/child_provider.dart';
@@ -72,7 +73,7 @@ class _ChildRegistrationScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F5FF),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF9F5FF)),
       appBar: AppBar(
         title: const Text('お子さんの情報登録'),
         backgroundColor: Colors.transparent,

@@ -117,6 +117,8 @@ flutter:
     - assets/stories/
     - assets/furigana/
     - assets/avatars/
+    - assets/shop/
+    - assets/shop/thumb/
     - assets/characters/
     - assets/explain/
     - assets/sounds/

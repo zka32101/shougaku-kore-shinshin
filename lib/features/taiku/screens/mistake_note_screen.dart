@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
@@ -25,7 +26,7 @@ class MistakeNoteScreen extends ConsumerWidget {
     final isLow = grade == GradeLevel.low;
 
     return Scaffold(
-      backgroundColor: LiteracyColors.backgroundFor(grade),
+      backgroundColor: DecorScope.pageBg(context, LiteracyColors.backgroundFor(grade)),
       appBar: AppBar(
         backgroundColor: Colors.redAccent.shade700,
         title: Text(

@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import '../../../widgets/furigana_text.dart';
@@ -90,7 +91,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
         : (isPerfect ? '完璧！全問正解！' : isGood ? 'よくできました！' : '次は頑張ろう！');
 
     return Scaffold(
-      backgroundColor: LiteracyColors.backgroundFor(grade),
+      backgroundColor: DecorScope.pageBg(context, LiteracyColors.backgroundFor(grade)),
       body: Stack(
         children: [
           SafeArea(

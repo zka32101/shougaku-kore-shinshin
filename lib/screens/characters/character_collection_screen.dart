@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_core/shared_core.dart' show BaseCharacter;
@@ -27,7 +28,7 @@ class CharacterCollectionScreen extends ConsumerWidget {
     final unlocked = unlockedCount(cleared, st.levelOf);
     return Scaffold(
       appBar: AppBar(title: const Text('キャラずかん')),
-      backgroundColor: const Color(0xFFF7F9FC),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF7F9FC)),
       body: Column(
         children: [
           Padding(

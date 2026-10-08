@@ -1,3 +1,4 @@
+import '../../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/home_ec.dart';
@@ -22,7 +23,7 @@ class HomeEcTopicScreen extends ConsumerWidget {
     final progressPercent = totalCount > 0 ? (completedCount / totalCount) : 0.0;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: DecorScope.pageBg(context, Colors.white),
       appBar: AppBar(
         title: Text('${topic.emoji} ${topic.name}'),
         backgroundColor: homeEcColor,

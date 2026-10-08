@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:convert';
@@ -57,7 +58,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     };
 
     return Scaffold(
-      backgroundColor: LiteracyColors.backgroundFor(grade),
+      backgroundColor: DecorScope.pageBg(context, LiteracyColors.backgroundFor(grade)),
       appBar: AppBar(
         backgroundColor: color,
         title: Row(

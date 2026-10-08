@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/badge.dart';
@@ -25,7 +26,7 @@ class DashboardScreen extends ConsumerWidget {
 
     if (childId == null) {
       return Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
         appBar: AppBar(
           title: const Text('ダッシュボード'),
           backgroundColor: AppColors.bgSecondary,
@@ -40,7 +41,7 @@ class DashboardScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
       appBar: AppBar(
         title: const Text('ダッシュボード'),
         backgroundColor: AppColors.bgSecondary,

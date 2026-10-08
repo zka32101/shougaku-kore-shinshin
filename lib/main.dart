@@ -1,3 +1,4 @@
+import 'features/shop/decor/decor_scope.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -203,7 +204,7 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
         value: Theme.of(context).brightness == Brightness.light
             ? SystemUiOverlayStyle.dark
             : SystemUiOverlayStyle.light,
-        child: child ?? const SizedBox.shrink(),
+        child: DecorBackdrop(child: child ?? const SizedBox.shrink()),
       ),
       home: const SplashScreen(),
       routes: {
