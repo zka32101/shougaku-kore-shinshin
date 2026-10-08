@@ -9,6 +9,8 @@ import '../../providers/auth_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../providers/offline_sync_provider.dart';
 import '../profile/profile_management_screen.dart';
+import '../../widgets/profile_edit_dialog.dart';
+import '../../providers/user_profile_provider.dart';
 import '../ranking/ranking_settings_screen.dart';
 import 'help_screen.dart';
 import 'privacy_policy_screen.dart';
@@ -102,6 +104,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             ),
           ),
           const SizedBox(height: 12),
+          ListTile(
+            key: const Key('settings_profile_name_grade'),
+            leading: const Icon(Icons.edit),
+            title: const Text('プロフィール（なまえ・がくねん）'),
+            subtitle: Text(ref.watch(displayNameProvider) ?? 'まだ きめていないよ'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => showProfileEditDialog(context),
+          ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('お子様のプロフィール'),

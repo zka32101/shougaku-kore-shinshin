@@ -7,6 +7,7 @@ import '../features/literacy_core/literacy_core.dart' show GradeLevel;
 import '../features/literacy_core/src/providers/grade_provider.dart' show gradeLevelProvider;
 import '../utils/furigana.dart';
 import 'child_provider.dart';
+import 'user_profile_provider.dart' show profileGradeProvider;
 
 /// 同梱のふりがな辞書(assets/furigana/words.json)。1回だけ読み込む。
 final furiganaEngineProvider = FutureProvider<FuriganaEngine>((ref) async {
@@ -25,6 +26,9 @@ final readingGradeProvider = Provider<int>((ref) {
       child.grade <= 6) {
     return child.grade;
   }
+  // 名前入力(プロフィール)で決めた学年(1〜6)があればそれを使う。
+  final picked = ref.watch(profileGradeProvider);
+  if (picked != null) return picked;
   switch (ref.watch(gradeLevelProvider)) {
     case GradeLevel.low:
       return 2;
