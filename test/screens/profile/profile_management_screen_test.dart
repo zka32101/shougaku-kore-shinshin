@@ -127,7 +127,7 @@ void main() {
     testWidgets('shows error text on provider error', (tester) async {
       await tester.pumpWidget(_wrap(error: Exception('network error')));
       await tester.pumpAndSettle();
-      expect(find.textContaining('エラー'), findsOneWidget);
+      expect(find.textContaining('データを読み込めませんでした'), findsOneWidget);
     });
   });
 }

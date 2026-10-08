@@ -71,12 +71,14 @@ void main() {
   group('SplashScreen', () {
     // ── Static UI (before the 1.5s startup timer fires) ───────────────────
 
-    testWidgets('shows logo emoji', (tester) async {
+    testWidgets('shows app icon and organization logo', (tester) async {
       await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
       await tester.pump();
-      expect(find.text('📖'), findsOneWidget);
-      // Drain the 1.5s pending timer so the test ends cleanly
-      await tester.pump(const Duration(milliseconds: 1600));
+      expect(find.byKey(const ValueKey('splash_app_icon')), findsOneWidget);
+      expect(find.byKey(const ValueKey('splash_company_logo')), findsOneWidget);
+      expect(find.text('Your Wish'), findsOneWidget);
+      // Drain the 1.5s pending timer (+300ms auth-loading retry) so the test ends cleanly
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
     });
 
@@ -84,7 +86,7 @@ void main() {
       await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
       await tester.pump();
       expect(find.text('小学コレ！心身'), findsOneWidget);
-      await tester.pump(const Duration(milliseconds: 1600));
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
     });
 
@@ -92,15 +94,7 @@ void main() {
       await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
       await tester.pump();
       expect(find.text('かっこいい大人になるために'), findsOneWidget);
-      await tester.pump(const Duration(milliseconds: 1600));
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows loading CircularProgressIndicator', (tester) async {
-      await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
-      await tester.pump();
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(const Duration(milliseconds: 1600));
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
     });
 
@@ -110,14 +104,14 @@ void main() {
     testWidgets('continues as guest to /home when backend is unreachable',
         (tester) async {
       await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
-      await tester.pump(const Duration(milliseconds: 1600));
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
       expect(find.text('HomePage'), findsOneWidget);
     });
 
     testWidgets('goes to /home when a child profile exists', (tester) async {
       await tester.pumpWidget(_wrap(api: _FakeApiService(children: [_child()])));
-      await tester.pump(const Duration(milliseconds: 1600));
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
       expect(find.text('HomePage'), findsOneWidget);
     });
@@ -125,7 +119,7 @@ void main() {
     testWidgets('goes to /child-registration when there is no child profile',
         (tester) async {
       await tester.pumpWidget(_wrap(api: _FakeApiService(children: const [])));
-      await tester.pump(const Duration(milliseconds: 1600));
+      await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
       expect(find.text('RegisterPage'), findsOneWidget);
     });

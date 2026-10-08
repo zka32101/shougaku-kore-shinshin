@@ -105,6 +105,7 @@ ProviderContainer _makeContainer({
     ]);
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late _InMemoryHiveService hive;
   late _FakeApiService api;
   late Directory testDir;
@@ -159,17 +160,16 @@ void main() {
       expect(stories.first.id, 'cached-s');
     });
 
-    test('rethrows when API fails and cache is empty', () async {
+    test('falls back to bundled stories when API fails and cache is empty',
+        () async {
       api.shouldFail = true;
       final container = _makeContainer(api: api, hive: hive);
       addTearDown(container.dispose);
 
-      await expectLater(
-        container.read(
-          storiesProvider((theme: null, gradeLevel: null, isPremium: null)).future,
-        ),
-        throwsA(isA<Exception>()),
+      final stories = await container.read(
+        storiesProvider((theme: null, gradeLevel: null, isPremium: null)).future,
       );
+      expect(stories, isNotEmpty);
     });
 
     test('theme filter is applied to offline cache', () async {
@@ -247,7 +247,8 @@ void main() {
       expect(story.id, 'story-cached-1');
     });
 
-    test('rethrows when API fails and story not in cache', () async {
+    test('rethrows when API fails and story is neither cached nor bundled',
+        () async {
       api.shouldFail = true;
       final container = _makeContainer(api: api, hive: hive);
       addTearDown(container.dispose);
@@ -275,24 +276,22 @@ void main() {
       expect(stories.first.id, 'w1');
     });
 
-    test('returns empty list when API returns nothing', () async {
+    test('falls back to bundled stories when API returns nothing', () async {
       api.weeklyResult = [];
       final container = _makeContainer(api: api, hive: hive);
       addTearDown(container.dispose);
 
       final stories = await container.read(weeklyThemeProvider(1).future);
-      expect(stories, isEmpty);
+      expect(stories, isNotEmpty);
     });
 
-    test('throws when API fails', () async {
+    test('falls back to bundled stories when API fails', () async {
       api.shouldFail = true;
       final container = _makeContainer(api: api, hive: hive);
       addTearDown(container.dispose);
 
-      await expectLater(
-        container.read(weeklyThemeProvider(1).future),
-        throwsA(isA<Exception>()),
-      );
+      final stories = await container.read(weeklyThemeProvider(1).future);
+      expect(stories, isNotEmpty);
     });
   });
 }
