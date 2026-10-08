@@ -78,11 +78,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // 起動画面（StartupSplash）と同じ見た目。アニメを再生し直さない。
-    return const BrandedSplash(
-      title: '小学コレ！心身',
-      subtitle: 'かっこいい大人になるために',
-      gradient: [Color(0xFF9B59B6), Color(0xFF8E44AD)],
-      animate: false,
-    );
+    return const BrandedSplash();
   }
 }

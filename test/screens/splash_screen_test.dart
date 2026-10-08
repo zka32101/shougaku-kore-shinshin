@@ -76,24 +76,8 @@ void main() {
       await tester.pump();
       expect(find.byKey(const ValueKey('splash_app_icon')), findsOneWidget);
       expect(find.byKey(const ValueKey('splash_company_logo')), findsOneWidget);
-      expect(find.text('Your Wish'), findsOneWidget);
+      expect(find.byKey(const ValueKey('splash_series_logo')), findsOneWidget);
       // Drain the 1.5s pending timer (+300ms auth-loading retry) so the test ends cleanly
-      await tester.pump(const Duration(milliseconds: 2000));
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows app title 小学コレ！心身', (tester) async {
-      await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
-      await tester.pump();
-      expect(find.text('小学コレ！心身'), findsOneWidget);
-      await tester.pump(const Duration(milliseconds: 2000));
-      await tester.pumpAndSettle();
-    });
-
-    testWidgets('shows subtitle かっこいい大人になるために', (tester) async {
-      await tester.pumpWidget(_wrap(api: _FakeApiService(unreachable: true)));
-      await tester.pump();
-      expect(find.text('かっこいい大人になるために'), findsOneWidget);
       await tester.pump(const Duration(milliseconds: 2000));
       await tester.pumpAndSettle();
     });
