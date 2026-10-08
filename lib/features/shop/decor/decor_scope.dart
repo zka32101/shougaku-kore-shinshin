@@ -29,7 +29,7 @@ class DecorScope extends InheritedWidget {
 /// アプリ全体の背景とエフェクトを敷く。MaterialApp の builder に置く。
 ///
 /// - 背景: 全画面の後ろに絵を敷き、文字が読めるよう、うすい膜（ライトは白・ダークは濃紺）を重ねる
-/// - エフェクト: 全画面の前に重ねる（雪は全面・波は下端）。タップは通す
+/// - エフェクト: 全画面の前に重ねる（波は下端・他は全面）。タップは通す
 /// - 何もつけていなければ、子をそのまま返す（見た目は変わらない）
 class DecorBackdrop extends ConsumerWidget {
   const DecorBackdrop({super.key, required this.child});

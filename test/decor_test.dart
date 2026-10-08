@@ -29,7 +29,7 @@ void main() {
       expect(File(i.asset).existsSync(), true, reason: i.asset);
       expect(File(i.thumb).existsSync(), true, reason: i.thumb);
     }
-    expect(kDecorItems.length, 18);
+    expect(kDecorItems.length, 22);
     expect(decorItemById('bg_shinshin')?.coinCost, 200);
   });
 
@@ -40,6 +40,18 @@ void main() {
     final summer = decorItemsForSale(DateTime(2026, 7, 10)).map((e) => e.id).toSet();
     expect(summer.contains('effect_waves'), true);
     expect(summer.contains('bg_snow'), false);
+    expect(summer.containsAll({'effect_fireworks', 'effect_twinkle'}), true);
+    expect(summer.contains('effect_sakura'), false);
+    expect(winter.contains('effect_twinkle'), true);
+    expect(decorItemsForSale(DateTime(2026, 4, 10)).any((e) => e.id == 'effect_sakura'), true);
+    expect(decorItemsForSale(DateTime(2026, 10, 10)).any((e) => e.id == 'effect_leaves'), true);
+    // どの季節にも各種類の商品がある（空の季節が無い）
+    for (final m in [1, 4, 7, 10]) {
+      final s = decorItemsForSale(DateTime(2026, m, 10));
+      for (final k in DecorKind.values) {
+        expect(s.any((e) => e.kind == k), true, reason: 'month $m kind $k');
+      }
+    }
   });
 
   test('買うとコインが減り所持が保存される。コイン不足・二重購入は失敗', () async {
