@@ -30,7 +30,9 @@ void main() {
       expect(File(i.asset).existsSync(), true, reason: i.asset);
       expect(File(i.thumb).existsSync(), true, reason: i.thumb);
     }
-    expect(kDecorItems.length, 22);
+    expect(kDecorItems.length, 23);
+    expect(decorItemById('frame_shinshin')?.coinCost, 250);
+    expect(decorItemById('frame_shinshin')?.season, isNull);
     expect(decorItemById('bg_shinshin')?.coinCost, 200);
   });
 
@@ -46,6 +48,10 @@ void main() {
     expect(winter.contains('effect_twinkle'), true);
     expect(decorItemsForSale(DateTime(2026, 4, 10)).any((e) => e.id == 'effect_sakura'), true);
     expect(decorItemsForSale(DateTime(2026, 10, 10)).any((e) => e.id == 'effect_leaves'), true);
+    // 教科フレームは常設（どの季節でも売る）
+    for (final m in [1, 4, 7, 10]) {
+      expect(decorItemsForSale(DateTime(2026, m, 10)).any((e) => e.id == 'frame_shinshin'), true, reason: 'month $m');
+    }
     // どの季節にも各種類の商品がある（空の季節が無い）
     for (final m in [1, 4, 7, 10]) {
       final s = decorItemsForSale(DateTime(2026, m, 10));
