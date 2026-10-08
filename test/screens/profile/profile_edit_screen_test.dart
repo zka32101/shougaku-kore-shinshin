@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 import 'package:shougaku_kore_doutoku/models/child_profile.dart';
 import 'package:shougaku_kore_doutoku/screens/profile/profile_edit_screen.dart';
 
@@ -47,7 +48,11 @@ void main() {
           '🦁', '🐯', '🐶', '🐱', '🐰', '🦊', '🦝', '🐨',
           '🐸', '🦋', '⭐', '🌟', '🌈', '🎵', '🎨', '🚀',
         ]) {
-          expect(find.text(emoji), findsOneWidget, reason: '$emoji not found');
+          expect(
+            find.byWidgetPredicate((w) => w is UkalabEmoji && w.emoji == emoji),
+            findsOneWidget,
+            reason: '$emoji not found',
+          );
         }
       });
 

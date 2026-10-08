@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 import 'package:shougaku_kore_doutoku/models/child_profile.dart';
 import 'package:shougaku_kore_doutoku/providers/child_provider.dart';
 import 'package:shougaku_kore_doutoku/providers/progress_provider.dart';
@@ -27,6 +28,11 @@ final _testChild = ChildProfile(
 );
 
 final _weeklyData = [1, 2, 0, 3, 1, 0, 2];
+
+
+/// UkalabEmoji は一部の絵文字を画像に置き換えるため、Text ではなくウィジェットで探す。
+Finder _emojiFinder(String e) =>
+    find.byWidgetPredicate((w) => w is UkalabEmoji && w.emoji == e);
 
 // ─── Helper ──────────────────────────────────────────────────────────────────
 
@@ -76,7 +82,7 @@ void main() {
     testWidgets('shows error text on selectedChildProvider error', (tester) async {
       await tester.pumpWidget(_wrap(childError: Exception('network error')));
       await tester.pumpAndSettle();
-      expect(find.textContaining('エラー'), findsOneWidget);
+      expect(find.textContaining('データを読み込めませんでした'), findsOneWidget);
     });
 
     testWidgets('shows no-child view when child is null', (tester) async {
@@ -95,7 +101,7 @@ void main() {
     testWidgets('shows avatar emoji in AppBar', (tester) async {
       await tester.pumpWidget(_wrap(child: _testChild));
       await tester.pumpAndSettle();
-      expect(find.text('⭐'), findsOneWidget);
+      expect(_emojiFinder('⭐'), findsOneWidget);
     });
 
     testWidgets('shows level card with level and points', (tester) async {
