@@ -146,7 +146,7 @@ void main() {
     testWidgets('shows error text when story fails to load', (tester) async {
       await tester.pumpWidget(_wrap(storyError: true));
       await tester.pumpAndSettle();
-      expect(find.textContaining('エラー'), findsOneWidget);
+      expect(find.textContaining('データを読み込めませんでした'), findsOneWidget);
     });
 
     testWidgets('shows story title in header', (tester) async {
