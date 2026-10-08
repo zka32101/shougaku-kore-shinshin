@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
+import '../../widgets/profile_name_card.dart';
+import '../../providers/user_profile_provider.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../utils/sound_effects_utils.dart';
 import '../ranking/ranking_screen.dart';
@@ -87,7 +89,8 @@ class HomeScreen extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
           children: [
             // アバター（コインつき）ヘッダー
-            const AvatarPanel(userName: 'ユーザー'),
+            AvatarPanel(userName: ref.watch(displayNameProvider)),
+            const ProfileNameCard(),
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)
