@@ -569,21 +569,11 @@ class _ThemeStageGrid extends ConsumerWidget {
                     isCompleted: isCompleted,
                     accuracy: stageProgress?.accuracy,
                     color: color,
-                    onTap: isUnlocked
-                        ? () {
-                            ref
-                                .read(currentStageProvider.notifier)
-                                .state = stageNum;
-                            Navigator.of(context).pushNamed('/quiz');
-                          }
-                        : () => ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(
-                            const SnackBar(
-                              content: Text('ひとつ前のステージをクリアすると、あそべるようになるよ'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          ),
+                    // ロックなし(isUnlocked は常に true)
+                    onTap: () {
+                      ref.read(currentStageProvider.notifier).state = stageNum;
+                      Navigator.of(context).pushNamed('/quiz');
+                    },
                   );
                 }).toList(),
               ),
