@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_provider.dart';
 import '../providers/story_provider.dart';
 import '../providers/child_provider.dart';
+import '../widgets/branded_splash.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -76,59 +77,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFFAF9FF),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF9B59B6), Color(0xFF8E44AD)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF9B59B6).withAlpha(80),
-                    blurRadius: 20,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: const Center(
-                child: Text('📖', style: TextStyle(fontSize: 50)),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              '小学コレ！心身',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'かっこいい大人になるために',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey.shade600,
-              ),
-            ),
-            const SizedBox(height: 48),
-            const CircularProgressIndicator(
-              strokeWidth: 3,
-              color: Color(0xFF9B59B6),
-            ),
-          ],
-        ),
-      ),
+    // 起動画面（StartupSplash）と同じ見た目。アニメを再生し直さない。
+    return const BrandedSplash(
+      title: '小学コレ！心身',
+      subtitle: 'かっこいい大人になるために',
+      gradient: [Color(0xFF9B59B6), Color(0xFF8E44AD)],
+      animate: false,
     );
   }
 }
