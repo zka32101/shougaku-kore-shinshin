@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/disaster_mission.dart';
@@ -18,7 +19,7 @@ class DisasterDrillScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF3E0),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFFFF3E0)),
       appBar: AppBar(
         title: Text('${mission.emoji} ${mission.title}'),
         backgroundColor: const Color(0xFFFF5722),

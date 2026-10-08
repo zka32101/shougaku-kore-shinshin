@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/notification_preferences.dart';
@@ -114,7 +115,7 @@ class _NotificationSettingsScreenState
     }
 
     return Scaffold(
-      backgroundColor: _bgColor,
+      backgroundColor: DecorScope.pageBg(context, _bgColor),
       appBar: AppBar(
         backgroundColor: _primaryColor,
         title: const Text('メール配信設定'),

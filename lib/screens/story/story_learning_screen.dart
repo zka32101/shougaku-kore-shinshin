@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import '../../providers/local_avatar_provider.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/furigana_text.dart';
@@ -288,8 +289,8 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
     final storyAsync = ref.watch(storyDetailProvider(widget.storyId));
 
     return storyAsync.when(
-      loading: () => const Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+      loading: () => Scaffold(
+        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Scaffold(
@@ -304,8 +305,8 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
 
     // content が null（リストキャッシュからのフォールバック時）— ローディングを再表示
     if (pages.isEmpty) {
-      return const Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+      return Scaffold(
+        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
         body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
       );
     }
@@ -319,7 +320,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
     }
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
       body: SafeArea(
         child: Column(
           children: [

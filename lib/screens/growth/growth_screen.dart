@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -22,7 +23,7 @@ class GrowthScreen extends ConsumerWidget {
     final childAsync = ref.watch(selectedChildProvider);
 
     return Scaffold(
-      backgroundColor: _bgColor,
+      backgroundColor: DecorScope.pageBg(context, _bgColor),
       body: childAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),

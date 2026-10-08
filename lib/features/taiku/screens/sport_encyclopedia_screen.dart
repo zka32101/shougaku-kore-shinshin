@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
@@ -24,7 +25,7 @@ class SportEncyclopediaScreen extends ConsumerWidget {
     final filtered = getSportsByCategory(selectedCategory);
 
     return Scaffold(
-      backgroundColor: LiteracyColors.backgroundFor(grade),
+      backgroundColor: DecorScope.pageBg(context, LiteracyColors.backgroundFor(grade)),
       body: CustomScrollView(
         slivers: [
           _AppBar(grade: grade, isLow: isLow),
@@ -287,7 +288,7 @@ class SportDetailScreen extends StatelessWidget {
     final isLow = grade == GradeLevel.low;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF5F5F5)),
       body: CustomScrollView(
         slivers: [
           _DetailAppBar(sport: sport),

@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
@@ -59,7 +60,7 @@ class QuizScreen extends ConsumerWidget {
         if (!didPop) _confirmExit(context);
       },
       child: Scaffold(
-        backgroundColor: LiteracyColors.backgroundFor(grade),
+        backgroundColor: DecorScope.pageBg(context, LiteracyColors.backgroundFor(grade)),
         appBar: AppBar(
           backgroundColor: color,
           leading: IconButton(

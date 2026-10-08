@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +25,7 @@ class DailyRecordScreen extends ConsumerWidget {
         foregroundColor: AppColors.textPrimary,
         elevation: 0,
       ),
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddRecordDialog(context, ref),
         backgroundColor: AppColors.primary,

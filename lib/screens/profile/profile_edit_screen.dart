@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/child_profile.dart';
@@ -88,7 +89,7 @@ class _ProfileEditScreenState extends ConsumerState<ProfileEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF5F5F5)),
       appBar: AppBar(
         title: Text(
           widget.profile != null ? 'プロフィール編集' : 'プロフィール作成',

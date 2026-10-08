@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/animal_avatar.dart';
+import '../features/shop/decor/decor_scope.dart';
 import '../providers/local_avatar_provider.dart';
 
 /// 動物アバターの丸いイラスト
@@ -64,7 +65,10 @@ class AvatarDisplayWidget extends ConsumerWidget {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.blue, width: 2),
             ),
-            child: AnimalAvatarImage(avatar: avatar, size: size),
+            child: DecorFrame(
+              size: size,
+              child: AnimalAvatarImage(avatar: avatar, size: size),
+            ),
           ),
           if (showName) ...[
             const SizedBox(height: 8),

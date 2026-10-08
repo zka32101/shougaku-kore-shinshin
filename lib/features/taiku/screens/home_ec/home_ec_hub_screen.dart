@@ -1,3 +1,4 @@
+import '../../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/home_ec.dart';
@@ -13,7 +14,7 @@ class HomeEcHubScreen extends ConsumerWidget {
     const homeEcColor = Color(0xFFE91E63);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: DecorScope.pageBg(context, Colors.white),
       appBar: AppBar(
         title: const Text('🍳 家庭科'),
         backgroundColor: homeEcColor,

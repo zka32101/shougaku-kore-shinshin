@@ -1,3 +1,4 @@
+import '../../shop/decor/decor_scope.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,7 +17,7 @@ class AlbumScreen extends ConsumerWidget {
     final filter = ref.watch(albumThemeFilterProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: DecorScope.pageBg(context, const Color(0xFFF8F9FA)),
       appBar: AppBar(
         title: const Text('体験アルバム 📷'),
         backgroundColor: Colors.white,

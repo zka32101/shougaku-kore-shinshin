@@ -1,3 +1,4 @@
+import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/badge.dart';
@@ -21,7 +22,7 @@ class BadgeShowcaseScreen extends ConsumerWidget {
 
     if (childId == null) {
       return Scaffold(
-        backgroundColor: AppColors.bgPrimary,
+        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
         appBar: AppBar(
           title: const Text('バッジ図鑑'),
           backgroundColor: AppColors.bgSecondary,
@@ -36,7 +37,7 @@ class BadgeShowcaseScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.bgPrimary,
+      backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
       appBar: AppBar(
         title: const Text('バッジ図鑑'),
         backgroundColor: AppColors.bgSecondary,
