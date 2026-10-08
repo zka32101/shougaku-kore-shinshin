@@ -9,6 +9,7 @@ import 'package:shougaku_kore_doutoku/features/shop/decor/decor_provider.dart';
 import 'package:shougaku_kore_doutoku/features/shop/decor/decor_screen.dart';
 import 'package:shougaku_kore_doutoku/features/shop/decor/decor_scope.dart';
 import 'package:shougaku_kore_doutoku/providers/local_avatar_provider.dart';
+import 'package:shougaku_kore_doutoku/screens/settings/avatar_selection_screen.dart';
 
 Future<ProviderContainer> _container({Map<String, Object> prefs = const {}}) async {
   SharedPreferences.setMockInitialValues(prefs);
@@ -203,5 +204,60 @@ void main() {
     expect(find.byType(Image), findsOneWidget);
     await tester.pumpWidget(app(20));
     expect(find.byType(Image), findsNothing);
+  });
+
+  group('アバター選択画面のきせかえショップ', () {
+    Future<void> pumpShop(WidgetTester tester, ProviderContainer c, {Size size = const Size(360, 640)}) async {
+      tester.view.physicalSize = size * 2;
+      tester.view.devicePixelRatio = 2;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(UncontrolledProviderScope(container: c, child: const MaterialApp(home: AvatarSelectionScreen())));
+      await tester.pump();
+    }
+
+    testWidgets('狭い画面でも動物アバター行が溢れない(BOTTOM OVERFLOWED回帰)', (tester) async {
+      final c = (await tester.runAsync(() => _container(prefs: {'local_avatar_coins': 500})))!;
+      for (final w in [320.0, 360.0, 411.0]) {
+        await pumpShop(tester, c, size: Size(w, 700));
+        expect(tester.takeException(), isNull, reason: 'width $w');
+      }
+    });
+
+    testWidgets('タイルをタップすると、そのタイルの商品名と価格が確認ダイアログに出る', (tester) async {
+      final c = (await tester.runAsync(() => _container(prefs: {'local_avatar_coins': 500})))!;
+      await pumpShop(tester, c);
+      final items = decorItemsForSale(DateTime.now());
+      for (final item in [items.first, items.last]) {
+        final tile = find.byKey(ValueKey('decor_shop_${item.id}'));
+        await tester.scrollUntilVisible(tile, 200, scrollable: find.byType(Scrollable).first);
+        await tester.ensureVisible(tile);
+        await tester.pump();
+        await tester.tap(tile);
+        await tester.pump(const Duration(milliseconds: 400));
+        expect(find.text('「${item.name}」を買う？（🪙${item.coinCost}）'), findsOneWidget);
+        expect(find.textContaining('「${item.name}」に ${item.coinCost}コイン'), findsOneWidget);
+        await tester.tap(find.text('やめる'));
+        await tester.pump(const Duration(milliseconds: 400));
+      }
+      expect(c.read(decorProvider).owned, isEmpty);
+    });
+
+    testWidgets('買うとコインは減るが、その場ではつけない(つけるのは「きせかえをえらぶ」)', (tester) async {
+      final c = (await tester.runAsync(() => _container(prefs: {'local_avatar_coins': 500})))!;
+      await pumpShop(tester, c);
+      final item = decorItemsForSale(DateTime.now()).first;
+      final tile = find.byKey(ValueKey('decor_shop_${item.id}'));
+      await tester.scrollUntilVisible(tile, 200, scrollable: find.byType(Scrollable).first);
+        await tester.ensureVisible(tile);
+        await tester.pump();
+      await tester.tap(tile);
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.text('買う'));
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+      await tester.pump(const Duration(milliseconds: 400));
+      expect(c.read(decorProvider).owned, contains(item.id));
+      expect(c.read(decorProvider).of(item.kind), isNull);
+      expect(c.read(localAvatarProvider).coins, 500 - item.coinCost);
+    });
   });
 }
