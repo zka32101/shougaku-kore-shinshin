@@ -90,6 +90,9 @@ class DecorBackdrop extends ConsumerWidget {
   }
 }
 
+const double kWavesHeightFraction = 0.12;
+const double kWavesOpacity = 0.55;
+
 class _Effect extends StatelessWidget {
   const _Effect(this.id);
   final String id;
@@ -98,9 +101,19 @@ class _Effect extends StatelessWidget {
   Widget build(BuildContext context) {
     final asset = 'assets/shop/$id.webp';
     if (id == 'effect_waves') {
+      // 下ナビや内容を邪魔しないよう、画面高の12%・不透明度55%に抑える
       return Align(
         alignment: Alignment.bottomCenter,
-        child: Image.asset(asset, width: double.infinity, fit: BoxFit.fitWidth, excludeFromSemantics: true),
+        child: SizedBox(
+          key: const ValueKey('decor_waves'),
+          width: double.infinity,
+          height: MediaQuery.sizeOf(context).height * kWavesHeightFraction,
+          child: Opacity(
+            opacity: kWavesOpacity,
+            child: Image.asset(asset,
+                width: double.infinity, fit: BoxFit.cover, alignment: Alignment.bottomCenter, excludeFromSemantics: true),
+          ),
+        ),
       );
     }
     return Image.asset(asset, fit: BoxFit.cover, excludeFromSemantics: true);

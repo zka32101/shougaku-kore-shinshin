@@ -115,7 +115,7 @@ class _StoryResultScreenState extends ConsumerState<StoryResultScreen>
                             height: 120,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withValues(alpha: 0.9),
+                              color: Colors.white,
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withValues(alpha: 0.1),

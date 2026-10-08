@@ -158,6 +158,21 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('波エフェクト: 画面高の12%以下・不透明度55%で、タップを通す', (tester) async {
+    final c = (await tester.runAsync(() => _container(prefs: {'decor_owned': ['effect_waves']})))!;
+    await tester.runAsync(() => c.read(decorProvider.notifier).equip(decorItemById('effect_waves')!));
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: c,
+      child: MaterialApp(builder: (context, child) => DecorBackdrop(child: child!), home: const Scaffold(body: Text('x'))),
+    ));
+    await tester.pump();
+    final h = tester.getSize(find.byKey(const ValueKey('decor_waves'))).height;
+    expect(h, lessThanOrEqualTo(tester.view.physicalSize.height / tester.view.devicePixelRatio * 0.12 + 0.01));
+    final op = tester.widget<Opacity>(find.descendant(of: find.byKey(const ValueKey('decor_waves')), matching: find.byType(Opacity)));
+    expect(op.opacity, closeTo(0.55, 0.01));
+    expect(find.ancestor(of: find.byKey(const ValueKey('decor_waves')), matching: find.byType(IgnorePointer)), findsWidgets);
+  });
+
   testWidgets('背景つきのときだけ、上端に暗い帯(ステータスバー用)と見出しの白地が出る', (tester) async {
     final c = (await tester.runAsync(() => _container(prefs: {'decor_owned': ['bg_space']})))!;
     late BuildContext inner;
