@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
+import '../../features/shop/decor/decor_scope.dart';
 import '../../utils/sound_effects_utils.dart';
 import '../ranking/ranking_screen.dart';
 import '../settings/settings_screen.dart';
@@ -117,12 +118,22 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: 8, left: 4),
-        child: Text(
-          text,
-          style: AppStyles.headingSmall.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
+        padding: const EdgeInsets.only(bottom: 8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            decoration: BoxDecoration(
+              color: DecorScope.chipBg(context),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              text,
+              style: AppStyles.headingSmall.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       );
@@ -161,6 +172,10 @@ class _HomeButton extends ConsumerWidget {
               constraints: BoxConstraints(minHeight: height),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               decoration: BoxDecoration(
+                // 背景つきのときだけ不透明の白地にして、絵が透けて文字が読みにくくなるのを防ぐ
+                color: (DecorScope.maybeOf(context)?.hasBackground ?? false)
+                    ? Colors.white
+                    : null,
                 borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
                 border: Border.all(
                     color: item.color.withValues(alpha: 0.5), width: 2),
