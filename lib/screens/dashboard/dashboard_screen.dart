@@ -22,23 +22,7 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Optimization: Only watch specific needed values, not full provider objects
-    final childId = ref.watch(currentChildIdProvider);
-
-    if (childId == null) {
-      return Scaffold(
-        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
-        appBar: AppBar(
-          title: const Text('ダッシュボード'),
-          backgroundColor: AppColors.bgSecondary,
-          foregroundColor: AppColors.textPrimary,
-          elevation: 0,
-        ),
-        body: CommonEmptyState(
-          message: '子どもを選択してください',
-          icon: Icons.person_outline,
-        ),
-      );
-    }
+    final childId = ref.watch(effectiveChildIdProvider);
 
     return Scaffold(
       backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),

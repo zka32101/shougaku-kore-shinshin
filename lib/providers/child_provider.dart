@@ -4,6 +4,8 @@ import '../models/child_profile.dart';
 import '../services/hive_service.dart';
 import 'story_provider.dart' show apiServiceProvider;
 import 'firestore_provider.dart';
+import 'user_profile_provider.dart'
+    show displayNameProvider, profileGradeProvider;
 
 // ── 選択中の子どもID を Hive に永続化するノティファイアー ──────────────
 class _ChildIdNotifier extends StateNotifier<String?> {
@@ -51,6 +53,15 @@ final currentChildIdProvider =
   },
 );
 
+/// 画面が使う子どもID。サーバー側で選択されていなければ、端末内の
+/// プロフィール(名前入力で作ったもの)を指す 'local-child' を返す。
+/// これにより、サーバー未接続でもバッジ図鑑などが空にならない。
+final effectiveChildIdProvider = Provider<String>((ref) {
+  return ref.watch(currentChildIdProvider) ?? kLocalChildId;
+});
+
+const kLocalChildId = 'local-child';
+
 /// 親の全子どもプロフィール取得（バックエンド API）
 final childrenProfilesProvider =
     FutureProvider.autoDispose<List<ChildProfile>>((ref) async {
@@ -70,20 +81,25 @@ final currentChildProfileProvider = FutureProvider.autoDispose<ChildProfile?>(
   (ref) async {
     final childId = ref.watch(currentChildIdProvider);
     // サーバー未接続でも学習できるよう、端末内の既定プロフィールにフォールバック
-    if (childId == null || childId.startsWith('local-child')) return _localChild();
+    // 名前入力(端末内プロフィール)の名前・学年を反映する
+    final localName = ref.watch(displayNameProvider);
+    final localGrade = ref.watch(profileGradeProvider);
+    if (childId == null || childId.startsWith(kLocalChildId)) {
+      return _localChild(localName, localGrade);
+    }
     try {
       return await ref.watch(childProfileProvider(childId).future);
     } catch (_) {
-      return _localChild();
+      return _localChild(localName, localGrade);
     }
   },
 );
 
-ChildProfile _localChild() => ChildProfile(
-      id: 'local-child',
+ChildProfile _localChild([String? name, int? grade]) => ChildProfile(
+      id: kLocalChildId,
       parentId: 'local',
-      name: 'ユーザー',
-      grade: 3,
+      name: name ?? 'ユーザー',
+      grade: grade ?? 3,
       createdAt: DateTime.fromMillisecondsSinceEpoch(0),
     );
 
