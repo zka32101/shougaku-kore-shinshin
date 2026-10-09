@@ -2,7 +2,6 @@ import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/badge.dart';
-import '../../providers/progress_provider.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/badge_provider.dart';
 import '../../utils/sound_effects_utils.dart';
@@ -108,24 +107,11 @@ class _BadgeStatsSummary extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progress = ref.watch(userProgressProvider(childId));
-
-    return progress.when(
-      data: (progressList) {
-        // 獲得済みバッジをカウント
-        final earnedBadgesSet = <String>{};
-        for (final p in progressList) {
-          for (final badge in kDoutokuBadges) {
-            if (badge.theme == 'all' || badge.theme == p.virtue) {
-              if (p.completionCount >= badge.requiredCompletions) {
-                earnedBadgesSet.add(badge.id);
-              }
-            }
-          }
-        }
-
+    // 端末内の定義+進捗で判定する（サーバーが取れなくても動く）
+    final earnedCount = ref.watch(totalEarnedBadgesCountProvider(childId)).valueOrNull ?? 0;
+    return Builder(
+      builder: (context) {
         final totalBadges = kDoutokuBadges.length;
-        final earnedCount = earnedBadgesSet.length;
 
         return Row(
           children: [
@@ -173,8 +159,6 @@ class _BadgeStatsSummary extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }
@@ -196,43 +180,34 @@ class _BadgeCategorySection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final progress = ref.watch(userProgressProvider(childId));
+    // 定義は端末内の kDoutokuBadges。サーバーの状態に関係なく常に並べる。
+    final themeGroups = <String, List<BadgeDefinition>>{};
+    for (final badge in badges) {
+      themeGroups.putIfAbsent(badge.theme, () => []).add(badge);
+    }
 
-    return progress.when(
-      data: (progressList) {
-        // 徳目別にグループ化
-        final themeGroups = <String, List<BadgeDefinition>>{};
-        for (final badge in badges) {
-          themeGroups.putIfAbsent(badge.theme, () => []).add(badge);
-        }
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              description,
-              style: const TextStyle(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // 徳目ごとにバッジを表示
-            ..._buildBadgesByTheme(themeGroups, progressList),
-          ],
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          description,
+          style: const TextStyle(
+            fontSize: 12,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        const SizedBox(height: 16),
+        ..._buildBadgesByTheme(themeGroups, const []),
+      ],
     );
   }
 
@@ -370,40 +345,8 @@ class _BadgeCardState extends ConsumerState<_BadgeCard>
           ? badges.firstWhere((eb) => eb.badgeId == widget.badge.id).earnedAt
           : null;
 
-      // 進捗を計算
-      double progress = 0;
-      if (widget.badge.theme != 'all') {
-        try {
-          final virtueProgress = widget.progressList.firstWhere(
-            (p) => p.virtue == widget.badge.theme,
-            orElse: () => null,
-          );
-          if (virtueProgress != null && virtueProgress.completionCount != null) {
-            final completionCount = virtueProgress.completionCount is int
-                ? virtueProgress.completionCount as int
-                : (virtueProgress.completionCount as num).toInt();
-            progress = (completionCount / widget.badge.requiredCompletions).clamp(0, 1).toDouble();
-          }
-        } catch (e) {
-          progress = 0;
-        }
-      } else {
-        try {
-          final totalCompleted = widget.progressList.fold<int>(
-            0,
-            (sum, p) {
-              if (p.completionCount == null) return sum;
-              final count = p.completionCount is int
-                  ? p.completionCount as int
-                  : (p.completionCount as num).toInt();
-              return sum + count;
-            },
-          );
-          progress = (totalCompleted / widget.badge.requiredCompletions).clamp(0, 1).toDouble();
-        } catch (e) {
-          progress = 0;
-        }
-      }
+      final progress =
+          ref.read(badgeProgressProvider(widget.childId)).valueOrNull?[widget.badge.id] ?? 0.0;
 
       // バッジをタップした際の音声効果
       if (isEarned) {
@@ -427,44 +370,13 @@ class _BadgeCardState extends ConsumerState<_BadgeCard>
   Widget build(BuildContext context) {
     final earnedBadges = ref.watch(earnedBadgesProvider(widget.childId));
 
-    return earnedBadges.when(
-      data: (badges) {
+    return Builder(
+      builder: (context) {
+        final badges = earnedBadges.valueOrNull ?? const <EarnedBadge>[];
         final isEarned = badges.any((eb) => eb.badgeId == widget.badge.id);
 
-        // 進捗を計算
-        double progress = 0;
-        if (widget.badge.theme != 'all') {
-          try {
-            final virtueProgress = widget.progressList.firstWhere(
-              (p) => p.virtue == widget.badge.theme,
-              orElse: () => null,
-            );
-            if (virtueProgress != null && virtueProgress.completionCount != null) {
-              final completionCount = virtueProgress.completionCount is int
-                  ? virtueProgress.completionCount as int
-                  : (virtueProgress.completionCount as num).toInt();
-              progress = (completionCount / widget.badge.requiredCompletions).clamp(0, 1).toDouble();
-            }
-          } catch (e) {
-            progress = 0;
-          }
-        } else {
-          try {
-            final totalCompleted = widget.progressList.fold<int>(
-              0,
-              (sum, p) {
-                if (p.completionCount == null) return sum;
-                final count = p.completionCount is int
-                    ? p.completionCount as int
-                    : (p.completionCount as num).toInt();
-                return sum + count;
-              },
-            );
-            progress = (totalCompleted / widget.badge.requiredCompletions).clamp(0, 1).toDouble();
-          } catch (e) {
-            progress = 0;
-          }
-        }
+        final progress =
+            ref.watch(badgeProgressProvider(widget.childId)).valueOrNull?[widget.badge.id] ?? 0.0;
 
         return ScaleTransition(
           scale: _scaleAnimation,
@@ -573,8 +485,6 @@ class _BadgeCardState extends ConsumerState<_BadgeCard>
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。'),
     );
   }
 }

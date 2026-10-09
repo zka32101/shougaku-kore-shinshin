@@ -1,6 +1,7 @@
 import '../../features/shop/decor/decor_scope.dart';
 import '../../providers/local_avatar_provider.dart';
 import 'package:flutter/material.dart';
+import '../../services/local_completion_store.dart';
 import '../../widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/story.dart';
@@ -234,6 +235,14 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
 
     // ストーリーを読み終えるたびにコインがもらえる（アバター購入に使う）
     ref.read(localAvatarProvider.notifier).earnCoins(AppConstants.coinsPerStory);
+
+    // 端末内にも完了を記録（サーバーに繋がらなくてもバッジ判定できるように）
+    await LocalCompletionStore.record(
+      childId: widget.childId,
+      storyId: story.id,
+      theme: story.theme,
+    );
+    if (!mounted) return;
 
     // 子どもプロフィール（totalPoints）と進捗リストを無効化 → ホーム・成長画面で最新値を表示
     ref.invalidate(childProfileProvider(widget.childId));
