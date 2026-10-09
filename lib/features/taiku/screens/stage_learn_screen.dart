@@ -730,6 +730,7 @@ class StageIntroCard extends StatelessWidget {
   final Color color;
   final bool isLow;
   const StageIntroCard({
+    super.key,
     required this.stageNum,
     required this.color,
     required this.isLow,
