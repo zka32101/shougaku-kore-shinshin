@@ -9,6 +9,7 @@ import '../providers/disaster_provider.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/parent_diary_provider.dart';
 import 'disaster_drill_screen.dart';
+import 'learn_screen.dart' show GeijutsuGuideNote;
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -100,6 +101,10 @@ class HomeScreen extends ConsumerWidget {
 
                   // テーマ別ステージグリッド
                   _ThemeStageGrid(grade: grade),
+                  const SizedBox(height: 20),
+
+                  // 図工・音楽・家庭科は「げいじゅつ」へ案内
+                  const GeijutsuGuideNote(),
                 ],
               ),
             ),
@@ -458,9 +463,6 @@ class _SmartRecommendCard extends ConsumerWidget {
       case 'environment': return '環境';
       case 'money': return 'お金';
       case 'values': return '価値観';
-      case 'art': return '図工';
-      case 'music': return '音楽';
-      case 'home_ec': return '家庭科';
       case 'ict': return '情報';
       case 'experience': return '実体験';
       default: return theme;
@@ -596,9 +598,6 @@ class _ThemeStageGrid extends ConsumerWidget {
       case 'environment': return '🌏 環境';
       case 'money': return '💴 お金';
       case 'values': return '💡 価値観';
-      case 'art': return '🎨 図工';
-      case 'music': return '🎵 音楽';
-      case 'home_ec': return '🍳 家庭科';
       case 'ict': return '💻 情報';
       case 'experience': return '🌟 実体験';
       default: return theme;
