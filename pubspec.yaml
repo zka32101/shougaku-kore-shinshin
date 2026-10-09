@@ -106,6 +106,7 @@ flutter:
   assets:
     - assets/icons_common/
     - assets/badges/
+    - assets/celebrate/
     - assets/branding/
     - assets/logos/
     - assets/images/
