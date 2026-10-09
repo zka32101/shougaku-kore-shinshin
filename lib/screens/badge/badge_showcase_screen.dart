@@ -8,7 +8,6 @@ import '../../providers/badge_provider.dart';
 import '../../utils/sound_effects_utils.dart';
 import '../../utils/animation_constants.dart';
 import '../../constants/app_colors.dart';
-import '../../widgets/common_states.dart';
 import '../../widgets/animations/index.dart';
 import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
 
@@ -18,23 +17,7 @@ class BadgeShowcaseScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final childId = ref.watch(currentChildIdProvider);
-
-    if (childId == null) {
-      return Scaffold(
-        backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),
-        appBar: AppBar(
-          title: const Text('バッジ図鑑'),
-          backgroundColor: AppColors.bgSecondary,
-          foregroundColor: AppColors.textPrimary,
-          elevation: 0,
-        ),
-        body: CommonEmptyState(
-          message: '子どもを選択してください',
-          icon: Icons.person_outline,
-        ),
-      );
-    }
+    final childId = ref.watch(effectiveChildIdProvider);
 
     return Scaffold(
       backgroundColor: DecorScope.pageBg(context, AppColors.bgPrimary),

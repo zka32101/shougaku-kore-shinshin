@@ -832,7 +832,7 @@ class _BranchingStoryView extends StatelessWidget {
                 delay: Duration(milliseconds: 400),
                 child: SizedBox(
                   width: double.infinity,
-                  child: _StoryActionButton(
+                  child: StoryActionButton(
                     label: 'ふりかえりへ',
                     onPressed: onContinue,
                     icon: Icons.arrow_forward,
@@ -982,7 +982,7 @@ class _ReflectionView extends StatelessWidget {
                 delay: Duration(milliseconds: 350),
                 child: SizedBox(
                   width: double.infinity,
-                  child: _StoryActionButton(
+                  child: StoryActionButton(
                     label: '結果を見る',
                     onPressed: onComplete,
                     isLoading: isCompleting,
@@ -1114,13 +1114,14 @@ class _AudioButton extends ConsumerWidget {
 // ─── ストーリーアクション ボタン ───────────────────
 
 /// Reusable action button with tap feedback and optional loading state
-class _StoryActionButton extends StatefulWidget {
+class StoryActionButton extends StatefulWidget {
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
   final bool isLoading;
 
-  const _StoryActionButton({
+  const StoryActionButton({
+    super.key,
     required this.label,
     required this.onPressed,
     this.icon,
@@ -1128,10 +1129,10 @@ class _StoryActionButton extends StatefulWidget {
   });
 
   @override
-  State<_StoryActionButton> createState() => _StoryActionButtonState();
+  State<StoryActionButton> createState() => StoryActionButtonState();
 }
 
-class _StoryActionButtonState extends State<_StoryActionButton>
+class StoryActionButtonState extends State<StoryActionButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -1180,18 +1181,24 @@ class _StoryActionButtonState extends State<_StoryActionButton>
         onTapDown: _onTapDown,
         onTapUp: _onTapUp,
         onTapCancel: _onTapCancel,
-        child: ElevatedButton(
-          onPressed: null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: Colors.white,
+        // タップは GestureDetector で拾う。ElevatedButton(onPressed: null) だと
+        // 無効色(灰色)になるため、見た目だけ有効色の Container で描く。
+        child: Semantics(
+          button: true,
+          enabled: !widget.isLoading && widget.onPressed != null,
+          label: widget.label,
+          child: Container(
+            alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
+            decoration: BoxDecoration(
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
             ),
-            elevation: 0,
-          ),
-          child: widget.isLoading
+            child: DefaultTextStyle.merge(
+              style: const TextStyle(color: Colors.white),
+              child: IconTheme.merge(
+                data: const IconThemeData(color: Colors.white),
+                child: widget.isLoading
               ? const SizedBox(
                   height: 20,
                   width: 20,
@@ -1216,6 +1223,9 @@ class _StoryActionButtonState extends State<_StoryActionButton>
                     ],
                   ],
                 ),
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -132,12 +132,21 @@ class _StoryResultScreenState extends ConsumerState<StoryResultScreen>
                                       (widget.score *
                                               _counterController.value)
                                           .toInt();
-                                  return Text(
-                                    '$currentScore%',
-                                    style: const TextStyle(
-                                      fontSize: 48,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
+                                  // 円(120dp)の中に収める。100% でも折り返さない
+                                  return Padding(
+                                    padding: const EdgeInsets.all(18),
+                                    child: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      child: Text(
+                                        '$currentScore%',
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        style: const TextStyle(
+                                          fontSize: 48,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
                                     ),
                                   );
                                 },

@@ -43,8 +43,7 @@ class _BadgeCelebrationHostState extends ConsumerState<BadgeCelebrationHost> {
   }
 
   void _onRecheck() {
-    final id = ref.read(currentChildIdProvider);
-    if (id == null) return;
+    final id = ref.read(effectiveChildIdProvider);
     ref.invalidate(userProgressProvider(id));
   }
 
@@ -78,16 +77,14 @@ class _BadgeCelebrationHostState extends ConsumerState<BadgeCelebrationHost> {
 
   @override
   Widget build(BuildContext context) {
-    final childId = ref.watch(currentChildIdProvider);
-    if (childId != null) {
-      ref.listen<AsyncValue<List<EarnedBadge>>>(
-        earnedBadgesProvider(childId),
-        (_, next) {
-          final v = next.valueOrNull;
-          if (v != null) _handle(childId, v);
-        },
-      );
-    }
+    final childId = ref.watch(effectiveChildIdProvider);
+    ref.listen<AsyncValue<List<EarnedBadge>>>(
+      earnedBadgesProvider(childId),
+      (_, next) {
+        final v = next.valueOrNull;
+        if (v != null) _handle(childId, v);
+      },
+    );
     return widget.child;
   }
 }
