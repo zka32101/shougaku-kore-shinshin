@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class HomeEcHubScreen extends ConsumerStatefulWidget {
   const HomeEcHubScreen({super.key});
@@ -61,7 +62,7 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🏠 家庭科コレ！'),
+        title: const FuriganaText('🏠 家庭科コレ！'),
         backgroundColor: kHomeEcColor,
         foregroundColor: Colors.white,
       ),
@@ -71,7 +72,7 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
           Card(
             child: ListTile(
               leading: const Icon(Icons.history),
-              title: const Text('これまでの家庭科の記録を ふりかえる'),
+              title: const FuriganaText('これまでの家庭科の記録を ふりかえる'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => Navigator.pushNamed(context, '/memories', arguments: 2),
             ),
@@ -96,7 +97,7 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
                       const Text('🎓', style: TextStyle(fontSize: 24)),
                       const SizedBox(width: 8),
                       const Expanded(
-                        child: Text(
+                        child: FuriganaText(
                           'なぜ家庭科を学ぶの？',
                           style: TextStyle(
                             color: Colors.white,
@@ -169,7 +170,7 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
           ),
 
           const SizedBox(height: 20),
-          const Text(
+          const FuriganaText(
             '色彩チャレンジ',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
@@ -187,7 +188,7 @@ class _HomeEcHubScreenState extends ConsumerState<HomeEcHubScreen> {
           ),
 
           const SizedBox(height: 20),
-          const Text(
+          const FuriganaText(
             '生活スキルチャレンジ',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
@@ -240,7 +241,7 @@ class _WhyItem extends StatelessWidget {
           UkalabEmoji(icon, size: 18),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
+            child: FuriganaText(
               text,
               style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5),
             ),
@@ -266,7 +267,7 @@ class _StatItem extends StatelessWidget {
         Text(value,
             style: const TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold, color: kHomeEcColor)),
-        Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+        FuriganaText(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
       ],
     );
   }
@@ -321,7 +322,7 @@ class _MenuCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(title,
+                        child: FuriganaText(title,
                             style: TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold, color: color)),
                       ),
@@ -332,7 +333,7 @@ class _MenuCard extends StatelessWidget {
                             color: color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(badge!,
+                          child: FuriganaText(badge!,
                               style: TextStyle(
                                   fontSize: 10,
                                   color: color,
@@ -341,10 +342,10 @@ class _MenuCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 2),
-                  Text(subtitle,
+                  FuriganaText(subtitle,
                       style: const TextStyle(fontSize: 12, color: Colors.grey)),
                   const SizedBox(height: 4),
-                  Text(description,
+                  FuriganaText(description,
                       style: const TextStyle(fontSize: 12, height: 1.4)),
                 ],
               ),

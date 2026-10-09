@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../models/color_profile.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class ColorDiagnosisScreen extends ConsumerStatefulWidget {
   const ColorDiagnosisScreen({super.key});
@@ -67,7 +68,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('色彩タイプ診断 (${_step + 1}/4)'),
+        title: FuriganaText('色彩タイプ診断 (${_step + 1}/4)'),
         backgroundColor: kArtColor,
         foregroundColor: Colors.white,
       ),
@@ -106,11 +107,11 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const FuriganaText(
             'あなたの「色」は何色ですか？',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const Text('複数選択OK', style: TextStyle(color: Colors.grey)),
+          const FuriganaText('複数選択OK', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 16),
           Expanded(
             child: GridView.builder(
@@ -144,7 +145,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         if (selected) const Icon(Icons.check_circle, color: Colors.white, size: 20),
-                        Text(
+                        FuriganaText(
                           _colorNames[i],
                           style: TextStyle(
                             color: selected ? Colors.white : color,
@@ -167,7 +168,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                 minimumSize: const Size(double.infinity, 54),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('次へ ▶', style: TextStyle(fontSize: 18)),
+              child: const FuriganaText('次へ ▶', style: TextStyle(fontSize: 18)),
             ),
           ),
         ],
@@ -185,7 +186,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
             '「${_selectedColors.map((i) => _colorNames[i]).take(2).join('・')}」を選んだ理由は？',
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-          const Text('複数選択OK', style: TextStyle(color: Colors.grey)),
+          const FuriganaText('複数選択OK', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
@@ -201,7 +202,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                       _selectedReasons.add(i);
                     }
                   }),
-                  title: Text(_reasons[i]),
+                  title: FuriganaText(_reasons[i]),
                   activeColor: kArtColor,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                   tileColor: sel ? kArtColor.withValues(alpha: 0.08) : null,
@@ -215,7 +216,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                 OutlinedButton(
                   onPressed: () => setState(() => _step = 0),
                   style: OutlinedButton.styleFrom(minimumSize: const Size(80, 54)),
-                  child: const Text('戻る'),
+                  child: const FuriganaText('戻る'),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -226,7 +227,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                       minimumSize: const Size(double.infinity, 54),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
-                    child: const Text('次へ ▶', style: TextStyle(fontSize: 18)),
+                    child: const FuriganaText('次へ ▶', style: TextStyle(fontSize: 18)),
                   ),
                 ),
               ],
@@ -255,7 +256,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
             style: TextStyle(color: kArtColor, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Text(
+          FuriganaText(
             scene['q'] as String,
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.4),
           ),
@@ -273,13 +274,13 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
                 elevation: 2,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              child: Text(opts[i] as String, textAlign: TextAlign.center),
+              child: FuriganaText(opts[i] as String, textAlign: TextAlign.center),
             ),
           )),
           if (qIdx > 0)
             TextButton(
               onPressed: () => setState(() => _sceneAnswers.removeLast()),
-              child: const Text('前の問いに戻る'),
+              child: const FuriganaText('前の問いに戻る'),
             ),
         ],
       ),
@@ -345,10 +346,10 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
               children: [
                 const Text('🎨', style: TextStyle(fontSize: 56)),
                 const SizedBox(height: 12),
-                const Text('あなたの色彩タイプは…',
+                const FuriganaText('あなたの色彩タイプは…',
                     style: TextStyle(color: Colors.white70, fontSize: 14)),
                 const SizedBox(height: 4),
-                Text(
+                FuriganaText(
                   typeStr,
                   style: const TextStyle(
                     color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold,
@@ -402,7 +403,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: const Text('図工を始める！ 🎨', style: TextStyle(fontSize: 18)),
+            child: const FuriganaText('図工を始める！ 🎨', style: TextStyle(fontSize: 18)),
           ),
         ],
       ),
@@ -412,7 +413,7 @@ class _ColorDiagnosisScreenState extends ConsumerState<ColorDiagnosisScreen> {
   Widget _buildAffinityBar(String label, double value, Color color) {
     return Row(
       children: [
-        SizedBox(width: 130, child: Text(label, style: const TextStyle(fontSize: 12))),
+        SizedBox(width: 130, child: FuriganaText(label, style: const TextStyle(fontSize: 12))),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),

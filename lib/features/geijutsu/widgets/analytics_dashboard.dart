@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/analytics_models.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 /// Analytics Dashboard for displaying learning statistics
 class AnalyticsDashboard extends StatelessWidget {
@@ -112,7 +113,7 @@ class AnalyticsDashboard extends StatelessWidget {
           children: [
             Icon(icon, size: 32, color: Colors.blue),
             const SizedBox(height: 12),
-            Text(
+            FuriganaText(
               title,
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
@@ -171,7 +172,7 @@ class AnalyticsDashboard extends StatelessWidget {
                           getTitlesWidget: (value, meta) {
                             final index = value.toInt();
                             if (index >= 0 && index < dailyActivity.length) {
-                              return Text(
+                              return FuriganaText(
                                 _getDayLabel(dailyActivity[index].day),
                                 style: const TextStyle(fontSize: 10),
                               );
@@ -215,7 +216,7 @@ class AnalyticsDashboard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              FuriganaText(
                 'せいかい率のすうじ',
                 style: Theme.of(context).textTheme.titleMedium,
               ),

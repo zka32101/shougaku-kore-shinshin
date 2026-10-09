@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../providers/app_providers.dart';
 import '../../models/composition.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class CompositionScreen extends ConsumerStatefulWidget {
   final int stage;
@@ -72,7 +73,7 @@ class _CompositionScreenState extends ConsumerState<CompositionScreen>
   Future<void> _save() async {
     if (_melody.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('まず音符を並べてみよう！')),
+        const SnackBar(content: FuriganaText('まず音符を並べてみよう！')),
       );
       return;
     }
@@ -114,7 +115,7 @@ class _CompositionScreenState extends ConsumerState<CompositionScreen>
     if (mounted) {
       final msg = bd != null ? '曲を保存しました！ バッジ「${bd[1]}」獲得！' : '曲を保存しました！';
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(msg), backgroundColor: kMusicColor),
+        SnackBar(content: FuriganaText(msg), backgroundColor: kMusicColor),
       );
       Navigator.pop(context);
     }
@@ -174,7 +175,7 @@ class _CompositionScreenState extends ConsumerState<CompositionScreen>
                   color: kMusicColorLight,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Text(
+                child: const FuriganaText(
                   '🎸 コード伴奏: C・G・Fを自動追加します',
                   style: TextStyle(fontSize: 14, color: kMusicColor),
                 ),
@@ -221,7 +222,7 @@ class _CompositionScreenState extends ConsumerState<CompositionScreen>
                 minimumSize: const Size(double.infinity, 54),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('完成・保存する 🎵', style: TextStyle(fontSize: 18)),
+              child: const FuriganaText('完成・保存する 🎵', style: TextStyle(fontSize: 18)),
             ),
           ],
         ),
@@ -266,12 +267,12 @@ class _StageInfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          FuriganaText(
             'Stage $stage の目標',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: kMusicColor),
           ),
           const SizedBox(height: 6),
-          Text(desc, style: const TextStyle(fontSize: 13, height: 1.6)),
+          FuriganaText(desc, style: const TextStyle(fontSize: 13, height: 1.6)),
         ],
       ),
     );
@@ -311,14 +312,14 @@ class _MelodyDisplay extends StatelessWidget {
                 TextButton.icon(
                   onPressed: removeLastNote,
                   icon: const Icon(Icons.backspace, size: 16),
-                  label: const Text('削除', style: TextStyle(fontSize: 12)),
+                  label: const FuriganaText('削除', style: TextStyle(fontSize: 12)),
                   style: TextButton.styleFrom(foregroundColor: Colors.red),
                 ),
             ],
           ),
           const SizedBox(height: 8),
           melody.isEmpty
-              ? const Text(
+              ? const FuriganaText(
                   '下の鍵盤をタップして音符を並べよう！',
                   style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
                 )
@@ -423,7 +424,7 @@ class _PatternSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('メロディのパターンを選ぼう',
+        const FuriganaText('メロディのパターンを選ぼう',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
         const SizedBox(height: 8),
         GridView.builder(
@@ -453,13 +454,13 @@ class _PatternSelector extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(p['label']!,
+                        FuriganaText(p['label']!,
                             style: TextStyle(
                               color: sel ? Colors.white : kTextDark,
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
                             )),
-                        Text(p['desc']!,
+                        FuriganaText(p['desc']!,
                             style: TextStyle(
                               color: sel ? Colors.white70 : Colors.grey,
                               fontSize: 11,
@@ -496,7 +497,7 @@ class _InstrumentSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('楽器を選ぼう',
+        const FuriganaText('楽器を選ぼう',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
         const SizedBox(height: 8),
         SingleChildScrollView(
@@ -519,7 +520,7 @@ class _InstrumentSelector extends StatelessWidget {
                     children: [
                       Text(inst['emoji']!, style: const TextStyle(fontSize: 18)),
                       const SizedBox(width: 6),
-                      Text(
+                      FuriganaText(
                         inst['name']!,
                         style: TextStyle(
                           color: sel ? Colors.white : kTextDark,
@@ -554,7 +555,7 @@ class _RhythmSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('リズム設定', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        const FuriganaText('リズム設定', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
         const SizedBox(height: 8),
         Row(
           children: ['4/4', '3/4'].map((ts) {
@@ -570,7 +571,7 @@ class _RhythmSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: sel ? kMusicColor : Colors.grey[300]!),
                 ),
-                child: Text(
+                child: FuriganaText(
                   '$ts 拍子',
                   style: TextStyle(
                     color: sel ? Colors.white : kTextDark,
@@ -671,7 +672,7 @@ class _DrumRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Center(
-              child: Text(
+              child: FuriganaText(
                 '拍${i + 1}',
                 style: TextStyle(
                   fontSize: 12,

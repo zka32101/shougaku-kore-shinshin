@@ -8,6 +8,7 @@ import '../models/composition.dart';
 import '../models/home_challenge.dart';
 import '../providers/app_providers.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 /// ふりかえり画面に並べる1件分の記録。
 class MemoryEntry {
@@ -193,7 +194,7 @@ class _MemoryList extends StatelessWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(emptyText,
+          child: FuriganaText(emptyText,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey, height: 1.7)),
         ),
@@ -253,9 +254,9 @@ class _MemoryTile extends StatelessWidget {
       child: ListTile(
         key: Key('memory_${entry.id}'),
         leading: _thumb(first, entry.emoji),
-        title: Text(entry.title,
+        title: FuriganaText(entry.title,
             style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(entry.subtitle),
+        subtitle: FuriganaText(entry.subtitle),
         trailing: const Icon(Icons.chevron_right),
         onTap: () => showMemoryDetail(context, entry, color),
       ),
@@ -283,7 +284,7 @@ void showMemoryDetail(BuildContext context, MemoryEntry e, Color color) {
           Text('${e.emoji} ${e.title}',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          Text(e.subtitle, style: TextStyle(color: color)),
+          FuriganaText(e.subtitle, style: TextStyle(color: color)),
           const SizedBox(height: 12),
           if (paths.isEmpty)
             Container(
@@ -307,10 +308,10 @@ void showMemoryDetail(BuildContext context, MemoryEntry e, Color color) {
           for (final l in e.lines)
             Padding(
               padding: const EdgeInsets.only(bottom: 6),
-              child: Text(l, style: const TextStyle(height: 1.6)),
+              child: FuriganaText(l, style: const TextStyle(height: 1.6)),
             ),
           const SizedBox(height: 4),
-          Text(
+          FuriganaText(
               '${e.createdAt.year}年${e.createdAt.month}月${e.createdAt.day}日に のこしたよ',
               style: const TextStyle(color: Colors.grey, fontSize: 12)),
         ],

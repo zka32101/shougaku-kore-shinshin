@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
 import '../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -45,7 +46,7 @@ class HomeScreen extends ConsumerWidget {
                           children: [
                             UkalabEmoji(display.avatarEmoji, size: 28),
                             const SizedBox(width: 8),
-                            const Text(
+                            const FuriganaText(
                               '小学コレ！芸術',
                               style: TextStyle(
                                 color: Colors.white,
@@ -56,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
                           ],
                         ),
                         const SizedBox(height: 4),
-                        Text(
+                        FuriganaText(
                           '${display.name} ・ バッジ ${badges.items.length}個',
                           style: const TextStyle(color: Colors.white70, fontSize: 14),
                         ),
@@ -77,7 +78,7 @@ class HomeScreen extends ConsumerWidget {
                     leading: const Text('📚', style: TextStyle(fontSize: 28)),
                     title: const Text('ふりかえり',
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: const Text('これまでの作品・曲・記録を見かえそう'),
+                    subtitle: const FuriganaText('これまでの作品・曲・記録を見かえそう'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => Navigator.pushNamed(context, '/memories'),
                   ),
@@ -204,7 +205,7 @@ class _SubjectCard extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text(
+                            FuriganaText(
                               title,
                               style: TextStyle(
                                 fontSize: 22,
@@ -220,7 +221,7 @@ class _SubjectCard extends StatelessWidget {
                                   color: color,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Text(
+                                child: FuriganaText(
                                   subtitle,
                                   style: const TextStyle(color: Colors.white, fontSize: 10),
                                   overflow: TextOverflow.ellipsis,
@@ -230,7 +231,7 @@ class _SubjectCard extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 4),
-                        Text(
+                        FuriganaText(
                           description,
                           style: TextStyle(fontSize: 13, color: color.withValues(alpha: 0.8), height: 1.4),
                         ),
@@ -249,9 +250,9 @@ class _SubjectCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(progressLabel,
+                      FuriganaText(progressLabel,
                           style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.bold)),
-                      Text(currentLabel,
+                      FuriganaText(currentLabel,
                           style: TextStyle(fontSize: 11, color: Colors.grey[600])),
                     ],
                   ),
@@ -331,7 +332,7 @@ class _StatChip extends StatelessWidget {
               count.toString(),
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+            FuriganaText(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
           ],
         ),
       ),

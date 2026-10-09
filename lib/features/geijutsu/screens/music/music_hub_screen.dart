@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class MusicHubScreen extends ConsumerStatefulWidget {
   const MusicHubScreen({super.key});
@@ -24,7 +25,7 @@ class _MusicHubScreenState extends ConsumerState<MusicHubScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🎵 音楽コレ！'),
+        title: const FuriganaText('🎵 音楽コレ！'),
         backgroundColor: kMusicColor,
         foregroundColor: Colors.white,
       ),
@@ -34,7 +35,7 @@ class _MusicHubScreenState extends ConsumerState<MusicHubScreen> {
           Card(
             child: ListTile(
               leading: const Icon(Icons.history),
-              title: const Text('これまでのつくった曲を ふりかえる'),
+              title: const FuriganaText('これまでのつくった曲を ふりかえる'),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => Navigator.pushNamed(context, '/memories', arguments: 1),
             ),
@@ -59,7 +60,7 @@ class _MusicHubScreenState extends ConsumerState<MusicHubScreen> {
                       const Text('🎓', style: TextStyle(fontSize: 24)),
                       const SizedBox(width: 8),
                       const Expanded(
-                        child: Text(
+                        child: FuriganaText(
                           'なぜ音楽を学ぶの？',
                           style: TextStyle(
                             color: Colors.white,
@@ -206,7 +207,7 @@ class _WhyItem extends StatelessWidget {
           UkalabEmoji(icon, size: 18),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(
+            child: FuriganaText(
               text,
               style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5),
             ),
@@ -230,7 +231,7 @@ class _StatItem extends StatelessWidget {
         UkalabEmoji(emoji, size: 24),
         const SizedBox(height: 4),
         Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: kMusicColor)),
-        Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+        FuriganaText(label, style: const TextStyle(fontSize: 11, color: Colors.grey)),
       ],
     );
   }
@@ -285,7 +286,7 @@ class _MenuCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(title,
+                        child: FuriganaText(title,
                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: color)),
                       ),
                       if (badge != null)
@@ -295,14 +296,14 @@ class _MenuCard extends StatelessWidget {
                             color: color.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Text(badge!, style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.bold)),
+                          child: FuriganaText(badge!, style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.bold)),
                         ),
                     ],
                   ),
                   const SizedBox(height: 2),
-                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                  FuriganaText(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
                   const SizedBox(height: 4),
-                  Text(description, style: const TextStyle(fontSize: 12, height: 1.4)),
+                  FuriganaText(description, style: const TextStyle(fontSize: 12, height: 1.4)),
                 ],
               ),
             ),

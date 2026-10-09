@@ -4,6 +4,7 @@ import '../providers/app_providers.dart';
 import '../models/badge.dart';
 import '../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class BadgeScreen extends ConsumerWidget {
   const BadgeScreen({super.key});
@@ -79,13 +80,13 @@ class _BadgeSummaryCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              FuriganaText(
                 '$total 個獲得！',
                 style: const TextStyle(
                   fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white,
                 ),
               ),
-              Text(
+              FuriganaText(
                 '全${BadgeCollection.allDefinitions.length}個中',
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
@@ -128,7 +129,7 @@ class _BadgeSection extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Text(title,
+            child: FuriganaText(title,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
           ),
           GridView.builder(
@@ -191,7 +192,7 @@ class _BadgeTile extends StatelessWidget {
           else
             const Text('🔒', style: TextStyle(fontSize: 30)),
           const SizedBox(height: 6),
-          Text(
+          FuriganaText(
             name,
             textAlign: TextAlign.center,
             style: TextStyle(

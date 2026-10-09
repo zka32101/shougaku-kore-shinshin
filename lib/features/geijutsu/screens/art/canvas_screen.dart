@@ -8,6 +8,7 @@ import 'dart:io';
 import '../../providers/app_providers.dart';
 import '../../models/artwork.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class CanvasScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> args;
@@ -123,7 +124,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
   Future<void> _save() async {
     if (_strokes.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('まず何か描いてみよう！')),
+        const SnackBar(content: FuriganaText('まず何か描いてみよう！')),
       );
       return;
     }
@@ -149,7 +150,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            FuriganaText(
               '作品を保存しよう',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,
                   color: kMonthColors[_month - 1]['color'] as Color),
@@ -192,7 +193,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              child: const Text('保存する ✓', style: TextStyle(fontSize: 16)),
+              child: const FuriganaText('保存する ✓', style: TextStyle(fontSize: 16)),
             ),
           ],
         ),
@@ -235,7 +236,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('作品を保存しました！バッジ「${bd[0]}」獲得！'),
+          content: FuriganaText('作品を保存しました！バッジ「${bd[0]}」獲得！'),
           backgroundColor: colorData['color'] as Color,
         ),
       );
@@ -250,7 +251,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lv$_level: $_colorNameで描こう'),
+        title: FuriganaText('Lv$_level: $_colorNameで描こう'),
         backgroundColor: color,
         foregroundColor: Colors.white,
         actions: [
@@ -265,13 +266,13 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
             onPressed: () => showDialog(
               context: context,
               builder: (dctx) => AlertDialog(
-                title: const Text('全消去'),
-                content: const Text('全てのストロークを消しますか？'),
+                title: const FuriganaText('全消去'),
+                content: const FuriganaText('全てのストロークを消しますか？'),
                 actions: [
                   TextButton(onPressed: () => Navigator.pop(dctx), child: const Text('キャンセル')),
                   TextButton(
                     onPressed: () { setState(() => _strokes.clear()); Navigator.pop(dctx); },
-                    child: const Text('消す', style: TextStyle(color: Colors.red)),
+                    child: const FuriganaText('消す', style: TextStyle(color: Colors.red)),
                   ),
                 ],
               ),
@@ -286,7 +287,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
           Container(
             color: color.withValues(alpha: 0.1),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
+            child: FuriganaText(
               _getCoachingMessage(),
               style: TextStyle(fontSize: 13, color: color, fontStyle: FontStyle.italic),
               textAlign: TextAlign.center,
@@ -380,7 +381,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                               color: _brushType == i ? color : Colors.grey[200],
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text(
+                            child: FuriganaText(
                               labels[i],
                               style: TextStyle(
                                 fontSize: 11,
@@ -409,7 +410,7 @@ class _CanvasScreenState extends ConsumerState<CanvasScreen> {
                 ),
                 child: _isSaving
                     ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                    : const Text('作品を保存する ✓', style: TextStyle(fontSize: 18)),
+                    : const FuriganaText('作品を保存する ✓', style: TextStyle(fontSize: 18)),
               ),
             ),
           ),
