@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/shop/decor/decor_items.dart';
 import '../../features/shop/decor/decor_provider.dart';
 import '../../features/shop/decor/decor_screen.dart';
+import '../../features/shop/title/title_shop.dart';
 import '../../models/animal_avatar.dart';
 import '../../providers/local_avatar_provider.dart';
 import '../../widgets/avatar_display_widget.dart';
@@ -126,6 +127,8 @@ class AvatarSelectionScreen extends ConsumerWidget {
       ),
           const SizedBox(height: 24),
           const _DecorShop(),
+          const SizedBox(height: 24),
+          const TitleShop(),
         ],
       ),
     );

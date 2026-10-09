@@ -1,3 +1,4 @@
+import '../features/shop/title/title_plate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/animal_avatar.dart';
@@ -117,6 +118,7 @@ class AvatarPanel extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                   ],
+                  const HomeTitlePlate(),
                   Text(
                     '🪙 $coins　アバターを選ぶ',
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
