@@ -39,11 +39,12 @@ final badgeStatsComputationProvider = FutureProvider.autoDispose
 
     for (final p in progressList) {
       if (p.action == 'story_completed' && p.storyId != null) {
-        final story = storyMap[p.storyId];
-        if (story != null) {
+        // ストーリー一覧に無くても、記録に徳目があればそれで数える
+        final theme = storyMap[p.storyId]?.theme ?? p.virtue;
+        if (theme != null && theme.isNotEmpty) {
           totalCompletions++;
           completionsByVirtue.update(
-            story.theme,
+            theme,
             (count) => count + 1,
             ifAbsent: () => 1,
           );

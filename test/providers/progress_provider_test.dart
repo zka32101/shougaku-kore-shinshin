@@ -122,14 +122,14 @@ void main() {
       expect(items.first.id, 'cached-p');
     });
 
-    test('rethrows when API fails and cache is empty', () async {
+    test('returns empty list (no throw) when API fails and cache is empty', () async {
       api.shouldFail = true;
       final container = _makeContainer(api: api, hive: hive);
       addTearDown(container.dispose);
 
-      await expectLater(
-        container.read(userProgressProvider('child-1').future),
-        throwsA(isA<Exception>()),
+      expect(
+        await container.read(userProgressProvider('child-1').future),
+        isEmpty,
       );
     });
   });

@@ -3,6 +3,7 @@ import '../models/progress.dart';
 import '../models/story.dart';
 import '../constants/app_constants.dart';
 import '../utils/date_time_utils.dart';
+import '../services/local_completion_store.dart';
 import 'story_provider.dart'
     show apiServiceProvider, hiveServiceProvider, storiesProvider;
 
@@ -18,15 +19,31 @@ final userProgressProvider = FutureProvider.autoDispose
     .family<List<Progress>, String>((ref, childId) async {
   final api = ref.watch(apiServiceProvider);
   final hive = ref.read(hiveServiceProvider);
+  List<Progress> remote;
   try {
-    final items = await api.fetchProgress(childId);
-    hive.cacheProgressList(items).ignore();
-    return items;
+    remote = await api.fetchProgress(childId);
+    hive.cacheProgressList(remote).ignore();
   } catch (_) {
-    final cached = await hive.getCachedProgress(childId);
-    if (cached.isNotEmpty) return cached;
-    rethrow;
+    // オフライン/タイムアウト/例外 → Hive キャッシュ（無ければ空）
+    try {
+      remote = await hive.getCachedProgress(childId);
+    } catch (_) {
+      remote = const [];
+    }
   }
+  // 端末内の完了記録を足す（サーバー側に同じストーリーがあればサーバー優先）
+  final local = await LocalCompletionStore.load(childId);
+  if (local.isEmpty) return remote;
+  final seen = <String>{
+    for (final p in remote)
+      if (p.action == AppConstants.actionStoryCompleted && p.storyId != null)
+        p.storyId!,
+  };
+  return [
+    ...remote,
+    for (final p in local)
+      if (!seen.contains(p.storyId)) p,
+  ];
 });
 
 /// 完了済みストーリー一覧（重複なし、完了日時順）
