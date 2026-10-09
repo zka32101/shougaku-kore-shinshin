@@ -119,6 +119,7 @@ flutter:
     - assets/avatars/
     - assets/shop/
     - assets/shop/thumb/
+    - assets/title_plate/
     - assets/characters/
     - assets/explain/
     - assets/sounds/
