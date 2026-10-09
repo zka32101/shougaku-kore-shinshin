@@ -6,6 +6,7 @@ import '../characters/character_collection_screen.dart';
 import '../library/library_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../../features/geijutsu/geijutsu_app.dart' show GeijutsuModule;
+import '../../widgets/badge_celebration_host.dart';
 import '../../widgets/shell_route_observer.dart';
 import 'home_screen.dart';
 import 'shell_navigation.dart';
@@ -31,6 +32,8 @@ class _MainShellState extends State<MainShell> {
   // 体育・芸術の内側で全画面ページ（クイズ・結果・描画・撮影など）が開いている間は下部ナビを隠す
   final _taikuObs = ShellRouteObserver();
   final _geijutsuObs = ShellRouteObserver();
+  // タブを切り替えるたびにバッジ獲得を再判定する
+  final _badgeRecheck = ValueNotifier<int>(0);
 
   ShellRouteObserver? _obsFor(HomeSection s) => switch (s) {
         HomeSection.taiku => _taikuObs,
@@ -68,6 +71,7 @@ class _MainShellState extends State<MainShell> {
     shellSectionRequest.removeListener(_onShellRequest);
     _taikuObs.dispose();
     _geijutsuObs.dispose();
+    _badgeRecheck.dispose();
     super.dispose();
   }
 
@@ -76,6 +80,7 @@ class _MainShellState extends State<MainShell> {
       _current = s;
       _visited.add(s);
     });
+    _badgeRecheck.value++;
   }
 
   Widget _build(HomeSection s) {
@@ -98,6 +103,13 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     final obs = _obsFor(_current);
+    final shell = _buildShell(obs);
+    // テスト用に画面を差し替えた場合(tabBuilders)は演出ホストを付けない
+    if (widget.tabBuilders != null) return shell;
+    return BadgeCelebrationHost(recheck: _badgeRecheck, child: shell);
+  }
+
+  Widget _buildShell(ShellRouteObserver? obs) {
     return ListenableBuilder(
       listenable: obs?.fullScreen ?? _never,
       builder: (context, _) {
