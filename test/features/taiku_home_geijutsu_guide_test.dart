@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shougaku_kore_doutoku/features/literacy_core/literacy_core.dart';
 import 'package:shougaku_kore_doutoku/features/taiku/data/taiku_questions.dart';
-import 'package:shougaku_kore_doutoku/features/taiku/providers/taiku_providers.dart';
 import 'package:shougaku_kore_doutoku/features/taiku/screens/home_screen.dart';
 
 void main() {
