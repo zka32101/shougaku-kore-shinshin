@@ -461,7 +461,10 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [widget.color, widget.color.withValues(alpha: 0.75)],
+                    colors: [
+                      widget.color,
+                      widget.color.withValues(alpha: 0.75),
+                    ],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -482,10 +485,13 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
                                 children: [
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 2),
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: Colors.white
-                                          .withValues(alpha: 0.25),
+                                      color: Colors.white.withValues(
+                                        alpha: 0.25,
+                                      ),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -630,7 +636,10 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
               onTap: () => setState(() => _expanded = isOpen ? null : i),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 180),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: isOpen
                       ? widget.color
@@ -651,20 +660,14 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: isOpen
-                                ? Colors.white
-                                : widget.color,
+                            color: isOpen ? Colors.white : widget.color,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Icon(
-                          isOpen
-                              ? Icons.expand_less
-                              : Icons.expand_more,
+                          isOpen ? Icons.expand_less : Icons.expand_more,
                           size: 14,
-                          color: isOpen
-                              ? Colors.white
-                              : widget.color,
+                          color: isOpen ? Colors.white : widget.color,
                         ),
                       ],
                     ),
@@ -673,7 +676,8 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 260),
                         child: FuriganaText(
-                          def, glossary: true,
+                          def,
+                          glossary: true,
                           style: const TextStyle(
                             fontSize: 10.5,
                             color: Colors.white,
@@ -695,11 +699,37 @@ class _KeywordsSectionState extends State<_KeywordsSection> {
 
 // ─── ステージ導入カード ───
 
-class _StageIntroCard extends StatelessWidget {
+/// ステージ説明画像（1〜12のみ。無い場合は何も表示しない）
+class _StageExplainImage extends StatelessWidget {
+  final int stageNum;
+  const _StageExplainImage({required this.stageNum});
+
+  @override
+  Widget build(BuildContext context) {
+    if (stageNum < 1 || stageNum > 12) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: AspectRatio(
+          aspectRatio: 4 / 3,
+          child: Image.asset(
+            'assets/explain/stage_$stageNum.jpg',
+            width: double.infinity,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) => const SizedBox.shrink(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StageIntroCard extends StatelessWidget {
   final int stageNum;
   final Color color;
   final bool isLow;
-  const _StageIntroCard({
+  const StageIntroCard({
     required this.stageNum,
     required this.color,
     required this.isLow,
@@ -711,47 +741,53 @@ class _StageIntroCard extends StatelessWidget {
     if (intro == null) return const SizedBox.shrink();
     final text = isLow ? intro.$1 : intro.$2;
 
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            color.withValues(alpha: 0.08),
-            color.withValues(alpha: 0.03),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.25)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 28,
-            height: 28,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              shape: BoxShape.circle,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _StageExplainImage(stageNum: stageNum),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                color.withValues(alpha: 0.08),
+                color.withValues(alpha: 0.03),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            child: Center(
-              child: Icon(Icons.menu_book_rounded, color: color, size: 15),
-            ),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: color.withValues(alpha: 0.25)),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: FuriganaText(
-              text,
-              style: TextStyle(
-                fontSize: isLow ? 13 : 12.5,
-                color: Colors.grey.shade800,
-                height: 1.65,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(Icons.menu_book_rounded, color: color, size: 15),
+                ),
               ),
-            ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: FuriganaText(
+                  text,
+                  style: TextStyle(
+                    fontSize: isLow ? 13 : 12.5,
+                    color: Colors.grey.shade800,
+                    height: 1.65,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -805,7 +841,7 @@ class _HighlightsTab extends StatelessWidget {
           const SizedBox(height: 14),
 
           // ステージ導入テキスト
-          _StageIntroCard(stageNum: stageNum, color: color, isLow: isLow),
+          StageIntroCard(stageNum: stageNum, color: color, isLow: isLow),
           const SizedBox(height: 16),
 
           // キーワード用語集
@@ -899,7 +935,8 @@ class _PointCard extends StatelessWidget {
               children: [
                 // トピック（問題文の短縮版）
                 FuriganaText(
-                  question.questionText, glossary: true,
+                  question.questionText,
+                  glossary: true,
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey.shade500,
@@ -911,8 +948,10 @@ class _PointCard extends StatelessWidget {
                 const SizedBox(height: 6),
                 // 正解
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.green.shade50,
                     borderRadius: BorderRadius.circular(6),
@@ -920,8 +959,11 @@ class _PointCard extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.check_circle,
-                          color: Colors.green.shade600, size: 12),
+                      Icon(
+                        Icons.check_circle,
+                        color: Colors.green.shade600,
+                        size: 12,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: FuriganaText(
@@ -940,7 +982,8 @@ class _PointCard extends StatelessWidget {
                 // 解説
                 if (question.explanationDetail != null)
                   FuriganaText(
-                    question.explanationDetail!, glossary: true,
+                    question.explanationDetail!,
+                    glossary: true,
                     style: TextStyle(
                       fontSize: isLow ? 12 : 12,
                       color: Colors.grey.shade800,
@@ -1049,9 +1092,7 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: _expanded ? color : Colors.grey.shade200,
-          ),
+          border: Border.all(color: _expanded ? color : Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.04),
@@ -1069,12 +1110,16 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
               borderRadius: BorderRadius.circular(12),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 10),
+                  horizontal: 12,
+                  vertical: 10,
+                ),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(6),
@@ -1091,15 +1136,15 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: FuriganaText(
-                        q.questionText, glossary: true,
+                        q.questionText,
+                        glossary: true,
                         style: TextStyle(
                           fontSize: widget.isLow ? 12 : 12,
                           color: Colors.grey.shade800,
                           fontWeight: FontWeight.w500,
                         ),
                         maxLines: _expanded ? null : 1,
-                        overflow:
-                            _expanded ? null : TextOverflow.ellipsis,
+                        overflow: _expanded ? null : TextOverflow.ellipsis,
                       ),
                     ),
                     Icon(
@@ -1131,8 +1176,11 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.check_circle_outline,
-                              color: Colors.green.shade600, size: 16),
+                          Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.green.shade600,
+                            size: 16,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Column(
@@ -1211,7 +1259,9 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                         decoration: BoxDecoration(
                           color: color.withValues(alpha: 0.04),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: color.withValues(alpha: 0.15)),
+                          border: Border.all(
+                            color: color.withValues(alpha: 0.15),
+                          ),
                         ),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1220,7 +1270,8 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                             const SizedBox(width: 6),
                             Expanded(
                               child: FuriganaText(
-                                q.explanationDetail!, glossary: true,
+                                q.explanationDetail!,
+                                glossary: true,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey.shade700,
@@ -1290,10 +1341,7 @@ class _QuizCTA extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               isLow ? 'クイズに ちょうせん！' : 'クイズに挑戦！',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ],
         ),
