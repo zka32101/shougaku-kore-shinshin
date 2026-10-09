@@ -4,6 +4,7 @@ import '../../models/artwork.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
 import '../memory_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class ArtMonthScreen extends ConsumerWidget {
   final int month;
@@ -42,7 +43,7 @@ class ArtMonthScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
+                        FuriganaText(
                           '$month月: $colorName',
                           style: const TextStyle(
                             color: Colors.white,
@@ -50,7 +51,7 @@ class ArtMonthScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        FuriganaText(
                           keywords,
                           style: const TextStyle(
                             color: Colors.white70,
@@ -74,7 +75,7 @@ class ArtMonthScreen extends ConsumerWidget {
                   month: month,
                 ),
                 const SizedBox(height: 16),
-                Text(
+                FuriganaText(
                   '4つのレベルに挑戦しよう',
                   style: TextStyle(
                     fontSize: 18,
@@ -164,7 +165,7 @@ class ArtMonthScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 24),
                 if (monthArtworks.isNotEmpty) ...[
-                  Text(
+                  FuriganaText(
                     '今月の作品 (${monthArtworks.length})',
                     style: const TextStyle(
                       fontSize: 16,
@@ -187,7 +188,7 @@ class ArtMonthScreen extends ConsumerWidget {
                     onPressed: () =>
                         Navigator.pushNamed(context, '/memories', arguments: 0),
                     icon: const Icon(Icons.history),
-                    label: const Text('ほかの月の作品も ふりかえる'),
+                    label: const FuriganaText('ほかの月の作品も ふりかえる'),
                   ),
                 ],
                 const SizedBox(height: 16),
@@ -204,7 +205,7 @@ class ArtMonthScreen extends ConsumerWidget {
                       );
                     },
                     icon: const Icon(Icons.arrow_forward),
-                    label: Text(
+                    label: FuriganaText(
                       '次の月: Month ${month + 1}「${kMonthColors[month]['name']}」へ',
                     ),
                     style: OutlinedButton.styleFrom(
@@ -264,7 +265,7 @@ class _ColorInfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          FuriganaText(
             '「$colorName」を知ろう',
             style: TextStyle(
               fontSize: 16,
@@ -301,7 +302,7 @@ class _FactRow extends StatelessWidget {
               color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Text(
+            child: FuriganaText(
               label,
               style: TextStyle(
                 fontSize: 11,
@@ -383,7 +384,7 @@ class _LevelCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  FuriganaText(
                     title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -391,7 +392,7 @@ class _LevelCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  FuriganaText(
                     description,
                     style: const TextStyle(fontSize: 12, color: Colors.grey),
                   ),
@@ -400,7 +401,7 @@ class _LevelCard extends StatelessWidget {
                     children: [
                       Icon(Icons.schedule, size: 12, color: Colors.grey[500]),
                       const SizedBox(width: 4),
-                      Text(
+                      FuriganaText(
                         duration,
                         style: TextStyle(fontSize: 11, color: Colors.grey[500]),
                       ),
@@ -460,7 +461,7 @@ class _ArtworkTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  FuriganaText(
                     artwork.title.isEmpty
                         ? '作品 Lv${artwork.level.index + 1}'
                         : artwork.title,
@@ -470,7 +471,7 @@ class _ArtworkTile extends StatelessWidget {
                     ),
                   ),
                   if (artwork.description.isNotEmpty)
-                    Text(
+                    FuriganaText(
                       artwork.description,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                       maxLines: 1,

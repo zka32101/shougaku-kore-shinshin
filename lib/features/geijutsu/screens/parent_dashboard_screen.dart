@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/app_providers.dart';
 import '../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class ParentDashboardScreen extends ConsumerWidget {
   const ParentDashboardScreen({super.key});
@@ -18,7 +19,7 @@ class ParentDashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('親ダッシュボード'),
+        title: const FuriganaText('親ダッシュボード'),
         backgroundColor: kPrimaryColor,
         foregroundColor: Colors.white,
       ),
@@ -95,7 +96,7 @@ class _OverviewCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const FuriganaText(
             'お子さんの学習まとめ',
             style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -140,7 +141,7 @@ class _CountBadge extends StatelessWidget {
               count.toString(),
               style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            Text(label, style: const TextStyle(color: Colors.white70, fontSize: 10)),
+            FuriganaText(label, style: const TextStyle(color: Colors.white70, fontSize: 10)),
           ],
         ),
       ),
@@ -172,7 +173,7 @@ class _ProfileCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
+          FuriganaText(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
           const SizedBox(height: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -180,7 +181,7 @@ class _ProfileCard extends StatelessWidget {
               color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(typeName, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            child: FuriganaText(typeName, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
           ),
           const SizedBox(height: 12),
           ...metrics.entries.map((e) => Padding(
@@ -235,7 +236,7 @@ class _ProgressSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('進捗', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const FuriganaText('進捗', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           _ProgressRow('🎨 図工', artMonths, 12, kArtColor),
           const SizedBox(height: 8),
@@ -260,7 +261,7 @@ class _ProgressRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(width: 80, child: Text(label, style: const TextStyle(fontSize: 13))),
+        SizedBox(width: 80, child: FuriganaText(label, style: const TextStyle(fontSize: 13))),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),
@@ -292,20 +293,20 @@ class _ParentTipsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          const FuriganaText(
             '💡 保護者の方へ',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: kPrimaryColor),
           ),
           const SizedBox(height: 10),
-          const Text(
+          const FuriganaText(
             '• 「上手い/下手」ではなく「個性」を認めて褒めましょう',
             style: TextStyle(fontSize: 13, height: 1.6),
           ),
-          const Text(
+          const FuriganaText(
             '• 「色が素敵だね」「リズムがいいね」と声かけしましょう',
             style: TextStyle(fontSize: 13, height: 1.6),
           ),
-          const Text(
+          const FuriganaText(
             '• 月末の「親子セッション」で一緒に振り返りましょう',
             style: TextStyle(fontSize: 13, height: 1.6),
           ),

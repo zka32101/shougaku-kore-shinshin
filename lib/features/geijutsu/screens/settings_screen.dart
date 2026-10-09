@@ -4,6 +4,10 @@ import '../models/analytics_models.dart';
 import '../widgets/analytics_dashboard.dart';
 import '../providers/app_providers.dart';
 import '../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/providers/app_version_provider.dart';
+import 'package:shougaku_kore_doutoku/screens/settings/help_screen.dart';
+import 'package:shougaku_kore_doutoku/screens/settings/privacy_policy_screen.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -31,7 +35,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('設定'),
+        title: const FuriganaText('設定'),
         backgroundColor: kPrimaryColor,
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -57,8 +61,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               const _SectionHeader(title: 'アプリ情報'),
               ListTile(
                 leading: const Text('🎨', style: TextStyle(fontSize: 24)),
-                title: const Text('小学コレ！芸術'),
-                subtitle: const Text('バージョン 1.0.0'),
+                title: const FuriganaText('小学コレ！芸術'),
+                subtitle: Text(
+                  'バージョン ${ref.watch(appVersionProvider).valueOrNull ?? ''}'.trim(),
+                ),
               ),
               const Divider(),
               const _SectionHeader(title: 'プライバシー'),
@@ -66,27 +72,22 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
                 leading: const Icon(Icons.privacy_tip),
                 title: const Text('プライバシーポリシー'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.description),
-                title: const Text('利用規約'),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () => _open(const PrivacyPolicyScreen()),
               ),
               const Divider(),
               const _SectionHeader(title: 'サポート'),
               ListTile(
                 leading: const Icon(Icons.help),
-                title: const Text('使い方ガイド'),
+                title: const FuriganaText('使い方ガイド'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () => _open(const HelpScreen()),
               ),
               ListTile(
                 leading: const Icon(Icons.mail),
-                title: const Text('お問い合わせ'),
+                // お問い合わせ窓口はヘルプ画面の末尾にあるのでそこへ案内する
+                title: const FuriganaText('お問い合わせ'),
                 trailing: const Icon(Icons.chevron_right),
-                onTap: () {},
+                onTap: () => _open(const HelpScreen()),
               ),
             ],
           ),
@@ -105,6 +106,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
         ],
       ),
     );
+  }
+
+  void _open(Widget page) {
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
   }
 
   List<DailyActivityData> _generateDailyActivity() {
@@ -134,9 +139,9 @@ class _ProfileTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final d = ref.watch(geijutsuDisplayProvider);
     return ListTile(
-      leading: Text(d.avatarEmoji, style: const TextStyle(fontSize: 28)),
-      title: Text(d.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: const Text('プロフィールはアプリ全体の設定で変更できます'),
+      leading: FuriganaText(d.avatarEmoji, style: const TextStyle(fontSize: 28)),
+      title: FuriganaText(d.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: const FuriganaText('プロフィールはアプリ全体の設定で変更できます'),
     );
   }
 }
@@ -149,7 +154,7 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-      child: Text(
+      child: FuriganaText(
         title,
         style: TextStyle(
           fontSize: 12,

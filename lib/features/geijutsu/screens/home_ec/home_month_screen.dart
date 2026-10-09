@@ -6,6 +6,7 @@ import 'package:uuid/uuid.dart';
 import '../../providers/app_providers.dart';
 import '../../models/home_challenge.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class HomeMonthScreen extends ConsumerStatefulWidget {
   final int month;
@@ -39,7 +40,7 @@ class _HomeMonthScreenState extends ConsumerState<HomeMonthScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.month}月: $colorName'),
+        title: FuriganaText('${widget.month}月: $colorName'),
         backgroundColor: color,
         foregroundColor: Colors.white,
         bottom: TabBar(
@@ -125,25 +126,25 @@ class _ColorLessonTab extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              FuriganaText(
                 '「$colorName」を知ろう',
                 style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              const Text('代表食材:', style: TextStyle(color: Colors.white70, fontSize: 13)),
+              const FuriganaText('代表食材:', style: TextStyle(color: Colors.white70, fontSize: 13)),
               const SizedBox(height: 4),
               Wrap(
                 spacing: 6,
                 children: foods.map((f) => Chip(
                   // 地色が月の色なので、白地+月色の文字で読めるようにする
-                  label: Text(f, style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.w600)),
+                  label: FuriganaText(f, style: TextStyle(fontSize: 12, color: color, fontWeight: FontWeight.w600)),
                   backgroundColor: Colors.white,
                   side: BorderSide.none,
                 )).toList(),
               ),
               const SizedBox(height: 8),
               const Text('ファッションのポイント:', style: TextStyle(color: Colors.white70, fontSize: 13)),
-              Text(fashion, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5)),
+              FuriganaText(fashion, style: const TextStyle(color: Colors.white, fontSize: 13, height: 1.5)),
             ],
           ),
         ),
@@ -164,7 +165,7 @@ class _ColorLessonTab extends ConsumerWidget {
             await ref.read(homeChallengeProvider.notifier).add(challenge);
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Lv.1「$colorName学習」完了！'), backgroundColor: color),
+                SnackBar(content: FuriganaText('Lv.1「$colorName学習」完了！'), backgroundColor: color),
               );
             }
           },
@@ -173,7 +174,7 @@ class _ColorLessonTab extends ConsumerWidget {
             minimumSize: const Size(double.infinity, 50),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-          child: const Text('Lv.1 完了！ ✓', style: TextStyle(fontSize: 16)),
+          child: const FuriganaText('Lv.1 完了！ ✓', style: TextStyle(fontSize: 16)),
         ),
       ],
     );
@@ -224,7 +225,7 @@ class _QuizCardState extends State<_QuizCard> {
           Text('クイズ 🧠',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: widget.color)),
           const SizedBox(height: 8),
-          Text(quiz['q'] as String,
+          FuriganaText(quiz['q'] as String,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           ...(quiz['opts'] as List<String>).asMap().entries.map((e) => GestureDetector(
@@ -253,11 +254,11 @@ class _QuizCardState extends State<_QuizCard> {
                               : Colors.grey[300]!,
                 ),
               ),
-              child: Text(e.value),
+              child: FuriganaText(e.value),
             ),
           )),
           if (_answer != null)
-            Text(
+            FuriganaText(
               _answer == quiz['ans']
                   ? '正解！🎉'
                   : '惜しい！答えは「${(quiz['opts'] as List<String>)[quiz['ans'] as int]}」だよ',
@@ -321,7 +322,7 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
   Future<void> _save() async {
     if (_menuCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('メニュー名を入力してね')),
+        const SnackBar(content: FuriganaText('メニュー名を入力してね')),
       );
       return;
     }
@@ -349,7 +350,7 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('料理チャレンジ保存！バッジ「${widget.colorName}の料理人」獲得！'),
+          content: FuriganaText('料理チャレンジ保存！バッジ「${widget.colorName}の料理人」獲得！'),
           backgroundColor: widget.color,
         ),
       );
@@ -372,19 +373,19 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              FuriganaText(
                 '「${widget.colorName}い料理」を作ろう！',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: widget.color),
               ),
               const SizedBox(height: 8),
-              const Text('メニュー候補（タップで入力）:', style: TextStyle(fontSize: 13, color: Colors.grey)),
+              const FuriganaText('メニュー候補（タップで入力）:', style: TextStyle(fontSize: 13, color: Colors.grey)),
               const SizedBox(height: 4),
               Wrap(
                 spacing: 6, runSpacing: 4,
                 children: suggestions.map((s) => GestureDetector(
                   onTap: () => setState(() => _menuCtrl.text = s),
                   child: Chip(
-                    label: Text(s, style: const TextStyle(fontSize: 12)),
+                    label: FuriganaText(s, style: const TextStyle(fontSize: 12)),
                     backgroundColor: widget.color.withValues(alpha: 0.2),
                   ),
                 )).toList(),
@@ -431,7 +432,7 @@ class _CookingTabState extends ConsumerState<_CookingTab> {
             minimumSize: const Size(double.infinity, 52),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-          child: Text(
+          child: FuriganaText(
             _saved ? '✓ 保存済み' : '料理チャレンジ完了！ ✓',
             style: const TextStyle(fontSize: 16),
           ),
@@ -496,7 +497,7 @@ class _FashionTabState extends ConsumerState<_FashionTab> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('ファッション完了！「${widget.colorName}のスタイリスト」獲得！'),
+          content: FuriganaText('ファッション完了！「${widget.colorName}のスタイリスト」獲得！'),
           backgroundColor: widget.color,
         ),
       );
@@ -514,13 +515,13 @@ class _FashionTabState extends ConsumerState<_FashionTab> {
             color: widget.color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Text(
+          child: FuriganaText(
             '「${widget.colorName}」を使ったファッションを考えよう！\n持っている服の中から${widget.colorName}を使ったコーデを組んで撮影しよう',
             style: TextStyle(color: widget.color, fontSize: 14, height: 1.6),
           ),
         ),
         const SizedBox(height: 16),
-        const Text('どんな時に着る？', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+        const FuriganaText('どんな時に着る？', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8, runSpacing: 8,
@@ -570,7 +571,7 @@ class _FashionTabState extends ConsumerState<_FashionTab> {
             minimumSize: const Size(double.infinity, 52),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-          child: Text(
+          child: FuriganaText(
             _saved ? '✓ 保存済み' : 'ファッション完了！ ✓',
             style: const TextStyle(fontSize: 16),
           ),
@@ -623,7 +624,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${widget.month}月「${widget.colorName}」完了！'),
+          content: FuriganaText('${widget.month}月「${widget.colorName}」完了！'),
           backgroundColor: widget.color,
         ),
       );
@@ -648,12 +649,12 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              FuriganaText(
                 '「${widget.colorName}」月の振り返り',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: widget.color),
               ),
               const SizedBox(height: 8),
-              const Text('親子で今月を振り返って話し合おう！',
+              const FuriganaText('親子で今月を振り返って話し合おう！',
                   style: TextStyle(fontSize: 13, height: 1.6)),
             ],
           ),
@@ -669,7 +670,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('💬 話すきっかけ', style: TextStyle(fontWeight: FontWeight.bold)),
+              const FuriganaText('💬 話すきっかけ', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               _ConversationPrompt('「${widget.colorName}い料理」、作ってみてどうだった？'),
               _ConversationPrompt('「${widget.colorName}い服」を着てどんな気持ちだった？'),
@@ -707,7 +708,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
             minimumSize: const Size(double.infinity, 52),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           ),
-          child: Text(
+          child: FuriganaText(
             _saved ? '✓ ${widget.month}月 完了！' : '${widget.month}月を完了する ✓',
             style: const TextStyle(fontSize: 16),
           ),
@@ -719,7 +720,7 @@ class _ParentSessionTabState extends ConsumerState<_ParentSessionTab> {
               context, '/home-ec/month', arguments: widget.month + 1,
             ),
             icon: const Icon(Icons.arrow_forward),
-            label: Text('次の月: Month ${widget.month + 1}「$nextColorName」へ'),
+            label: FuriganaText('次の月: Month ${widget.month + 1}「$nextColorName」へ'),
             style: OutlinedButton.styleFrom(
               foregroundColor: kMonthColors[widget.month]['color'] as Color,
               minimumSize: const Size(double.infinity, 48),
@@ -744,7 +745,7 @@ class _ConversationPrompt extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('• ', style: TextStyle(color: Colors.grey)),
-          Expanded(child: Text(text, style: const TextStyle(fontSize: 13, height: 1.5))),
+          Expanded(child: FuriganaText(text, style: const TextStyle(fontSize: 13, height: 1.5))),
         ],
       ),
     );
@@ -776,12 +777,12 @@ class _PhotoSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: Text(hint, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              child: FuriganaText(hint, style: const TextStyle(fontSize: 12, color: Colors.grey)),
             ),
             TextButton.icon(
               onPressed: onPickPhoto,
               icon: const Icon(Icons.add_a_photo, size: 16),
-              label: const Text('写真を追加'),
+              label: const FuriganaText('写真を追加'),
               style: TextButton.styleFrom(foregroundColor: color),
             ),
           ],
@@ -839,7 +840,7 @@ class _PhotoSection extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.add_a_photo, color: color.withValues(alpha: 0.5)),
-                    Text('タップして写真を追加',
+                    FuriganaText('タップして写真を追加',
                         style: TextStyle(color: color.withValues(alpha: 0.7), fontSize: 12)),
                   ],
                 ),

@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../providers/app_providers.dart';
 import '../../models/composition.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class ThemeComposeScreen extends ConsumerStatefulWidget {
   const ThemeComposeScreen({super.key});
@@ -54,13 +55,13 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
   Future<void> _save() async {
     if (_selectedTheme == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('テーマを選んでね！')),
+        const SnackBar(content: FuriganaText('テーマを選んでね！')),
       );
       return;
     }
     if (_melody.length < 3) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('3音以上入力してね！')),
+        const SnackBar(content: FuriganaText('3音以上入力してね！')),
       );
       return;
     }
@@ -93,7 +94,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('「$_selectedTheme」の曲を保存したよ！🎉'),
+          content: FuriganaText('「$_selectedTheme」の曲を保存したよ！🎉'),
           backgroundColor: theme['color'] as Color,
         ),
       );
@@ -115,7 +116,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('🎼 テーマ作曲チャレンジ'),
+        title: const FuriganaText('🎼 テーマ作曲チャレンジ'),
         backgroundColor: kMusicColor,
         foregroundColor: Colors.white,
       ),
@@ -130,7 +131,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                const FuriganaText(
                   'このテーマのイメージを音で表現してみよう！\nどんなリズム？速い？ゆっくり？明るい？',
                   style: TextStyle(fontSize: 13, color: Colors.grey, height: 1.5),
                 ),
@@ -156,7 +157,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
                           children: [
                             Text(t['emoji'] as String, style: const TextStyle(fontSize: 18)),
                             const SizedBox(width: 4),
-                            Text(
+                            FuriganaText(
                               t['name'] as String,
                               style: TextStyle(
                                 color: isSelected ? Colors.white : color,
@@ -185,11 +186,11 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            FuriganaText(
                               selectedData['name'] as String,
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: themeColor),
                             ),
-                            Text(
+                            FuriganaText(
                               selectedData['hint'] as String,
                               style: TextStyle(fontSize: 12, color: themeColor),
                             ),
@@ -213,7 +214,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                FuriganaText(
                   '下の鍵盤をタップして音を入力しよう！\nテーマのイメージに合うメロディを考えてね',
                   style: TextStyle(fontSize: 13, color: Colors.grey[600], height: 1.5),
                 ),
@@ -231,7 +232,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
                     border: Border.all(color: Colors.grey[200]!),
                   ),
                   child: _melody.isEmpty
-                      ? const Text('ここに音が並ぶよ…', style: TextStyle(color: Colors.grey, fontSize: 13))
+                      ? const FuriganaText('ここに音が並ぶよ…', style: TextStyle(color: Colors.grey, fontSize: 13))
                       : Wrap(
                           spacing: 4,
                           runSpacing: 4,
@@ -281,18 +282,18 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    Text('${_melody.length}/16音', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                    FuriganaText('${_melody.length}/16音', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                     const Spacer(),
                     TextButton.icon(
                       onPressed: _removeLastNote,
                       icon: const Icon(Icons.backspace_outlined, size: 16),
-                      label: const Text('1音消す'),
+                      label: const FuriganaText('1音消す'),
                       style: TextButton.styleFrom(foregroundColor: Colors.orange),
                     ),
                     TextButton.icon(
                       onPressed: () => setState(() => _melody.clear()),
                       icon: const Icon(Icons.clear, size: 16),
-                      label: const Text('全消し'),
+                      label: const FuriganaText('全消し'),
                       style: TextButton.styleFrom(foregroundColor: Colors.red),
                     ),
                   ],
@@ -311,7 +312,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                FuriganaText(
                   'どんな気持ちで作った？\nどんな場面に合う曲？自由に書いてね！',
                   style: TextStyle(fontSize: 13, color: Colors.grey[600], height: 1.5),
                 ),
@@ -341,7 +342,7 @@ class _ThemeComposeScreenState extends ConsumerState<ThemeComposeScreen> {
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
-            child: Text(
+            child: FuriganaText(
               _saved ? '✓ 保存済み！バッジ獲得！' : '💾 作品を保存する',
               style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
             ),
@@ -386,7 +387,7 @@ class _StepCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: color)),
+              FuriganaText(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: color)),
             ],
           ),
           const SizedBox(height: 12),

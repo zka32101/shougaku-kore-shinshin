@@ -5,6 +5,7 @@ import 'package:shougaku_kore_doutoku/widgets/photo_source_chooser.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 // トピックデータ定義
 class _TopicData {
@@ -205,7 +206,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${topic.name}チャレンジ完了！バッジ獲得🎉 ($completed/${topic.activities.length}活動)'),
+          content: FuriganaText('${topic.name}チャレンジ完了！バッジ獲得🎉 ($completed/${topic.activities.length}活動)'),
           backgroundColor: topic.color,
         ),
       );
@@ -221,7 +222,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
   @override
   Widget build(BuildContext context) {
     final topic = _topics[widget.topicId];
-    if (topic == null) return const Scaffold(body: Center(child: Text('トピックが見つかりません')));
+    if (topic == null) return const Scaffold(body: Center(child: FuriganaText('トピックが見つかりません')));
     final completedCount = _checked.values.where((v) => v).length;
     final total = topic.activities.length;
 
@@ -254,7 +255,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          FuriganaText(
                             topic.why,
                             style: const TextStyle(
                               color: Colors.white,
@@ -278,7 +279,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                     children: [
                       const Text('✦ ', style: TextStyle(color: Colors.white70, fontSize: 12)),
                       Expanded(
-                        child: Text(
+                        child: FuriganaText(
                           point,
                           style: const TextStyle(
                             color: Colors.white,
@@ -310,11 +311,11 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    FuriganaText(
                       'チャレンジ進捗',
                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: topic.color),
                     ),
-                    Text(
+                    FuriganaText(
                       '$completedCount / $total 完了',
                       style: TextStyle(fontSize: 14, color: topic.color, fontWeight: FontWeight.bold),
                     ),
@@ -361,7 +362,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                   final isDone = _checked[act.id] ?? false;
                   return ListTile(
                     leading: UkalabEmoji(act.emoji, size: 28),
-                    title: Text(
+                    title: FuriganaText(
                       act.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -369,7 +370,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                         decoration: isDone ? TextDecoration.lineThrough : null,
                       ),
                     ),
-                    subtitle: Text(
+                    subtitle: FuriganaText(
                       act.description,
                       style: TextStyle(
                         fontSize: 12,
@@ -405,14 +406,14 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    FuriganaText(
                       '📸 写真で記録',
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: topic.color),
                     ),
                     TextButton.icon(
                       onPressed: _pickPhoto,
                       icon: const Icon(Icons.add_a_photo, size: 16),
-                      label: const Text('追加'),
+                      label: const FuriganaText('追加'),
                       style: TextButton.styleFrom(foregroundColor: topic.color),
                     ),
                   ],
@@ -456,7 +457,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
                     ),
                   )
                 else
-                  Text(
+                  FuriganaText(
                     'やってみた様子を写真に撮ろう！',
                     style: TextStyle(color: Colors.grey[400], fontSize: 13),
                   ),
@@ -491,7 +492,7 @@ class _HomeEcTopicScreenState extends ConsumerState<HomeEcTopicScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               disabledBackgroundColor: Colors.grey[200],
             ),
-            child: Text(
+            child: FuriganaText(
               _saved
                   ? '✓ バッジ獲得済み！'
                   : completedCount == 0

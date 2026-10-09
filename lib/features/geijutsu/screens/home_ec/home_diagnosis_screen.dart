@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class HomeDiagnosisScreen extends ConsumerStatefulWidget {
   const HomeDiagnosisScreen({super.key});
@@ -35,7 +36,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('家庭の色彩診断 (${_step + 1}/3)'),
+        title: FuriganaText('家庭の色彩診断 (${_step + 1}/3)'),
         backgroundColor: kHomeEcColor,
         foregroundColor: Colors.white,
       ),
@@ -68,9 +69,9 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('お家の中の「色」を探そう！',
+          const FuriganaText('お家の中の「色」を探そう！',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const Text('各場所の「好きな色」をタップして選ぼう', style: TextStyle(color: Colors.grey)),
+          const FuriganaText('各場所の「好きな色」をタップして選ぼう', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 16),
           Expanded(
             child: ListView.builder(
@@ -98,7 +99,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
                 minimumSize: const Size(double.infinity, 54),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('次へ ▶', style: TextStyle(fontSize: 18)),
+              child: const FuriganaText('次へ ▶', style: TextStyle(fontSize: 18)),
             ),
           ),
         ],
@@ -112,7 +113,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('一番「心が落ち着く色」は？',
+          const FuriganaText('一番「心が落ち着く色」は？',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           SingleChildScrollView(
@@ -153,7 +154,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
                 itemCount: _reasons.length,
                 itemBuilder: (ctx, i) => RadioListTile<String>(
                   value: _reasons[i],
-                  title: Text(_reasons[i]),
+                  title: FuriganaText(_reasons[i]),
                   activeColor: kHomeEcColor,
                 ),
               ),
@@ -165,7 +166,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
                 OutlinedButton(
                   onPressed: () => setState(() => _step = 0),
                   style: OutlinedButton.styleFrom(minimumSize: const Size(80, 54)),
-                  child: const Text('戻る'),
+                  child: const FuriganaText('戻る'),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -176,7 +177,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
                       minimumSize: const Size(double.infinity, 54),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                     ),
-                    child: const Text('診断結果を見る ▶', style: TextStyle(fontSize: 18)),
+                    child: const FuriganaText('診断結果を見る ▶', style: TextStyle(fontSize: 18)),
                   ),
                 ),
               ],
@@ -231,7 +232,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
               children: [
                 const Text('🏠', style: TextStyle(fontSize: 56)),
                 const SizedBox(height: 12),
-                const Text('あなたのお家の色彩バランス',
+                const FuriganaText('あなたのお家の色彩バランス',
                     style: TextStyle(color: Colors.white70, fontSize: 14)),
                 const SizedBox(height: 8),
                 Text(
@@ -260,14 +261,14 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                FuriganaText(
                   '💡 今月のテーマ: $favoriteColorName',
                   style: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold, color: favoriteColor,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                FuriganaText(
                   '「$favoriteColorName」を使った料理とファッションで\n色彩ライフを楽しもう！',
                   style: const TextStyle(fontSize: 14, height: 1.6),
                 ),
@@ -290,7 +291,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: Text('$favoriteColorNameチャレンジを始める！ 🍳', style: const TextStyle(fontSize: 16)),
+            child: FuriganaText('$favoriteColorNameチャレンジを始める！ 🍳', style: const TextStyle(fontSize: 16)),
           ),
         ],
       ),
@@ -300,7 +301,7 @@ class _HomeDiagnosisScreenState extends ConsumerState<HomeDiagnosisScreen> {
   Widget _buildHomeBar(String label, double value, Color color) {
     return Row(
       children: [
-        SizedBox(width: 90, child: Text(label, style: const TextStyle(fontSize: 12))),
+        SizedBox(width: 90, child: FuriganaText(label, style: const TextStyle(fontSize: 12))),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),
@@ -352,8 +353,8 @@ class _ColorRoomCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                  Text(hint, style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                  FuriganaText(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  FuriganaText(hint, style: const TextStyle(fontSize: 11, color: Colors.grey)),
                 ],
               ),
             ],

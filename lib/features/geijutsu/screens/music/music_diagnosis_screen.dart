@@ -4,6 +4,7 @@ import '../../providers/app_providers.dart';
 import '../../models/music_profile.dart';
 import '../../theme/app_theme.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class MusicDiagnosisScreen extends ConsumerStatefulWidget {
   const MusicDiagnosisScreen({super.key});
@@ -55,7 +56,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('音感タイプ診断 (${_step + 1}/3)'),
+        title: FuriganaText('音感タイプ診断 (${_step + 1}/3)'),
         backgroundColor: kMusicColor,
         foregroundColor: Colors.white,
       ),
@@ -88,9 +89,9 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('あなたが好きな「音」は？',
+          const FuriganaText('あなたが好きな「音」は？',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const Text('複数選択OK', style: TextStyle(color: Colors.grey)),
+          const FuriganaText('複数選択OK', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 16),
           Expanded(
             child: GridView.builder(
@@ -122,7 +123,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                       children: [
                         Text(s['emoji']!, style: const TextStyle(fontSize: 24)),
                         const SizedBox(width: 8),
-                        Text(
+                        FuriganaText(
                           s['label']!,
                           style: TextStyle(
                             color: sel ? Colors.white : kTextDark,
@@ -144,7 +145,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                 minimumSize: const Size(double.infinity, 54),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: const Text('次へ ▶', style: TextStyle(fontSize: 18)),
+              child: const FuriganaText('次へ ▶', style: TextStyle(fontSize: 18)),
             ),
           ),
         ],
@@ -167,7 +168,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
           Text('Q${qIdx + 1}/${_quizItems.length}',
               style: const TextStyle(color: kMusicColor, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          Text(q['q'] as String,
+          FuriganaText(q['q'] as String,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, height: 1.4)),
           const SizedBox(height: 24),
           ...(q['opts'] as List).asMap().entries.map((e) => Padding(
@@ -181,13 +182,13 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                 elevation: 2,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
-              child: Text(e.value as String, textAlign: TextAlign.center),
+              child: FuriganaText(e.value as String, textAlign: TextAlign.center),
             ),
           )),
           if (qIdx > 0)
             TextButton(
               onPressed: () => setState(() => _quizAnswers.removeLast()),
-              child: const Text('前の問いに戻る'),
+              child: const FuriganaText('前の問いに戻る'),
             ),
         ],
       ),
@@ -252,10 +253,10 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
               children: [
                 UkalabEmoji(typeEmoji, size: 56),
                 const SizedBox(height: 12),
-                const Text('あなたの音感タイプは…',
+                const FuriganaText('あなたの音感タイプは…',
                     style: TextStyle(color: Colors.white70, fontSize: 14)),
                 const SizedBox(height: 4),
-                Text(typeStr,
+                FuriganaText(typeStr,
                     style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 12),
                 Wrap(
@@ -266,7 +267,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(s, style: const TextStyle(color: Colors.white, fontSize: 12)),
+                    child: FuriganaText(s, style: const TextStyle(color: Colors.white, fontSize: 12)),
                   )).toList(),
                 ),
               ],
@@ -309,7 +310,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
               minimumSize: const Size(double.infinity, 54),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: const Text('作曲を始める！ 🎵', style: TextStyle(fontSize: 18)),
+            child: const FuriganaText('作曲を始める！ 🎵', style: TextStyle(fontSize: 18)),
           ),
         ],
       ),
@@ -319,7 +320,7 @@ class _MusicDiagnosisScreenState extends ConsumerState<MusicDiagnosisScreen> {
   Widget _buildMusicBar(String label, double value) {
     return Row(
       children: [
-        SizedBox(width: 110, child: Text(label, style: const TextStyle(fontSize: 12))),
+        SizedBox(width: 110, child: FuriganaText(label, style: const TextStyle(fontSize: 12))),
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),

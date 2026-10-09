@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../theme/app_theme.dart';
+import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 
 class FreePianoScreen extends ConsumerStatefulWidget {
   const FreePianoScreen({super.key});
@@ -70,7 +71,7 @@ class _FreePianoScreenState extends ConsumerState<FreePianoScreen> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             color: const Color(0xFF0F3460),
-            child: const Text(
+            child: const FuriganaText(
               '✨ 鍵盤をタップして自由に演奏しよう！ドレミの音を耳と心で感じてね',
               style: TextStyle(color: Colors.white70, fontSize: 12),
               textAlign: TextAlign.center,
@@ -90,7 +91,7 @@ class _FreePianoScreenState extends ConsumerState<FreePianoScreen> {
                         children: [
                           Text('🎵', style: TextStyle(fontSize: 48)),
                           SizedBox(height: 8),
-                          Text(
+                          FuriganaText(
                             '鍵盤を押すと音符が並ぶよ！',
                             style: TextStyle(color: Colors.white54, fontSize: 14),
                           ),
@@ -174,8 +175,8 @@ class _FreePianoScreenState extends ConsumerState<FreePianoScreen> {
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text('白鍵: ドレミファソラシ', style: TextStyle(color: Colors.white54, fontSize: 11)),
-                Text('黒鍵: ♯（半音高い音）', style: TextStyle(color: Colors.white54, fontSize: 11)),
+                FuriganaText('白鍵: ドレミファソラシ', style: TextStyle(color: Colors.white54, fontSize: 11)),
+                FuriganaText('黒鍵: ♯（半音高い音）', style: TextStyle(color: Colors.white54, fontSize: 11)),
               ],
             ),
           ),

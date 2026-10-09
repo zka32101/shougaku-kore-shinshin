@@ -122,23 +122,13 @@ void main() {
       expect(find.byType(Slider), findsOneWidget);
     });
 
-    testWidgets('shows 表示設定 section header', (tester) async {
+    testWidgets('言語ドロップダウンは出さない(日本語固定)', (tester) async {
       _setTallViewport(tester);
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
-      expect(find.text('表示設定'), findsOneWidget);
-    });
-
-    testWidgets('shows 言語 tile with DropdownButton', (tester) async {
-      _setTallViewport(tester);
-      await tester.pumpWidget(_wrap());
-      await tester.pumpAndSettle();
-      expect(find.text('言語'), findsOneWidget);
-      // DropdownButton<SupportedLocale> — match by predicate to avoid generic mismatch
-      expect(
-        find.byWidgetPredicate((w) => w is DropdownButton),
-        findsOneWidget,
-      );
+      expect(find.text('言語'), findsNothing);
+      expect(find.text('表示設定'), findsNothing);
+      expect(find.byWidgetPredicate((w) => w is DropdownButton), findsNothing);
     });
 
     testWidgets('shows アカウント・その他 section header', (tester) async {

@@ -3,13 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import '../taiku_app.dart';
 import '../providers/taiku_providers.dart';
-import '../models/artwork.dart';
 import 'general_overview_screen.dart';
 import 'stage_learn_screen.dart';
-import 'art/canvas_screen.dart';
-import 'music/free_piano_screen.dart';
-import 'music/composition_screen.dart';
-import 'home_ec/home_ec_hub_screen.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 // ─── まなぶ画面 ───
@@ -27,9 +22,6 @@ class LearnScreen extends ConsumerWidget {
     _ThemeGroup('environment', '🌱', '環境・SDGs', [19, 22, 23]),
     _ThemeGroup('money', '💰', 'お金のきほん', [20, 24, 25]),
     _ThemeGroup('values', '🤝', '道徳・人権', [21, 26, 27]),
-    _ThemeGroup('art', '🎨', '図工・美術', [28, 29]),
-    _ThemeGroup('music', '🎵', '音楽', [30, 31]),
-    _ThemeGroup('home_ec', '🍳', '家庭科', [32, 33]),
     _ThemeGroup('ict', '💻', 'ICT・プログラミング', [34, 35]),
   ];
 
@@ -79,6 +71,10 @@ class LearnScreen extends ConsumerWidget {
                     _GradeInfoBanner(grade: grade),
                     const SizedBox(height: 20),
                     for (final group in _themeGroups) ...[
+                      if (group.theme == 'ict') ...[
+                        const GeijutsuGuideNote(),
+                        const SizedBox(height: 24),
+                      ],
                       _ThemeSection(
                         group: group,
                         grade: grade,
@@ -97,6 +93,36 @@ class LearnScreen extends ConsumerWidget {
                 ),
                 error: (_, _) => const SizedBox.shrink(),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 図工・音楽・家庭科は「げいじゅつ」で遊べることを知らせる1行の案内。
+class GeijutsuGuideNote extends StatelessWidget {
+  const GeijutsuGuideNote({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: const Key('taiku_geijutsu_guide'),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFCE4EC),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFF48FB1)),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.palette_outlined, color: Color(0xFFD81B60), size: 20),
+          SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              'ずこう・おんがく・かていかは「げいじゅつ」で あそべるよ',
+              style: TextStyle(fontSize: 12, color: Color(0xFFAD1457)),
             ),
           ),
         ],
@@ -238,12 +264,6 @@ class _ThemeSection extends StatelessWidget {
       10: ('🔬', 'スポーツ科学'),
       11: ('🌟', '健康とキャリア総合'),
       12: ('🌍', 'グローバルスポーツ・未来'),
-      28: ('🎨', '1色で表現'),
-      29: ('🎭', '2色で対比'),
-      30: ('🎹', 'フリー演奏'),
-      31: ('🎼', '作曲にちょうせん'),
-      32: ('🍳', '料理の基本'),
-      33: ('🧵', 'ソーイング'),
     };
     return m[stage] ?? ('📖', 'ステージ$stage');
   }
@@ -275,38 +295,15 @@ class _StageCard extends StatelessWidget {
     final isLow = grade == GradeLevel.low;
 
     void navigateTo() {
-      if (theme == 'art') {
-        final level = stageNum == 28 ? ArtLevel.lv1 : stageNum == 29 ? ArtLevel.lv2 : ArtLevel.lv3;
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => CanvasScreen(
-            month: 1,
-            level: level,
-            colorName: '$emoji $title',
-            themeColor: color,
-            stageNum: stageNum,
-          ),
-        ));
-      } else if (theme == 'music') {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => stageNum == 31
-              ? const CompositionScreen()
-              : const FreePianoScreen(),
-        ));
-      } else if (theme == 'home_ec') {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => const HomeEcHubScreen(),
-        ));
-      } else {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (_) => StageLearnScreen(
-            stageNum: stageNum,
-            emoji: emoji,
-            title: title,
-            theme: theme,
-            color: color,
-          ),
-        ));
-      }
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => StageLearnScreen(
+          stageNum: stageNum,
+          emoji: emoji,
+          title: title,
+          theme: theme,
+          color: color,
+        ),
+      ));
     }
 
     return InkWell(

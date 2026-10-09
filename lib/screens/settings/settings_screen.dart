@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, requireParentalGate;
 import '../../providers/audio_provider.dart';
-import '../../providers/locale_provider.dart';
+import '../../providers/app_version_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../providers/offline_sync_provider.dart';
@@ -42,7 +42,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
     final soundEnabled = ref.watch(isSoundEnabledProvider);
     final narrationEnabled = ref.watch(isNarrationEnabledProvider);
     final volumeLevel = ref.watch(volumeLevelProvider);
-    final currentLocale = ref.watch(currentLocaleProvider);
     final notifSettings = ref.watch(notificationSettingsProvider);
     final syncState = ref.watch(offlineSyncProvider);
 
@@ -248,38 +247,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             ),
           ),
 
-          // 言語・表示設定セクション
-          const SizedBox(height: 24),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              '表示設定',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(height: 12),
-          ListTile(
-            leading: const Icon(Icons.language),
-            title: const Text('言語'),
-            trailing: DropdownButton<SupportedLocale>(
-              value: currentLocale,
-              underline: const SizedBox(),
-              onChanged: (locale) {
-                if (locale != null) {
-                  ref
-                      .read(localeProvider.notifier)
-                      .setLocale(locale);
-                }
-              },
-              items: SupportedLocale.values
-                  .map((locale) => DropdownMenuItem(
-                        value: locale,
-                        child: Text(locale.nativeName),
-                      ))
-                  .toList(),
-            ),
-          ),
-
           // アカウント・その他セクション
           const SizedBox(height: 24),
           const Padding(
@@ -322,7 +289,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               showAboutDialog(
                 context: context,
                 applicationName: '小学コレ！心身',
-                applicationVersion: '0.1.0',
+                applicationVersion: ref.read(appVersionProvider).valueOrNull,
               );
             },
           ),
@@ -332,10 +299,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             title: const Text('他のアプリを見る'),
             subtitle: const Text('小学コレ！シリーズの他の教科アプリを紹介します'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => launchUrl(
-              Uri.parse('https://sites.google.com/view/yourwishapps'),
-              mode: LaunchMode.externalApplication,
-            ),
+            onTap: _openOtherApps,
           ),
           CrossPromoSection(
             currentAppId: 'com.yourwish.shougakukore.shinshin',
@@ -356,6 +320,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
         ],
       ),
     );
+  }
+
+  Future<void> _openOtherApps() async {
+    var opened = false;
+    try {
+      opened = await launchUrl(
+        Uri.parse('https://sites.google.com/view/yourwishapps'),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (_) {
+      opened = false;
+    }
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('ページを ひらけませんでした。あとで もういちど ためしてね')),
+      );
+    }
   }
 
   Future<void> _pickReminderTime(
