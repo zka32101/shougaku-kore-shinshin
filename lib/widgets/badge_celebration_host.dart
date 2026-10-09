@@ -53,9 +53,12 @@ class _BadgeCelebrationHostState extends ConsumerState<BadgeCelebrationHost> {
       final prefs = await SharedPreferences.getInstance();
       final stored = prefs.getStringList(_key(childId));
       final ids = earned.map((e) => e.badgeId).toList();
+      // 初回(null)も「まだ何も通知していない」として扱う。
+      // 以前は初回の既存分を黙って登録していたため、通信なしで進捗取得が遅れ、
+      // 最初の判定が1話完了後になると獲得バッジが通知されなかった。
       final fresh = detectNewBadgeIds(
-          earned: ids, notified: stored?.toSet());
-      // 初回(null)は既存分を一括登録、以降は新規分を追加登録
+          earned: ids, notified: stored?.toSet() ?? <String>{});
+      // 通知済みIDを追加登録（再表示・再起動後の再表示を防ぐ）
       await prefs.setStringList(
           _key(childId), {...?stored, ...ids}.toList());
       if (fresh.isEmpty || !mounted) return;
