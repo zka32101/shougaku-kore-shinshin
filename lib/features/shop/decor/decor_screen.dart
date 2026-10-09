@@ -42,13 +42,21 @@ class _Empty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(32),
-        child: Text(
-          'まだきせかえをもっていないよ。\nアバター選択画面でコインとこうかんして、背景やフレームをゲットしよう！',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14, height: 1.6),
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset('assets/images/illustrations/empty_closet.webp',
+                key: const ValueKey('decor_empty_illust'), width: 160, excludeFromSemantics: true),
+            const SizedBox(height: 12),
+            const Text(
+              'まだきせかえをもっていないよ…\nアバター選択画面でコインとこうかんして、背景やフレームをゲットしよう！',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14, height: 1.6),
+            ),
+          ],
         ),
       ),
     );

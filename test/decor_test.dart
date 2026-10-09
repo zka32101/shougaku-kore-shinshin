@@ -30,7 +30,13 @@ void main() {
       expect(File(i.asset).existsSync(), true, reason: i.asset);
       expect(File(i.thumb).existsSync(), true, reason: i.thumb);
     }
-    expect(kDecorItems.length, 23);
+    expect(kDecorItems.length, 29);
+    for (final id in ['effect_shinshin', 'bg_christmas', 'bg_newyear', 'frame_christmas', 'effect_christmas', 'effect_newyear']) {
+      expect(decorItemById(id), isNotNull, reason: id);
+    }
+    expect(decorItemById('effect_shinshin')?.season, isNull);
+    expect(decorItemById('effect_shinshin')?.coinCost, 200);
+    expect(File('assets/images/illustrations/empty_closet.webp').existsSync(), true);
     expect(decorItemById('frame_shinshin')?.coinCost, 250);
     expect(decorItemById('frame_shinshin')?.season, isNull);
     expect(decorItemById('bg_shinshin')?.coinCost, 200);
@@ -38,7 +44,8 @@ void main() {
 
   test('季節の商品は現在の季節の分だけ売る', () {
     final winter = decorItemsForSale(DateTime(2026, 1, 10)).map((e) => e.id).toSet();
-    expect(winter.containsAll({'bg_snow', 'effect_snow', 'frame_newyear', 'bg_space'}), true);
+    expect(winter.containsAll({'bg_snow', 'effect_snow', 'frame_newyear', 'bg_space', 'bg_christmas', 'bg_newyear', 'frame_christmas', 'effect_christmas', 'effect_newyear'}), true);
+    expect(decorItemsForSale(DateTime(2026, 7, 10)).any((e) => e.id == 'bg_christmas'), false);
     expect(winter.contains('bg_sakura'), false);
     final summer = decorItemsForSale(DateTime(2026, 7, 10)).map((e) => e.id).toSet();
     expect(summer.contains('effect_waves'), true);
@@ -147,6 +154,7 @@ void main() {
     await tester.pumpWidget(UncontrolledProviderScope(container: empty, child: const MaterialApp(home: DecorScreen())));
     await tester.pump();
     expect(find.textContaining('まだきせかえをもっていないよ'), findsOneWidget);
+    expect(find.byKey(const ValueKey('decor_empty_illust')), findsOneWidget);
   });
 
   testWidgets('DecorBackdrop: 背景つきなら絵と膜を敷き、なければ子だけ', (tester) async {
