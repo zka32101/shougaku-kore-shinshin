@@ -2,6 +2,7 @@ import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
+import '../data/question_images.dart';
 import '../data/taiku_questions.dart';
 import '../taiku_app.dart';
 import '../providers/child_profiles_provider.dart';
@@ -144,6 +145,16 @@ class _Header extends StatelessWidget {
   }
 }
 
+@visibleForTesting
+class MistakeCardForTest extends StatelessWidget {
+  final TaikuQuestion question;
+  final GradeLevel grade;
+  const MistakeCardForTest({super.key, required this.question, required this.grade});
+  @override
+  Widget build(BuildContext context) =>
+      _MistakeCard(question: question, grade: grade);
+}
+
 class _MistakeCard extends StatelessWidget {
   final TaikuQuestion question;
   final GradeLevel grade;
@@ -232,6 +243,10 @@ class _MistakeCard extends StatelessWidget {
                 ],
               ),
             ),
+            if (kQuestionImages.containsKey(question.id)) ...[
+              const SizedBox(height: 10),
+              QuestionImage(question.id, maxHeight: 140),
+            ],
             if (onLearned case final fn?) ...[
               const SizedBox(height: 10),
               Align(
