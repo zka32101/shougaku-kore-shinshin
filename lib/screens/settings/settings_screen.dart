@@ -304,6 +304,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
           CrossPromoSection(
             currentAppId: 'com.yourwish.shougakukore.shinshin',
             currentCategory: '小学コレ',
+            isChildDirected: true,
             beforeOpenStore: (context) => requireParentalGate(context),
           ),
               const SizedBox(height: 24),

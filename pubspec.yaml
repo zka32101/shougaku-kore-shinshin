@@ -27,7 +27,7 @@ dependencies:
   cross_promo_kit:
     git:
       url: https://github.com/zka32101/cross_promo_kit.git
-      ref: v0.2.0
+      ref: v0.3.0
 
   # Firebase
   firebase_core: ^4.0.0
@@ -100,6 +100,14 @@ dev_dependencies:
   mockito: ^5.4.4
   fake_cloud_firestore: ^4.0.0
   firebase_auth_mocks: ^0.15.0
+
+# shared_core が cross_promo_kit を v0.2.0 で固定している間は、v0.3.0 に上書きする。
+# shared_core 側が v0.3.0 以降を参照するようになったら削除してよい。
+dependency_overrides:
+  cross_promo_kit:
+    git:
+      url: https://github.com/zka32101/cross_promo_kit.git
+      ref: v0.3.0
 
 flutter:
   uses-material-design: true
