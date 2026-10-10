@@ -169,7 +169,7 @@ class _AppBar extends StatelessWidget {
                     Image.asset(
                       streakFlameAsset(streak.currentStreak)!,
                       height: 16,
-                      errorBuilder: (_, __, ___) => const Text('🔥',
+                      errorBuilder: (_, _, _) => const Text('🔥',
                           style: TextStyle(fontSize: 11)),
                     ),
                     const SizedBox(width: 2),
@@ -231,7 +231,7 @@ class _StreakBanner extends StatelessWidget {
           Image.asset(
             streakFlameAsset(streak.currentStreak)!,
             height: 36,
-            errorBuilder: (_, __, ___) =>
+            errorBuilder: (_, _, _) =>
                 const Text('🔥', style: TextStyle(fontSize: 28)),
           ),
           const SizedBox(width: 12),
