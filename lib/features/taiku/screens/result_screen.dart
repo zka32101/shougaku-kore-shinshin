@@ -10,6 +10,7 @@ import '../taiku_app.dart';
 import '../providers/taiku_providers.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/sibling_quest_provider.dart';
+import '../../../reward_assets.dart';
 import 'activity_screen.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 import 'package:shougaku_kore_doutoku/widgets/scroll_fill.dart';
@@ -116,7 +117,18 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     style: TextStyle(
                         fontSize: 14, color: Colors.grey.shade600),
                   ),
-                  const SizedBox(height: 32),
+                  if (isGood) ...[
+                    const SizedBox(height: 12),
+                    Image.asset(
+                      rewardStickerAsset(
+                          quiz.correctCount, quiz.questions.length),
+                      key: const Key('reward_sticker'),
+                      width: 72,
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    ),
+                    const SizedBox(height: 12),
+                  ] else
+                    const SizedBox(height: 32),
 
                   // スコアカード
                   _ScoreCard(
