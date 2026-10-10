@@ -1,3 +1,4 @@
+import '../data/question_images.dart';
 import 'package:flutter/material.dart';
 import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -980,6 +981,7 @@ class _PointCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
+                QuestionImage(question.id),
                 // 解説
                 if (question.explanationDetail != null)
                   FuriganaText(
@@ -1167,6 +1169,7 @@ class _ExpandableQuestionCardState extends State<_ExpandableQuestionCard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    QuestionImage(q.id),
                     // 正解表示
                     Container(
                       padding: const EdgeInsets.all(10),
