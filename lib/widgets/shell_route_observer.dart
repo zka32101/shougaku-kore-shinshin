@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
-/// モジュール（体育・芸術）の内側 Navigator を見張り、「/home」以外の
+/// モジュール（体育・芸術）の内側 Navigator を見張り、土台（'/'・'/home'・'/onboarding'）以外の
 /// 全画面ページ（クイズ・結果・描画・撮影など）が開いている間は
 /// [fullScreen] を true にする。アプリ全体の下部ナビを隠すために使う。
 class ShellRouteObserver extends NavigatorObserver {
+  /// 下部ナビを出したままにする土台ページの名前。
+  static const baseRouteNames = {'/', '/home', '/onboarding'};
+
   final ValueNotifier<bool> fullScreen = ValueNotifier(false);
   final List<Route<dynamic>> _stack = [];
 
   bool get _wantFullScreen {
-    // 土台の「/home」が一番上のときだけナビを表示する
+    // 土台のページ（芸術は '/' がホーム、体育の「ようこそ」は '/onboarding'）が
+    // 一番上のときはナビを表示する。クイズなどの全画面ページだけ隠す。
     final top = _stack.isEmpty ? null : _stack.last;
-    return top != null && top.settings.name != '/home';
+    return top != null && !baseRouteNames.contains(top.settings.name);
   }
 
   void _update() {
