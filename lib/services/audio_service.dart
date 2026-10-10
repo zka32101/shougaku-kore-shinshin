@@ -36,7 +36,7 @@ class AudioService {
         }
       }
 
-      await _flutterTts!.setSpeechRate(1.0);
+      await _flutterTts!.setSpeechRate(0.45);
       await _flutterTts!.setVolume(0.8);
       _isInitialized = true;
     } catch (e) {
@@ -84,7 +84,7 @@ class AudioService {
   /// テキストを音声で読み上げ
   Future<void> speak(
     String text, {
-    double speed = 1.0,
+    double speed = 0.45,
     double volume = 0.8,
   }) async {
     if (!_isInitialized) {
