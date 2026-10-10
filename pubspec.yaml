@@ -132,6 +132,7 @@ flutter:
     - assets/title_plate/
     - assets/characters/
     - assets/explain/
+    - assets/explain/q/
     - assets/reward/
     - assets/sounds/
     - assets/taiku/images/

@@ -1,3 +1,4 @@
+import '../data/question_images.dart';
 import '../../shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -128,6 +129,7 @@ class QuizScreen extends ConsumerWidget {
                         ),
                         if (quiz.isAnswered) ...[
                           const SizedBox(height: 16),
+                          QuestionImage(question.id),
                           LiteracyFeedbackWidget(
                             feedback: question.feedbackFor(
                               quiz.selectedChoice == question.correctIndex,
