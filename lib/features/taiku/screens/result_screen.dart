@@ -68,6 +68,21 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     }
   }
 
+  /// おまけシール。この端末に履歴が残るのは累計の解答数のみなので、
+  /// 初挑戦(このステージの累計解答数=今回の問題数)と、その初回満点だけ判定する。
+  List<String> _bonusStickers(QuizState quiz, int stage, bool isPerfect) {
+    final attempts =
+        ref.read(taikuProgressProvider).valueOrNull?.stages[stage]?.totalAttempts;
+    final first = attempts != null &&
+        quiz.questions.isNotEmpty &&
+        attempts == quiz.questions.length;
+    return bonusStickerAssets(
+      firstAttempt: first,
+      personalBest: false,
+      firstPerfect: first && isPerfect,
+    );
+  }
+
   @override
   void dispose() {
     _confetti.dispose();
@@ -119,12 +134,27 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   ),
                   if (isGood) ...[
                     const SizedBox(height: 12),
-                    Image.asset(
-                      rewardStickerAsset(
-                          quiz.correctCount, quiz.questions.length),
-                      key: const Key('reward_sticker'),
-                      width: 72,
-                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          rewardStickerAsset(
+                              quiz.correctCount, quiz.questions.length),
+                          key: const Key('reward_sticker'),
+                          width: 72,
+                          errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                        ),
+                        for (final b in _bonusStickers(quiz, stage, isPerfect))
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Image.asset(
+                              b,
+                              height: 48,
+                              errorBuilder: (_, _, _) =>
+                                  const SizedBox.shrink(),
+                            ),
+                          ),
+                      ],
                     ),
                     const SizedBox(height: 12),
                   ] else

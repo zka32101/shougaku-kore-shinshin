@@ -5,6 +5,7 @@ import '../providers/mistake_note_provider.dart';
 import '../providers/taiku_providers.dart';
 import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
 import '../../../widgets/streak_crown_row.dart';
+import '../../../widgets/streak_calendar.dart';
 import 'activity_screen.dart';
 import 'characters_screen.dart';
 import 'mistake_note_screen.dart';
@@ -67,8 +68,21 @@ class BadgeScreen extends ConsumerWidget {
             context,
             title: '🔥 連続学習バッジ',
             subtitle: '毎日続けて獲得！',
-            headerTrailing: StreakCrownRow(
-                longestStreak: ref.watch(streakProvider).longestStreak),
+            headerTrailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                StreakCrownRow(
+                    longestStreak: ref.watch(streakProvider).longestStreak),
+                IconButton(
+                  key: const Key('badge_streak_calendar_button'),
+                  tooltip: 'れんぞくカレンダー',
+                  visualDensity: VisualDensity.compact,
+                  icon: const Icon(Icons.calendar_month, color: Colors.orange),
+                  onPressed: () => showStreakCalendar(
+                      context, ref.read(streakProvider).studyDaySet),
+                ),
+              ],
+            ),
             badges: streakBadges,
             acquired: acquired,
             color: Colors.orange,

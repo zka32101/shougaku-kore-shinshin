@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../literacy_core/literacy_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../streak_dates.dart';
 import '../data/taiku_questions.dart';
 
 export '../../literacy_core/literacy_core.dart'
@@ -75,6 +76,7 @@ class StreakState {
   final String lastStudyDate; // 'yyyy-MM-dd'
   final int totalStudyDays;
   final int totalStudyMinutes;
+  final List<String> studyDates; // 'yyyy-MM-dd'(直近180日)
 
   const StreakState({
     this.currentStreak = 0,
@@ -82,6 +84,7 @@ class StreakState {
     this.lastStudyDate = '',
     this.totalStudyDays = 0,
     this.totalStudyMinutes = 0,
+    this.studyDates = const [],
   });
 
   StreakState copyWith({
@@ -90,6 +93,7 @@ class StreakState {
     String? lastStudyDate,
     int? totalStudyDays,
     int? totalStudyMinutes,
+    List<String>? studyDates,
   }) =>
       StreakState(
         currentStreak: currentStreak ?? this.currentStreak,
@@ -97,7 +101,10 @@ class StreakState {
         lastStudyDate: lastStudyDate ?? this.lastStudyDate,
         totalStudyDays: totalStudyDays ?? this.totalStudyDays,
         totalStudyMinutes: totalStudyMinutes ?? this.totalStudyMinutes,
+        studyDates: studyDates ?? this.studyDates,
       );
+
+  Set<DateTime> get studyDaySet => studyDatesToSet(studyDates);
 }
 
 class StreakNotifier extends StateNotifier<StreakState> {
@@ -106,6 +113,7 @@ class StreakNotifier extends StateNotifier<StreakState> {
   static const _kLastDate = 'taiku_last_study_date';
   static const _kTotalDays = 'taiku_total_study_days';
   static const _kTotalMin = 'taiku_total_study_minutes';
+  static const _kStudyDates = 'taiku_study_dates';
 
   StreakNotifier() : super(const StreakState()) {
     _load();
@@ -113,12 +121,23 @@ class StreakNotifier extends StateNotifier<StreakState> {
 
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
+    final streak = prefs.getInt(_kStreak) ?? 0;
+    final lastStr = prefs.getString(_kLastDate) ?? '';
+    var dates = prefs.getStringList(_kStudyDates);
+    if (dates == null) {
+      // 初回のみ: 現在の連続日数と最終学習日から最終日までN日をバックフィル
+      // (この連続は「学習(クイズ完了)した日」基準なので実態と一致する)
+      final last = parseStudyDate(lastStr);
+      dates = last == null ? <String>[] : backfillStudyDates(streak, last);
+      if (dates.isNotEmpty) await prefs.setStringList(_kStudyDates, dates);
+    }
     state = StreakState(
-      currentStreak: prefs.getInt(_kStreak) ?? 0,
+      currentStreak: streak,
       longestStreak: prefs.getInt(_kLongest) ?? 0,
-      lastStudyDate: prefs.getString(_kLastDate) ?? '',
+      lastStudyDate: lastStr,
       totalStudyDays: prefs.getInt(_kTotalDays) ?? 0,
       totalStudyMinutes: prefs.getInt(_kTotalMin) ?? 0,
+      studyDates: normalizeStudyDates(dates, DateTime.now()),
     );
   }
 
@@ -151,6 +170,8 @@ class StreakNotifier extends StateNotifier<StreakState> {
     await prefs.setString(_kLastDate, today);
     await prefs.setInt(_kTotalDays, newDays);
     await prefs.setInt(_kTotalMin, newMin);
+    final newDates = addStudyDate(state.studyDates, DateTime.now());
+    await prefs.setStringList(_kStudyDates, newDates);
 
     state = StreakState(
       currentStreak: newStreak,
@@ -158,6 +179,7 @@ class StreakNotifier extends StateNotifier<StreakState> {
       lastStudyDate: today,
       totalStudyDays: newDays,
       totalStudyMinutes: newMin,
+      studyDates: newDates,
     );
   }
 
