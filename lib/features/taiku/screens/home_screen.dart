@@ -234,6 +234,15 @@ class _StreakBanner extends StatelessWidget {
             errorBuilder: (_, _, _) =>
                 const Text('🔥', style: TextStyle(fontSize: 28)),
           ),
+          if (streakCrownAsset(streak.currentStreak) != null) ...[
+            const SizedBox(width: 4),
+            Image.asset(
+              streakCrownAsset(streak.currentStreak)!,
+              key: const Key('streak_crown'),
+              height: 36,
+              errorBuilder: (_, _, _) => const SizedBox.shrink(),
+            ),
+          ],
           const SizedBox(width: 12),
           Expanded(
             child: Column(

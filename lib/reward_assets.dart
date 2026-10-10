@@ -19,3 +19,12 @@ String rewardStickerAsset(int correct, int total) {
   if (total > 0 && correct / total >= 0.8) return '${base}sticker_star.webp';
   return '${base}sticker_flower.webp';
 }
+
+/// 7/14/30日の節目に出すトロフィー/クラウン（それ以外は null）。
+String? streakCrownAsset(int days) {
+  const base = 'assets/reward/';
+  if (days == 7) return '${base}streak_trophy_crown.webp';
+  if (days == 14) return '${base}streak_medal_crown.webp';
+  if (days == 30) return '${base}streak_shield_crown.webp';
+  return null;
+}

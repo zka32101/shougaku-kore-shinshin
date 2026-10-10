@@ -43,4 +43,12 @@ void main() {
     ));
     expect(tester.takeException(), isNull);
   });
+
+  test('streakCrownAsset milestones', () {
+    expect(streakCrownAsset(6), isNull);
+    expect(streakCrownAsset(7), contains('trophy_crown'));
+    expect(streakCrownAsset(14), contains('medal_crown'));
+    expect(streakCrownAsset(30), contains('shield_crown'));
+    expect(streakCrownAsset(31), isNull);
+  });
 }

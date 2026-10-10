@@ -4,6 +4,7 @@ import '../taiku_app.dart';
 import '../providers/mistake_note_provider.dart';
 import '../providers/taiku_providers.dart';
 import 'package:shougaku_kore_doutoku/widgets/badge_emblem.dart';
+import '../../../widgets/streak_crown_row.dart';
 import 'activity_screen.dart';
 import 'characters_screen.dart';
 import 'mistake_note_screen.dart';
@@ -66,6 +67,8 @@ class BadgeScreen extends ConsumerWidget {
             context,
             title: '🔥 連続学習バッジ',
             subtitle: '毎日続けて獲得！',
+            headerTrailing: StreakCrownRow(
+                longestStreak: ref.watch(streakProvider).longestStreak),
             badges: streakBadges,
             acquired: acquired,
             color: Colors.orange,
@@ -105,13 +108,24 @@ class BadgeScreen extends ConsumerWidget {
     required List<TaikuBadge> badges,
     required List<String> acquired,
     required Color color,
+    Widget? headerTrailing,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: const TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold)),
+        Row(
+          children: [
+            Flexible(
+              child: Text(title,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+            if (headerTrailing != null) ...[
+              const SizedBox(width: 8),
+              headerTrailing,
+            ],
+          ],
+        ),
         const SizedBox(height: 2),
         Text(subtitle,
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
