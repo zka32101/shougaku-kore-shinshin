@@ -85,7 +85,7 @@ final volumeLevelProvider =
 /// ナレーション速度プロバイダー
 final narrationSpeedProvider =
     StateNotifierProvider<_DoubleSettingNotifier, double>(
-  (ref) => _DoubleSettingNotifier('narration_speed', 1.0),
+  (ref) => _DoubleSettingNotifier('narration_speed', 0.45),
 );
 
 /// 現在再生中の音声IDプロバイダー

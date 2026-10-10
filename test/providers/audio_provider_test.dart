@@ -241,11 +241,11 @@ void main() {
       expect(container.read(volumeLevelProvider), 0.8);
     });
 
-    test('narrationSpeedProvider defaults to 1.0', () async {
+    test('narrationSpeedProvider defaults to 0.45 (ゆっくり)', () async {
       final container = makeContainer();
       addTearDown(container.dispose);
       await _pump();
-      expect(container.read(narrationSpeedProvider), 1.0);
+      expect(container.read(narrationSpeedProvider), 0.45);
     });
 
     test('currentlyPlayingAudioProvider defaults to null', () {
