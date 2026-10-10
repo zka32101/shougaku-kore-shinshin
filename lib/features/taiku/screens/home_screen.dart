@@ -9,6 +9,7 @@ import '../providers/disaster_provider.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/parent_diary_provider.dart';
 import '../../../reward_assets.dart';
+import '../../../widgets/streak_calendar.dart';
 import 'disaster_drill_screen.dart';
 import 'learn_screen.dart' show GeijutsuGuideNote;
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
@@ -216,7 +217,11 @@ class _StreakBanner extends StatelessWidget {
     );
     final progress = streak.currentStreak / nextMilestone;
 
-    return Container(
+    return InkWell(
+      key: const Key('streak_calendar_button'),
+      borderRadius: BorderRadius.circular(16),
+      onTap: () => showStreakCalendar(context, streak.studyDaySet),
+      child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -292,6 +297,7 @@ class _StreakBanner extends StatelessWidget {
             ],
           ),
         ],
+      ),
       ),
     );
   }
