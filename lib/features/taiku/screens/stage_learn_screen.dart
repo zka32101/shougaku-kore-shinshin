@@ -706,7 +706,7 @@ class _StageExplainImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (stageNum < 1 || stageNum > 12) return const SizedBox.shrink();
+    if (stageNum < 1 || stageNum > 35) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: ClipRRect(

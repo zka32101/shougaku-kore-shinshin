@@ -23,8 +23,15 @@ void main() {
     expect(find.byType(AspectRatio), findsOneWidget);
     expect(t.takeException(), isNull);
   });
-  testWidgets('stage 13 shows no image', (t) async {
+  testWidgets('stage 13 shows explain image', (t) async {
+    t.view.physicalSize = const Size(360, 640);
+    t.view.devicePixelRatio = 1.0;
+    addTearDown(t.view.reset);
     await t.pumpWidget(_wrap(13));
+    expect(find.byType(Image), findsOneWidget);
+  });
+  testWidgets('stage 36 shows no image', (t) async {
+    await t.pumpWidget(_wrap(36));
     expect(find.byType(Image), findsNothing);
   });
 }
