@@ -29,4 +29,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(obs.fullScreen.value, isFalse);
   });
+
+  for (final base in ['/', '/onboarding']) {
+    testWidgets('base page $base keeps the bottom bar visible', (tester) async {
+      final obs = ShellRouteObserver();
+      final key = GlobalKey<NavigatorState>();
+      await tester.pumpWidget(MaterialApp(
+        home: Navigator(
+          key: key,
+          observers: [obs],
+          initialRoute: base,
+          onGenerateRoute: (s) => MaterialPageRoute<void>(
+            settings: s,
+            builder: (_) => Text(s.name ?? 'unnamed'),
+          ),
+        ),
+      ));
+      await tester.pump();
+      expect(obs.fullScreen.value, isFalse);
+
+      key.currentState!.pushNamed('/quiz');
+      await tester.pumpAndSettle();
+      expect(obs.fullScreen.value, isTrue);
+    });
+  }
 }

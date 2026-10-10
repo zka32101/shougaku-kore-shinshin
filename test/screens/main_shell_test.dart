@@ -47,6 +47,18 @@ void main() {
     final bar = tester.widget<NavigationBar>(find.byType(NavigationBar));
     expect(bar.selectedIndex, 0);
   });
+
+  testWidgets('back at home shows a confirm snackbar instead of exiting',
+      (tester) async {
+    await tester.pumpWidget(_app());
+    final NavigatorState nav = tester.state(find.byType(Navigator));
+    await nav.maybePop();
+    await tester.pump();
+    expect(find.text('もう一度おすと、アプリをとじるよ'), findsOneWidget);
+    // まだアプリは残っている
+    expect(find.byType(NavigationBar), findsOneWidget);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+  });
 }
 
 void _extra() {

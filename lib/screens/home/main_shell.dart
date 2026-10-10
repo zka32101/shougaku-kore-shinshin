@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/taiku/providers/album_provider.dart';
 import '../../features/taiku/screens/activity_screen.dart' show recoverLostPhotoMemory;
@@ -75,6 +76,25 @@ class _MainShellState extends State<MainShell> {
     super.dispose();
   }
 
+  // ホームで「戻る」を押したとき、2秒以内にもう一度押すと終了する（うっかり終了を防ぐ）
+  DateTime? _lastHomeBack;
+
+  void _backAtHome() {
+    final now = DateTime.now();
+    final last = _lastHomeBack;
+    if (last != null && now.difference(last) < const Duration(seconds: 2)) {
+      SystemNavigator.pop();
+      return;
+    }
+    _lastHomeBack = now;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(const SnackBar(
+        content: Text('もう一度おすと、アプリをとじるよ'),
+        duration: Duration(seconds: 2),
+      ));
+  }
+
   void _select(HomeSection s) {
     setState(() {
       _current = s;
@@ -115,10 +135,15 @@ class _MainShellState extends State<MainShell> {
       builder: (context, _) {
         final hideBar = obs?.fullScreen.value ?? false;
         return PopScope(
-          // ホーム以外で「戻る」を押したら、まず内側の画面を戻し、無ければホームへ戻す
-          canPop: _current == HomeSection.home,
+          // ホーム以外で「戻る」を押したら、まず内側の画面を戻し、無ければホームへ戻す。
+          // ホームでは「もう一度おすと終了」を出す
+          canPop: false,
           onPopInvokedWithResult: (didPop, _) async {
             if (didPop) return;
+            if (_current == HomeSection.home) {
+              _backAtHome();
+              return;
+            }
             if (hideBar && await obs!.popInner()) return;
             _select(HomeSection.home);
           },
