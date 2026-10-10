@@ -8,6 +8,7 @@ import '../providers/weather_provider.dart';
 import '../providers/disaster_provider.dart';
 import '../providers/child_profiles_provider.dart';
 import '../providers/parent_diary_provider.dart';
+import '../../../reward_assets.dart';
 import 'disaster_drill_screen.dart';
 import 'learn_screen.dart' show GeijutsuGuideNote;
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
@@ -162,10 +163,22 @@ class _AppBar extends StatelessWidget {
                   color: Colors.orange.shade600,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Text(
-                  '🔥 ${streak.currentStreak}日',
-                  style: const TextStyle(color: Colors.white, fontSize: 11,
-                      fontWeight: FontWeight.bold),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Image.asset(
+                      streakFlameAsset(streak.currentStreak)!,
+                      height: 16,
+                      errorBuilder: (_, __, ___) => const Text('🔥',
+                          style: TextStyle(fontSize: 11)),
+                    ),
+                    const SizedBox(width: 2),
+                    Text(
+                      '${streak.currentStreak}日',
+                      style: const TextStyle(color: Colors.white, fontSize: 11,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             const SizedBox(width: 8),
@@ -215,7 +228,12 @@ class _StreakBanner extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text('🔥', style: TextStyle(fontSize: 28)),
+          Image.asset(
+            streakFlameAsset(streak.currentStreak)!,
+            height: 36,
+            errorBuilder: (_, __, ___) =>
+                const Text('🔥', style: TextStyle(fontSize: 28)),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
