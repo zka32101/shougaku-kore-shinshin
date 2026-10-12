@@ -6,6 +6,8 @@ import '../../literacy_core/literacy_core.dart';
 import '../data/taiku_questions.dart';
 import '../providers/taiku_providers.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
+import 'package:shougaku_kore_doutoku/widgets/access_guard.dart';
+import 'package:shougaku_kore_doutoku/providers/premium_provider.dart';
 
 // ─── ステージ導入テキスト（低学年・高学年） ───
 
@@ -442,6 +444,14 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
 
   @override
   Widget build(BuildContext context) {
+    // 無料期間後は、ステージ[kFreeStageLimit]まで無料。それ以降はプレミアムが必要。
+    return AccessGuard(
+      requirePremium: widget.stageNum > kFreeStageLimit,
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final grade = ref.watch(gradeLevelProvider);
     final isLow = grade == GradeLevel.low;
     final questions = getQuestionsForStage(widget.stageNum);
