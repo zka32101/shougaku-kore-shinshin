@@ -8,6 +8,7 @@ import '../library/library_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../../features/geijutsu/geijutsu_app.dart' show GeijutsuModule;
 import '../../widgets/badge_celebration_host.dart';
+import '../../widgets/premium_lock_view.dart';
 import '../../widgets/shell_route_observer.dart';
 import 'home_screen.dart';
 import 'shell_navigation.dart';
@@ -110,11 +111,11 @@ class _MainShellState extends State<MainShell> {
       case HomeSection.home:
         return HomeScreen(onSelectSection: _select);
       case HomeSection.doutoku:
-        return const LibraryScreen();
+        return const PremiumGate(child: LibraryScreen());
       case HomeSection.taiku:
-        return TaikuModule(observer: _taikuObs);
+        return PremiumGate(child: TaikuModule(observer: _taikuObs));
       case HomeSection.geijutsu:
-        return GeijutsuModule(observer: _geijutsuObs);
+        return PremiumGate(child: GeijutsuModule(observer: _geijutsuObs));
       case HomeSection.characters:
         return const CharacterCollectionScreen();
     }

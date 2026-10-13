@@ -4,6 +4,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
 import '../../widgets/profile_name_card.dart';
+import '../../widgets/plan_card.dart';
 import '../../providers/user_profile_provider.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../utils/sound_effects_utils.dart';
@@ -91,6 +92,7 @@ class HomeScreen extends ConsumerWidget {
             // アバター（コインつき）ヘッダー
             AvatarPanel(userName: ref.watch(displayNameProvider)),
             const ProfileNameCard(),
+            const PlanCard(),
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)
