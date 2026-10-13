@@ -52,7 +52,7 @@ class _UpgradeScreenState extends ConsumerState<UpgradeScreen> {
                   const Text('🌱', style: TextStyle(fontSize: 48)),
                   const SizedBox(height: 8),
                   Text(
-                    '英語コレ！を\nずっと使おう',
+                    '小学コレ！心身を\nずっと使おう',
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)
                         .copyWith(color: Colors.white, height: 1.4),
                     textAlign: TextAlign.center,
