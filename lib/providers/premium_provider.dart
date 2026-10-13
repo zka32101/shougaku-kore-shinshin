@@ -75,6 +75,9 @@ class PremiumNotifier extends StateNotifier<PremiumStatus> {
     }
   }
 
+  /// 直近の購入失敗の理由（無ければ null）。
+  String? get lastFailure => ShinshinPurchaseService.instance.lastFailure;
+
   Future<bool> restorePurchases() async =>
       _sync(await _guard(() => ShinshinPurchaseService.instance.restore()));
 
