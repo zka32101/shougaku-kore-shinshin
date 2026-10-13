@@ -21,7 +21,14 @@ class _UpgradeScreenState extends ConsumerState<UpgradeScreen> {
     if (!mounted) return;
     setState(() => _busy = false);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(ok ? successMessage : failureMessage)),
+      SnackBar(
+        content: Text(ok
+            ? successMessage
+            : (ref.read(premiumProvider.notifier).lastFailure != null
+                ? '$failureMessage（${ref.read(premiumProvider.notifier).lastFailure}）'
+                : failureMessage)),
+        duration: const Duration(seconds: 8),
+      ),
     );
     if (ok) Navigator.of(context).maybePop();
   }
