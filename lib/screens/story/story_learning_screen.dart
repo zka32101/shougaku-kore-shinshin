@@ -291,7 +291,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
 
   @override
   Widget build(BuildContext context) {
-    return AccessGuard(child: _buildGuarded(context));
+    return _buildGuarded(context);
   }
 
   Widget _buildGuarded(BuildContext context) {
@@ -305,7 +305,11 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
       error: (e, _) => Scaffold(
         body: Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
       ),
-      data: (story) => _buildStory(context, story),
+      // 無料期間後は、プレミアム指定の物語だけロックする。
+      data: (story) => AccessGuard(
+        requirePremium: story.isPremium,
+        child: _buildStory(context, story),
+      ),
     );
   }
 
