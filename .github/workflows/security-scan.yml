@@ -175,7 +175,7 @@ jobs:
         if: steps.dockerfile.outputs.exists == 'true'
         run: |
           if [ -f "backend/Dockerfile" ]; then
-            docker build -t shougaku-kore:test -f backend/Dockerfile .
+            docker build -t shougaku-kore:test -f backend/Dockerfile backend
           elif [ -f "Dockerfile" ]; then
             docker build -t shougaku-kore:test .
           fi
