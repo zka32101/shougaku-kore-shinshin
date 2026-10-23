@@ -8,7 +8,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoService;
 import 'firebase_options.dart';
 import 'screens/home/main_shell.dart';
-import 'screens/subscription/trial_status_screen.dart';
 import 'screens/upgrade_screen.dart';
 import 'screens/settings/avatar_selection_screen.dart';
 import 'screens/ranking/ranking_screen.dart';
@@ -210,7 +209,6 @@ class ShougakuKoreDoutokuApp extends ConsumerWidget {
       routes: {
         '/home': (context) => const MainShell(),
         '/child-registration': (context) => const ChildRegistrationScreen(),
-        '/trial_status': (context) => const TrialStatusScreen(),
         '/subscription': (context) => const UpgradeScreen(),
         '/avatar_selection': (context) => const AvatarSelectionScreen(),
         '/ranking': (context) => const RankingScreen(),
