@@ -8,7 +8,7 @@ class AnalyticsService {
   factory AnalyticsService() => _instance;
   AnalyticsService._internal();
 
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+  FirebaseAnalytics get _analytics => FirebaseAnalytics.instance;
 
   // ============ 認証イベント ============
 

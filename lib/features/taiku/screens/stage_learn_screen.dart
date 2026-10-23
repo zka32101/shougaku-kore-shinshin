@@ -10,7 +10,6 @@ import '../data/taiku_questions.dart';
 import '../providers/taiku_providers.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 import 'package:shougaku_kore_doutoku/widgets/access_guard.dart';
-import 'package:shougaku_kore_doutoku/providers/premium_provider.dart';
 
 // ─── ステージ導入テキスト（低学年・高学年） ───
 
@@ -447,9 +446,9 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
 
   @override
   Widget build(BuildContext context) {
-    // 無料期間後は、ステージ[kFreeStageLimit]まで無料と、特別ステージ（31〜33）は無料。それ以外はプレミアムが必要。
+    // 無料期間（14日）が終わったら、プレミアムに入るまで、すべてのステージをロックする。
     return AccessGuard(
-      requirePremium: !isFreeTaikuStage(widget.stageNum),
+      requirePremium: true,
       child: _buildContent(context),
     );
   }
