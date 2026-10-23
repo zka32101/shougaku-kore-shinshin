@@ -1,3 +1,4 @@
+import '../drawing/free_drawing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
@@ -67,6 +68,8 @@ class HomeScreen extends ConsumerWidget {
           () => _open(context, HomeSection.geijutsu, const GeijutsuModule())),
     ];
     final more = <HomeItem>[
+      HomeItem('🖍️', 'おえかき', 'じゆうに かこう', const Color(0xFFEC407A),
+          () => _push(context, const FreeDrawingScreen())),
       HomeItem('🐾', 'キャラずかん', 'キャラを そだてよう', const Color(0xFF43A047),
           () => _open(context, HomeSection.characters,
               const CharacterCollectionScreen())),
