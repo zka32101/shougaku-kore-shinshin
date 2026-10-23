@@ -79,7 +79,7 @@ class HomeScreen extends ConsumerWidget {
     ];
     // 体育・芸術それぞれの記録（以前は各画面の上にあった専用メニュー）
     final records = <_HomeItem>[
-      _HomeItem('🏅', 'たいいくのバッジ', 'スポーツ・けんこう', const Color(0xFFE64A19),
+      _HomeItem('🏅', 'たいいくのバッジ', 'たいいくで あつめた', const Color(0xFFE64A19),
           () => _push(context,
               const TaikuModule(initialRoute: '/badges', standalone: true))),
       _HomeItem('📷', 'たいいくのアルバム', '体験のきろく', const Color(0xFFFF6D00),
@@ -88,7 +88,7 @@ class HomeScreen extends ConsumerWidget {
       _HomeItem('👪', 'たいいくの ほごしゃ', '見まもりページ', const Color(0xFF00838F),
           () => _push(context,
               const TaikuModule(initialRoute: '/parent', standalone: true))),
-      _HomeItem('⭐', 'げいじゅつのバッジ', '図工・音楽・家庭科', const Color(0xFFD81B60),
+      _HomeItem('⭐', 'げいじゅつのバッジ', 'げいじゅつで あつめた', const Color(0xFFD81B60),
           () => _push(context,
               const GeijutsuModule(initialRoute: '/badges', standalone: true))),
       _HomeItem('👪', 'げいじゅつの ほごしゃ', '見まもりページ', const Color(0xFFAD1457),
