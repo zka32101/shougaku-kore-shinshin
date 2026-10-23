@@ -1796,5 +1796,445 @@
    ],
    "illustrationUrl": null
   }
+ },
+ {
+  "id": "local-story-42",
+  "title": "しらない ひとからの メッセージ",
+  "description": "ゲームで しらない ひとから さそわれた お話",
+  "theme": "courage",
+  "gradeLevel": 1,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 150,
+  "weekNumber": 3,
+  "emoji": "🎮",
+  "content": {
+   "introduction": "あおいちゃんは、タブレットで ゲームを して いました。",
+   "mainNarrative": [
+    "とつぜん、しらない ひとから「いっしょに あそぼう。どこに すんでるの？」と メッセージが きました。",
+    "あおいちゃんは、どうしようと おもいました。"
+   ],
+   "dilemmaScene": "あおいちゃんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s42c1",
+     "text": "おうちの ひとに すぐ みせて、そうだんする",
+     "value": "courage",
+     "branchContent": "おうちの ひとは「おしえてくれて ありがとう」と いって、その ひとを ブロックして くれました。あおいちゃんは あんしんしました。",
+     "reflection": "しらない ひとからの メッセージは、すぐ おとなに はなそう。"
+    },
+    {
+     "id": "s42c2",
+     "text": "じぶんの すんでいる ところを おしえる",
+     "value": "honesty",
+     "branchContent": "その ひとは、ほかにも いろいろ きいて きました。あおいちゃんは、だんだん こわく なりました。",
+     "reflection": "なまえや すんでいる ところは、ネットの ひとに おしえては いけないよ。"
+    },
+    {
+     "id": "s42c3",
+     "text": "へんじを しないで、そのまま にして おく",
+     "value": "responsibility",
+     "branchContent": "メッセージは なんども きて、あおいちゃんは なやんで しまいました。",
+     "reflection": "むしを するだけでなく、おとなに はなすと もっと あんしんだよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-43",
+  "title": "パスワードを おしえて",
+  "description": "ともだちに パスワードを たのまれる お話",
+  "theme": "responsibility",
+  "gradeLevel": 2,
+  "difficulty": 1,
+  "isPremium": false,
+  "durationSeconds": 180,
+  "weekNumber": 4,
+  "emoji": "🔑",
+  "content": {
+   "introduction": "ゆうたくんは、じぶんの ゲームの パスワードを きめました。",
+   "mainNarrative": [
+    "なかよしの けんとくんが「パスワード おしえて。おれの ぶんも レベルあげて あげる」と いいました。",
+    "ゆうたくんは、ことわったら きらわれるかなと しんぱいに なりました。"
+   ],
+   "dilemmaScene": "ゆうたくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s43c1",
+     "text": "「パスワードは だれにも おしえない きまりなんだ」と ことわる",
+     "value": "responsibility",
+     "branchContent": "けんとくんは「そうなんだ」と いって、いっしょに あそんでくれました。パスワードは あんぜんでした。",
+     "reflection": "パスワードは ともだちにも おしえない。それは じぶんを まもる ルールだよ。"
+    },
+    {
+     "id": "s43c2",
+     "text": "おしえて しまう",
+     "value": "honesty",
+     "branchContent": "あとで、アイテムが ぜんぶ なくなって いました。ゆうたくんは、かなしく なりました。",
+     "reflection": "ともだちでも、パスワードを つかわれると こまる ことが あるよ。"
+    },
+    {
+     "id": "s43c3",
+     "text": "おうちの ひとに そうだんして、ことわり方を きく",
+     "value": "courage",
+     "branchContent": "おうちの ひとは「いっしょに かんがえよう」と いってくれました。ゆうたくんは、じしんを もって ことわれました。",
+     "reflection": "むずかしい ときは、おとなに そうだんして いいんだよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-44",
+  "title": "ゲームの なかまはずれ",
+  "description": "オンラインゲームで なかまはずれに なった子の お話",
+  "theme": "kindness",
+  "gradeLevel": 3,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 210,
+  "weekNumber": 1,
+  "emoji": "🕹️",
+  "content": {
+   "introduction": "はるきくんは、クラスの みんなと オンラインゲームで あそんでいます。",
+   "mainNarrative": [
+    "ある日、みんなが「あいつは ヘタだから チームに いれないで あそぼう」と、そうたくんを はずして いるのを 見ました。",
+    "そうたくんは、チャットで ひとりごとを つぶやいて います。"
+   ],
+   "dilemmaScene": "はるきくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s44c1",
+     "text": "そうたくんに「いっしょに あそぼう」と こえを かける",
+     "value": "kindness",
+     "branchContent": "そうたくんは「ありがとう」と よろこびました。ほかの みんなも、はずかしそうに いれてくれました。",
+     "reflection": "ひとりに なって いる 友だちに こえを かけると、その 子の ささえに なるよ。"
+    },
+    {
+     "id": "s44c2",
+     "text": "みんなに あわせて、そうたくんを いれない",
+     "value": "cooperation",
+     "branchContent": "そうたくんは、チャットから いなくなりました。はるきくんは、モヤモヤした きもちに なりました。",
+     "reflection": "みんなに あわせるだけでは、だれかが きずつく ことが あるよ。"
+    },
+    {
+     "id": "s44c3",
+     "text": "先生に そうだんする",
+     "value": "responsibility",
+     "branchContent": "先生は、クラスで ネットの つかい方を はなしあう 時間を つくってくれました。",
+     "reflection": "ひとりで むずかしい ときは、おとなの 力を かりて いいんだよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-45",
+  "title": "かってに しゃしん",
+  "description": "友達の変な写真を投稿しそうになる お話",
+  "theme": "respect",
+  "gradeLevel": 3,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 210,
+  "weekNumber": 2,
+  "emoji": "📸",
+  "content": {
+   "introduction": "みほさんは、休み時間に 友だちの ちはるさんが ころんだ しゅんかんを、タブレットで とってしまいました。",
+   "mainNarrative": [
+    "おもしろい かおだったので、みほさんは「みんなに 見せたいな」と おもいました。",
+    "でも、ちはるさんは すこし はずかしそうに して います。"
+   ],
+   "dilemmaScene": "みほさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s45c1",
+     "text": "ちはるさんに あやまって、写真を けす",
+     "value": "respect",
+     "branchContent": "ちはるさんは「けして くれて ありがとう」と いってくれました。ふたりは もっと なかよく なれました。",
+     "reflection": "本人の きもちを だいじに すると、しんらいが うまれるよ。"
+    },
+    {
+     "id": "s45c2",
+     "text": "グループチャットに のせてしまう",
+     "value": "honesty",
+     "branchContent": "みんなが わらって、ちはるさんは 学校に 行きたく なくなりました。",
+     "reflection": "一度 のせた 写真は、けしても コピーされて ひろがる ことが あるよ。"
+    },
+    {
+     "id": "s45c3",
+     "text": "ちはるさんに「のせても いい？」と きく",
+     "value": "kindness",
+     "branchContent": "ちはるさんは「いやだな」と こたえて、みほさんは のせない ことに しました。",
+     "reflection": "のせる 前に 本人に きくのは、とても たいせつな ルールだよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-46",
+  "title": "プレゼントの さそい",
+  "description": "ゲームのアイテムをあげるよと言う人の お話",
+  "theme": "honesty",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 240,
+  "weekNumber": 3,
+  "emoji": "🎁",
+  "content": {
+   "introduction": "たくやくんは、人気の ゲームで あそんでいます。",
+   "mainNarrative": [
+    "ある日、知らない人から「レアアイテムを あげるよ。SNSの IDを おしえて」と メッセージが きました。",
+    "たくやくんは、ほしかった アイテムなので、ドキドキしました。"
+   ],
+   "dilemmaScene": "たくやくんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s46c1",
+     "text": "おうちの人に見せて、そうだんする",
+     "value": "courage",
+     "branchContent": "おうちの人は「それは あぶない さそいだよ」と おしえてくれ、その人を ブロックしました。",
+     "reflection": "ただで もらえる ものには、わなが あることが あるよ。"
+    },
+    {
+     "id": "s46c2",
+     "text": "IDを おしえて アイテムを もらう",
+     "value": "honesty",
+     "branchContent": "その人は、つぎは「写真を送って」「お金を はらって」と、いろいろ ようきゅうしてきました。",
+     "reflection": "会ったことの ない人に、個人の 情報を わたしては いけないよ。"
+    },
+    {
+     "id": "s46c3",
+     "text": "返事をしないで、ブロックする",
+     "value": "responsibility",
+     "branchContent": "たくやくんは、あとで おうちの人にも はなして、あんしんしました。",
+     "reflection": "あやしい メッセージは ブロックして、おとなにも 伝えると 安心だよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-47",
+  "title": "グループチャットの 既読",
+  "description": "チャットで返事がおくれたことで けんかになった お話",
+  "theme": "cooperation",
+  "gradeLevel": 4,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 240,
+  "weekNumber": 4,
+  "emoji": "💬",
+  "content": {
+   "introduction": "さくらさんは、クラスの グループチャットに 入っています。",
+   "mainNarrative": [
+    "ある日、友だちが「どうして 返事を くれないの？ 無視してるの？」と、さくらさんに おこりました。",
+    "さくらさんは、宿題を していて 気づかなかっただけでした。"
+   ],
+   "dilemmaScene": "さくらさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s47c1",
+     "text": "「宿題を していて、気づかなかったよ。ごめんね」と 伝える",
+     "value": "honesty",
+     "branchContent": "友だちは「そうだったんだ」と わかってくれて、すぐに なかなおりしました。",
+     "reflection": "文字だけだと、気持ちは すれちがいやすいよ。理由を 伝えると 安心するよ。"
+    },
+    {
+     "id": "s47c2",
+     "text": "おこって、チャットを やめてしまう",
+     "value": "courage",
+     "branchContent": "さくらさんも 友だちも、さみしい きもちに なりました。",
+     "reflection": "すぐに やめるより、まず 気持ちを 伝えてみよう。"
+    },
+    {
+     "id": "s47c3",
+     "text": "次の日、学校で 直接 話す",
+     "value": "respect",
+     "branchContent": "顔を 見て 話すと、気持ちが よく つたわって、仲直り できました。",
+     "reflection": "むずかしい 話は、顔を 見て 話す ほうが つたわりやすいよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-48",
+  "title": "うわさの シェア",
+  "description": "まだ本当かわからないうわさを広めそうになる お話",
+  "theme": "responsibility",
+  "gradeLevel": 5,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 270,
+  "weekNumber": 1,
+  "emoji": "📣",
+  "content": {
+   "introduction": "りくさんは、SNSで「となりのクラスの 子が 学校で ものを ぬすんだらしい」という 投稿を 見ました。",
+   "mainNarrative": [
+    "たくさんの人が「ほんとう？」「ひどい」と コメントを して、シェアも されて います。",
+    "りくさんも、みんなに 知らせた ほうがいいかなと 思いました。"
+   ],
+   "dilemmaScene": "りくさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s48c1",
+     "text": "本当かどうか わからないので、シェアしない。先生に 相談する",
+     "value": "responsibility",
+     "branchContent": "あとで、その うわさは まちがいだったと わかりました。シェアしなくて よかったと、りくさんは ほっとしました。",
+     "reflection": "うわさを 広げる前に、本当か 確かめよう。まちがいだと 人を 深く 傷つける ことが あるよ。"
+    },
+    {
+     "id": "s48c2",
+     "text": "「ひどいね」と コメントして シェアする",
+     "value": "honesty",
+     "branchContent": "うわさは どんどん 広がり、その子は 学校に 来られなく なりました。あとで まちがいだと わかりました。",
+     "reflection": "広がった うわさは、取り消しても 完全には もどせないよ。"
+    },
+    {
+     "id": "s48c3",
+     "text": "その投稿の 子に 直接 たしかめる",
+     "value": "courage",
+     "branchContent": "その子は「やっていない」と はっきり 言いました。りくさんは、まちがった うわさを 止める 手伝いを しました。",
+     "reflection": "確かめる 勇気は、友だちを まもる 力に なるよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-49",
+  "title": "なりすまし",
+  "description": "友達のふりをした人に だまされそうになる お話",
+  "theme": "honesty",
+  "gradeLevel": 5,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 270,
+  "weekNumber": 2,
+  "emoji": "🎭",
+  "content": {
+   "introduction": "ゆいさんの もとに、友だちの アカウントから「お金が たりない。ギフトカードを 買って 番号を 送って」と メッセージが きました。",
+   "mainNarrative": [
+    "いつもの 友だちの 名前で、写真も 同じです。",
+    "でも、友だちが そんなことを 言うのは めずらしい、とゆいさんは 思いました。"
+   ],
+   "dilemmaScene": "ゆいさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s49c1",
+     "text": "電話や 学校で 本人に 確かめる。そして 親にも 相談する",
+     "value": "honesty",
+     "branchContent": "本人は「そんなメッセージ 送ってないよ」と 言いました。アカウントが のっとられて いたことが わかりました。",
+     "reflection": "お金の たのみごとは、まず 別の 方法で 本人に 確かめよう。"
+    },
+    {
+     "id": "s49c2",
+     "text": "言われた とおりに 番号を 送る",
+     "value": "responsibility",
+     "branchContent": "お金は とられて しまい、ゆいさんも 友だちも こまって しまいました。",
+     "reflection": "「急いで」と せかす メッセージは、うたがって みよう。"
+    },
+    {
+     "id": "s49c3",
+     "text": "友だちに「それ ほんとう？」と その場で 聞く",
+     "value": "courage",
+     "branchContent": "返事は「はい、急いで」と 来て、ゆいさんは あやしいと 気づきました。",
+     "reflection": "あやしいと 思ったら、お金や 番号を 送る前に 立ち止まろう。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-50",
+  "title": "炎上した 動画",
+  "description": "悪ふざけの動画を投稿しようとする友達の お話",
+  "theme": "responsibility",
+  "gradeLevel": 6,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 300,
+  "weekNumber": 3,
+  "emoji": "🔥",
+  "content": {
+   "introduction": "たけるさんの 友だちの だいきさんが「お店の 商品で ふざけた 動画を とって SNSに のせよう。バズるぞ」と 言いました。",
+   "mainNarrative": [
+    "クラスの みんなが「おもしろそう」と 笑っています。",
+    "でも、たけるさんは、お店の 人に めいわくを かけると 思いました。"
+   ],
+   "dilemmaScene": "たけるさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s50c1",
+     "text": "「お店の人に めいわくだよ。やめよう」と はっきり 伝える",
+     "value": "courage",
+     "branchContent": "だいきさんは しぶしぶ やめました。あとで、同じような 動画が 問題に なった ニュースを 見て、たけるさんに 感謝しました。",
+     "reflection": "みんなが 笑っていても、悪いことは 悪いと 伝える 勇気が 大切だよ。"
+    },
+    {
+     "id": "s50c2",
+     "text": "いっしょに 動画を とって のせる",
+     "value": "honesty",
+     "branchContent": "動画は 広がり、お店や 学校から 注意され、親も 呼ばれる ことに なりました。",
+     "reflection": "一度のせた 動画は 消せず、将来にも 影響する ことが あるよ。"
+    },
+    {
+     "id": "s50c3",
+     "text": "こっそり 先生や 親に 伝える",
+     "value": "responsibility",
+     "branchContent": "先生が みんなと 話して、動画は のせられませんでした。",
+     "reflection": "自分だけで 止められない ときは、おとなに 伝えて いいんだよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
+ },
+ {
+  "id": "local-story-51",
+  "title": "AIの 答え",
+  "description": "宿題でAIの答えを そのまま うつしそうになる お話",
+  "theme": "honesty",
+  "gradeLevel": 6,
+  "difficulty": 2,
+  "isPremium": false,
+  "durationSeconds": 300,
+  "weekNumber": 4,
+  "emoji": "🤖",
+  "content": {
+   "introduction": "なつきさんは、社会の 宿題で「江戸時代の くらしについて まとめる」ことに なりました。",
+   "mainNarrative": [
+    "AIに 聞いたら、すぐに 長い 文章が 出てきました。",
+    "そのまま うつせば、宿題は すぐに 終わります。"
+   ],
+   "dilemmaScene": "なつきさんは、どうしますか？",
+   "choices": [
+    {
+     "id": "s51c1",
+     "text": "AIの 答えを 参考にして、本や 先生の 資料で 確かめ、自分の 言葉で まとめる",
+     "value": "honesty",
+     "branchContent": "まとめには 自信が 持てました。AIの 答えに まちがいが あったことも わかり、確かめて よかったと 思いました。",
+     "reflection": "AIの 答えは まちがうことも ある。参考に して、自分で 確かめよう。"
+    },
+    {
+     "id": "s51c2",
+     "text": "AIの 文章を そのまま 提出する",
+     "value": "responsibility",
+     "branchContent": "先生に「これは 君の 言葉かな？」と 聞かれ、なつきさんは 答えに こまって しまいました。",
+     "reflection": "人の 文章や AIの 文章を 自分の ものとして 出すのは、よくないよ。"
+    },
+    {
+     "id": "s51c3",
+     "text": "AIを 使ったことを 先生に 伝えて、使い方を 相談する",
+     "value": "courage",
+     "branchContent": "先生は「いい 使い方を 一緒に 考えよう」と 言ってくれました。",
+     "reflection": "正直に 伝えて 相談すると、上手な 使い方を 学べるよ。"
+    }
+   ],
+   "illustrationUrl": null
+  }
  }
 ]
