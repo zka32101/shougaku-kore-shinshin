@@ -1,6 +1,6 @@
 import '../../providers/growth_note_provider.dart' show growthNoteProvider;
-import '../../providers/today_pick_provider.dart' show revisitPickProvider;
-import '../../providers/today_pick_provider.dart' show localCompletedStoryIdsProvider;
+import '../../providers/today_pick_provider.dart'
+    show localCompletedStoryIdsProvider, revisitPickProvider;
 import '../../services/local_reflection_store.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../providers/local_avatar_provider.dart';
