@@ -44,6 +44,11 @@ const _profiles = <String, List<int>>{
   'sp_golf': [3, 2, 2, 3, 1, 5],
   'sp_para': [4, 4, 3, 3, 4, 5],
   'sp_jumprope': [5, 4, 4, 3, 2, 3],
+  'sp_vault': [4, 3, 2, 4, 1, 3],
+  'sp_mat': [4, 3, 2, 3, 1, 3],
+  'sp_horizontalbar': [4, 3, 2, 4, 1, 3],
+  'sp_longrope': [5, 4, 4, 3, 5, 3],
+  'sp_tag': [5, 5, 4, 3, 3, 4],
 };
 
 /// 登録のない競技は人気度だけを反映した標準値にする。
