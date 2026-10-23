@@ -13,6 +13,7 @@ import '../../widgets/profile_edit_dialog.dart';
 import '../../providers/user_profile_provider.dart';
 import '../ranking/ranking_settings_screen.dart';
 import 'help_screen.dart';
+import 'module_data_reset_section.dart';
 import 'privacy_policy_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -147,6 +148,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               );
             },
           ),
+
+          // ─── たいいく／げいじゅつのデータ管理 ───
+          const ModuleDataResetSection(),
 
           // ─── 通知設定セクション ───
           const SizedBox(height: 8),
