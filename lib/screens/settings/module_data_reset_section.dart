@@ -11,6 +11,7 @@ import '../../features/taiku/providers/parent_diary_provider.dart';
 import '../../features/taiku/providers/sibling_quest_provider.dart';
 import '../../features/taiku/providers/taiku_providers.dart';
 import '../../services/module_data_reset.dart';
+import '../../utils/guardian_gate.dart';
 
 /// 設定：たいいく／げいじゅつの学習データだけを消す（アプリ全体のデータは消えない）
 class ModuleDataResetSection extends ConsumerWidget {
@@ -23,6 +24,8 @@ class ModuleDataResetSection extends ConsumerWidget {
     required Future<int> Function(SharedPreferences) reset,
     required void Function() refresh,
   }) async {
+    if (!await confirmAdult(context, purpose: '学習のきろくを消す操作です。')) return;
+    if (!context.mounted) return;
     final ok = await showDialog<bool>(
       context: context,
       builder: (dctx) => AlertDialog(

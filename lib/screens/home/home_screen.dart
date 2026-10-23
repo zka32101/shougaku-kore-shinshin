@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_core/shared_core.dart' show requireParentalGate;
 import '../../constants/app_colors.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/today_pick_provider.dart';
 import '../../services/local_reflection_store.dart' show kReflectionFeelings;
+import '../../utils/guardian_gate.dart';
 import '../hub/guardian_hub_screen.dart';
 import '../hub/records_hub_screen.dart';
 import '../story/story_learning_screen.dart';
@@ -51,10 +51,7 @@ class HomeScreen extends ConsumerWidget {
 
   /// 保護者向けのページは、大人であることを確認してから開く。
   Future<void> _openGuardian(BuildContext context) async {
-    final ok = await requireParentalGate(
-      context,
-      description: '保護者のかた向けのページです。\n下の計算の答えを入力してください。',
-    );
+    final ok = await confirmAdult(context, purpose: '保護者のかた向けのページです。');
     if (!ok || !context.mounted) return;
     _push(context, const GuardianHubScreen());
   }
