@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/today_pick_provider.dart';
+import '../growth/growth_note_screen.dart';
 import '../story/story_learning_screen.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
@@ -67,6 +68,8 @@ class HomeScreen extends ConsumerWidget {
               const CharacterCollectionScreen())),
       _HomeItem('🎖️', 'バッジ', 'バッジを集める', const Color(0xFFF9A825),
           () => _push(context, const BadgeShowcaseScreen())),
+      _HomeItem('📓', 'せいちょうノート', 'かんがえた ことを みかえそう', const Color(0xFF2E7D32),
+          () => _push(context, const GrowthNoteScreen())),
       _HomeItem('🏆', 'ランキング', '成績を確認', const Color(0xFF8E24AA),
           () => _push(context, const RankingScreen())),
       _HomeItem('📊', 'ほごしゃ レポート', '成長を分析', const Color(0xFF00897B),

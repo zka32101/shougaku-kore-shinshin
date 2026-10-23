@@ -1,3 +1,4 @@
+import '../../providers/growth_note_provider.dart' show growthNoteProvider;
 import '../../providers/today_pick_provider.dart' show localCompletedStoryIdsProvider;
 import '../../services/local_reflection_store.dart';
 import '../../features/shop/decor/decor_scope.dart';
@@ -269,6 +270,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
     ref.invalidate(childProfileProvider(widget.childId));
     ref.invalidate(userProgressProvider(widget.childId));
     ref.invalidate(localCompletedStoryIdsProvider(widget.childId)); // ホームのおすすめを更新
+    ref.invalidate(growthNoteProvider(widget.childId)); // せいちょうノートを更新
 
     AnalyticsService().logStoryCompleted(
       storyId: story.id,
