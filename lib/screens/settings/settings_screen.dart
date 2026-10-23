@@ -9,6 +9,7 @@ import '../../providers/app_version_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../providers/offline_sync_provider.dart';
+import '../../providers/premium_provider.dart';
 import '../profile/profile_management_screen.dart';
 import '../../widgets/profile_edit_dialog.dart';
 import '../../providers/user_profile_provider.dart';
@@ -67,6 +68,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
           // Tab 1: 設定
           ListView(
             children: [
+              // ─── プレミアム（無料期間・購読状態） ───
+              const _PremiumCard(),
+
               // ─── オフライン同期状態 ───
               if (syncState.pendingCount > 0)
             Container(
@@ -375,4 +379,38 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
     }
   }
 
+}
+
+/// 無料期間の残り日数・購読状態を表示し、購入画面（/subscription）へ誘導する。
+class _PremiumCard extends ConsumerWidget {
+  const _PremiumCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final premium = ref.watch(premiumProvider);
+
+    final String title;
+    final String subtitle;
+    if (premium.isPremium) {
+      title = 'プレミアム会員';
+      subtitle = 'すべてのコンテンツが使えます。ありがとうございます！';
+    } else if (premium.isTrialActive) {
+      title = 'プレミアムを試し中';
+      subtitle = '無料期間 あと${premium.trialDaysLeft}日';
+    } else {
+      title = 'プレミアムにアップグレード';
+      subtitle = '無料期間は終了しました。月額¥300 / 年額¥2,400';
+    }
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      child: ListTile(
+        leading: const Text('⭐', style: TextStyle(fontSize: 28)),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () => Navigator.of(context).pushNamed('/subscription'),
+      ),
+    );
+  }
 }

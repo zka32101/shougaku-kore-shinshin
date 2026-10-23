@@ -68,11 +68,6 @@ dependencies:
   # Secure Storage (for tokens)
   flutter_secure_storage: ^11.1.1
 
-  # In-App Purchase
-  in_app_purchase: ^3.1.0
-  in_app_purchase_android: ^0.5.3
-  in_app_purchase_storekit: ^0.4.13
-
   # 体育・芸術モジュール（旧 taiku-kore / geijutsu-kore / literacy_core）
   confetti: ^0.8.0
   image_picker: ^1.0.8
