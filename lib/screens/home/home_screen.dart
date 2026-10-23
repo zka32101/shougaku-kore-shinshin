@@ -222,6 +222,13 @@ class _TodayPickCard extends ConsumerWidget {
               ),
             ),
           ),
+          if (ref.watch(todayCandidatesProvider).length > 1)
+            TextButton.icon(
+              key: const Key('today_pick_choose'),
+              onPressed: () => _chooseStory(context, ref, child.id),
+              icon: const Icon(Icons.swap_horiz, size: 18),
+              label: const Text('ほかの おはなしから えらぶ'),
+            ),
           if (onOpenTaiku != null) ...[
             const Divider(height: 16),
             TextButton.icon(
@@ -314,6 +321,57 @@ class _RevisitCard extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// 3つの候補から、親子で相談して読むお話を選ぶ。
+void _chooseStory(BuildContext context, WidgetRef ref, String childId) {
+  final picks = ref.read(todayCandidatesProvider);
+  showModalBottomSheet<void>(
+    context: context,
+    builder: (sheetContext) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
+            child: Text(
+              'きょうは どの おはなしに する？',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: Text(
+              'おうちの人と いっしょに えらんでみよう',
+              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+            ),
+          ),
+          for (final p in picks)
+            ListTile(
+              key: Key('today_candidate_${p.story.id}'),
+              leading: const Icon(Icons.menu_book),
+              title: Text(p.story.title),
+              subtitle: (p.story.description ?? '').isEmpty
+                  ? null
+                  : Text(p.story.description!,
+                      maxLines: 2, overflow: TextOverflow.ellipsis),
+              onTap: () {
+                Navigator.of(sheetContext).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => StoryLearningScreen(
+                      storyId: p.story.id,
+                      childId: childId,
+                    ),
+                  ),
+                );
+              },
+            ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _HomeItem {
