@@ -9,6 +9,12 @@ const int kTrialDays = 14;
 
 /// 無料期間が終わった後も無料で遊べる最大ステージ番号（他の小学コレと同じ）。
 const int kFreeStageLimit = 10;
+
+/// 無料期間後も無料で遊べる体育の特別ステージ（31〜33）。
+const int kFreeSpecialStageFrom = 31, kFreeSpecialStageTo = 33;
+
+/// 体育のステージ [n] が、無料期間後も無料で遊べるか。
+bool isFreeTaikuStage(int n) => n <= kFreeStageLimit || (n >= kFreeSpecialStageFrom && n <= kFreeSpecialStageTo);
 const String _kTrialStartKey = 'trial_start_ms';
 
 final premiumProvider =

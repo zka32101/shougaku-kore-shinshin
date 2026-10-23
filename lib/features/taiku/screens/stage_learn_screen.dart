@@ -447,9 +447,9 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
 
   @override
   Widget build(BuildContext context) {
-    // 無料期間後は、ステージ[kFreeStageLimit]まで無料。それ以降はプレミアムが必要。
+    // 無料期間後は、ステージ[kFreeStageLimit]まで無料と、特別ステージ（31〜33）は無料。それ以外はプレミアムが必要。
     return AccessGuard(
-      requirePremium: widget.stageNum > kFreeStageLimit,
+      requirePremium: !isFreeTaikuStage(widget.stageNum),
       child: _buildContent(context),
     );
   }
