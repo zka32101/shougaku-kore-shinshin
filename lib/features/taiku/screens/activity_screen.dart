@@ -100,6 +100,9 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
             availableDifficulties: availableDifficulties,
           ),
 
+          // いろいろな体験があることの説明
+          _ExperienceIntro(color: color),
+
           // 活動リスト
           Expanded(
             child: activities.isEmpty
@@ -224,6 +227,9 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     await prefs.remove(_pendingKey);
     if (file == null) return;
 
+    if (!context.mounted) return;
+    final note = await _askNote(context, activity.title);
+
     final memory = ActivityMemory(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       activityId: activity.id,
@@ -232,6 +238,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       relatedStage: widget.stage,
       completedAt: DateTime.now(),
       imagePath: file.path,
+      note: note,
     );
 
     await ref.read(albumProvider.notifier).addMemory(memory);
@@ -244,6 +251,101 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
         ),
       );
     }
+  }
+}
+
+/// 体験のひとこと（やったこと・わかったこと）を書いてもらう。書かなくてもよい。
+Future<String?> _askNote(BuildContext context, String title) async {
+  final controller = TextEditingController();
+  final result = await showDialog<String>(
+    context: context,
+    builder: (dctx) => AlertDialog(
+      title: const Text('✏️ ひとこと かこう'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('「$title」で やったこと・わかったことを\n書いておくと、じぶんの 実績になるよ。',
+              style: const TextStyle(fontSize: 13)),
+          const SizedBox(height: 10),
+          TextField(
+            controller: controller,
+            maxLength: 100,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: '例：はじめて 10回 できた！',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const Text('※ 名前や住所などは 書かないでね',
+              style: TextStyle(fontSize: 11, color: Colors.grey)),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dctx).pop(),
+          child: const Text('書かない'),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(dctx).pop(controller.text.trim()),
+          child: const Text('ほぞん'),
+        ),
+      ],
+    ),
+  );
+  controller.dispose();
+  return (result == null || result.isEmpty) ? null : result;
+}
+
+/// 「いろいろな体験がある」ことと、記録の残し方の説明
+class _ExperienceIntro extends StatelessWidget {
+  final Color color;
+  const _ExperienceIntro({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: EdgeInsets.zero,
+          childrenPadding: const EdgeInsets.only(bottom: 10),
+          dense: true,
+          leading: Icon(Icons.explore, color: color),
+          title: Text(
+            'いろいろな 体験が あるよ',
+            style: TextStyle(
+                fontSize: 14, fontWeight: FontWeight.bold, color: color),
+          ),
+          subtitle: const Text('体験って なに？ どうやって のこすの？',
+              style: TextStyle(fontSize: 11)),
+          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              '体験は、本を読むだけではわからないことを、じぶんの体と心でたしかめることです。\n'
+              '・体を動かす体験（スポーツ・ストレッチ）\n'
+              '・つくる体験（料理・工作・絵・音楽）\n'
+              '・人から聞く体験（家の人や、仕事をしている人にインタビュー）\n'
+              '・まもる体験（避難の道を歩く・防災グッズをそろえる）\n'
+              '・おてつだいや地いきの体験（家事・そうじ・ボランティア）\n\n'
+              'どれも「やってみた」ことが、あなたの力になります。むずかしく考えず、'
+              'できそうなものからえらんでね。\n\n'
+              'やったら、写真とひとことを「たいいくのアルバム」にのこそう。'
+              '自分がどんな体験をしてきたか、あとで見かえせる実績になります。',
+              style: TextStyle(fontSize: 12.5, height: 1.7),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

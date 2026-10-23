@@ -1,4 +1,5 @@
 import '../data/question_images.dart';
+import '../data/stage_why.dart';
 import 'package:flutter/material.dart';
 import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -445,7 +446,8 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
     final grade = ref.watch(gradeLevelProvider);
     final isLow = grade == GradeLevel.low;
     final questions = getQuestionsForStage(widget.stageNum);
-    final highlights = _pickHighlights(questions, 5);
+    // まなびポイントは、クイズの全問を反映する
+    final highlights = questions;
 
     return Scaffold(
       body: NestedScrollView(
@@ -573,15 +575,6 @@ class _StageLearnScreenState extends ConsumerState<StageLearnScreen>
   void _startQuiz(BuildContext context, WidgetRef ref) {
     ref.read(currentStageProvider.notifier).state = widget.stageNum;
     Navigator.of(context).pushNamed('/quiz');
-  }
-
-  List<TaikuQuestion> _pickHighlights(List<TaikuQuestion> all, int count) {
-    if (all.length <= count) return all;
-    final step = all.length / count;
-    return List.generate(
-      count,
-      (i) => all[(i * step).round().clamp(0, all.length - 1)],
-    );
   }
 }
 
@@ -836,8 +829,8 @@ class _HighlightsTab extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             isLow
-                ? 'だいじな ${highlights.length}つを まとめたよ'
-                : '特に重要な${highlights.length}つのポイントをまとめました',
+                ? 'クイズに でる ${highlights.length}こを ぜんぶ まとめたよ'
+                : 'クイズに出る${highlights.length}個のポイントを、すべてまとめました',
             style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 14),
@@ -846,9 +839,26 @@ class _HighlightsTab extends StatelessWidget {
           StageIntroCard(stageNum: stageNum, color: color, isLow: isLow),
           const SizedBox(height: 16),
 
+          // なぜ大切なの？
+          _WhyCard(stageNum: stageNum, color: color, isLow: isLow),
+
+          // SNS・ネットの注意点（関係するステージだけ）
+          if (kSnsCautionStages.contains(stageNum)) ...[
+            _SnsCautionCard(isLow: isLow),
+            const SizedBox(height: 16),
+          ],
+
           // キーワード用語集
           _KeywordsSection(stageNum: stageNum, color: color, isLow: isLow),
           const SizedBox(height: 16),
+
+          // ポイント一覧の見出し
+          _SectionTitle(
+            icon: Icons.push_pin,
+            label: isLow ? 'おぼえる ポイント' : 'おぼえておくポイント',
+            color: color,
+          ),
+          const SizedBox(height: 10),
 
           // ポイントカード
           for (int i = 0; i < highlights.length; i++) ...[
@@ -899,103 +909,279 @@ class _PointCard extends StatelessWidget {
     required this.isLow,
   });
 
-  static const _nums = ['①', '②', '③', '④', '⑤'];
-
   @override
   Widget build(BuildContext context) {
-    final num = index < _nums.length ? _nums[index] : '●';
+    final answer = question.choices[question.correctIndex];
 
     return Container(
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.04),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-            child: Center(
-              child: Text(
-                num,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+        border: Border.all(color: color.withValues(alpha: 0.35), width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.08),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // タイトル帯：ポイント番号 ＋ いちばん大事なこと（正解）
+          Container(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+            color: color.withValues(alpha: 0.12),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // トピック（問題文の短縮版）
-                FuriganaText(
-                  question.questionText,
-                  glossary: true,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey.shade500,
-                    fontStyle: FontStyle.italic,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 6),
-                // 正解
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 4,
-                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: Colors.green.shade50,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: Colors.green.shade200),
+                    color: color,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green.shade600,
-                        size: 12,
-                      ),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: FuriganaText(
-                          question.choices[question.correctIndex],
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.green.shade800,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                QuestionImage(question.id),
-                // 解説
-                if (question.explanationDetail != null)
-                  FuriganaText(
-                    question.explanationDetail!,
-                    glossary: true,
-                    style: TextStyle(
-                      fontSize: isLow ? 12 : 12,
-                      color: Colors.grey.shade800,
-                      height: 1.6,
+                  child: Text(
+                    'ポイント ${index + 1}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: FuriganaText(
+                    answer,
+                    style: TextStyle(
+                      fontSize: isLow ? 16 : 15,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // もんだい
+                _LabeledText(
+                  label: isLow ? 'もんだい' : 'もんだい',
+                  text: question.questionText,
+                  glossary: true,
+                  textStyle: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade700,
+                    height: 1.5,
+                  ),
+                  labelColor: Colors.grey.shade600,
+                ),
+                QuestionImage(question.id),
+                if (question.explanationDetail != null) ...[
+                  const SizedBox(height: 10),
+                  // くわしく
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                    decoration: BoxDecoration(
+                      color: color.withValues(alpha: 0.05),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border(
+                        left: BorderSide(color: color, width: 4),
+                      ),
+                    ),
+                    child: _LabeledText(
+                      label: isLow ? 'くわしく' : 'くわしい説明',
+                      text: question.explanationDetail!,
+                      glossary: true,
+                      textStyle: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey.shade900,
+                        height: 1.7,
+                      ),
+                      labelColor: color,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LabeledText extends StatelessWidget {
+  final String label;
+  final String text;
+  final bool glossary;
+  final TextStyle textStyle;
+  final Color labelColor;
+
+  const _LabeledText({
+    required this.label,
+    required this.text,
+    required this.glossary,
+    required this.textStyle,
+    required this.labelColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            color: labelColor,
+          ),
+        ),
+        const SizedBox(height: 3),
+        FuriganaText(text, glossary: glossary, style: textStyle),
+      ],
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  const _SectionTitle({
+    required this.icon,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: color, size: 18),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// 「なぜ大切なの？」：覚える理由を、やさしい言葉で説明するカード
+class _WhyCard extends StatelessWidget {
+  final int stageNum;
+  final Color color;
+  final bool isLow;
+
+  const _WhyCard({
+    required this.stageNum,
+    required this.color,
+    required this.isLow,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final why = kStageWhy[stageNum];
+    if (why == null) return const SizedBox.shrink();
+    final text = isLow ? why.$1 : why.$2;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF8E1),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFFFB300), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionTitle(
+            icon: Icons.help_outline,
+            label: isLow ? 'なぜ たいせつなの？' : 'なぜ大切なの？',
+            color: const Color(0xFFE65100),
+          ),
+          const SizedBox(height: 8),
+          FuriganaText(
+            text,
+            style: TextStyle(
+              fontSize: isLow ? 14 : 13,
+              color: Colors.grey.shade900,
+              height: 1.75,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// SNS・ネットの注意点カード
+class _SnsCautionCard extends StatelessWidget {
+  final bool isLow;
+  const _SnsCautionCard({required this.isLow});
+
+  @override
+  Widget build(BuildContext context) {
+    const red = Color(0xFFC62828);
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFEBEE),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: red.withValues(alpha: 0.5), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionTitle(
+            icon: Icons.warning_amber_rounded,
+            label: isLow ? 'ネットで きをつけること' : 'SNS・ネットで気をつけること',
+            color: red,
+          ),
+          const SizedBox(height: 8),
+          for (final (low, high) in kSnsCautions)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 2, right: 6),
+                    child: Icon(Icons.check_circle, color: red, size: 16),
+                  ),
+                  Expanded(
+                    child: FuriganaText(
+                      isLow ? low : high,
+                      style: TextStyle(
+                        fontSize: isLow ? 13.5 : 12.5,
+                        color: Colors.grey.shade900,
+                        height: 1.6,
+                        fontWeight: isLow ? FontWeight.w600 : FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
       ),
     );
