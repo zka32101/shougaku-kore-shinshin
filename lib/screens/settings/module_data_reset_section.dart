@@ -12,6 +12,7 @@ import '../../features/taiku/providers/sibling_quest_provider.dart';
 import '../../features/taiku/providers/taiku_providers.dart';
 import '../../services/module_data_reset.dart';
 import '../../utils/guardian_gate.dart';
+import 'my_data_screen.dart';
 
 /// 設定：たいいく／げいじゅつの学習データだけを消す（アプリ全体のデータは消えない）
 class ModuleDataResetSection extends ConsumerWidget {
@@ -72,6 +73,24 @@ class ModuleDataResetSection extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 8),
+        ListTile(
+          key: const Key('my_data_tile'),
+          leading: const Icon(Icons.fact_check_outlined),
+          title: const Text('このアプリが覚えていること'),
+          subtitle: const Text('どうとくの記録の件数を見る・消す'),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+          onTap: () async {
+            if (!await confirmAdult(context,
+                purpose: '学習のきろくを見たり、消したりする画面です。')) {
+              return;
+            }
+            if (!context.mounted) return;
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(builder: (_) => const MyDataScreen()),
+            );
+          },
+        ),
+        const Divider(height: 0),
         ListTile(
           key: const Key('reset_taiku_data'),
           leading: const Icon(Icons.delete_outline, color: Colors.red),

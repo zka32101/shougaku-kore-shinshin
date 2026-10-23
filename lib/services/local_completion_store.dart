@@ -57,6 +57,12 @@ class LocalCompletionStore {
     }
   }
 
+  /// この子どもの端末内の完了記録をすべて消す。
+  static Future<void> clear(String childId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key(childId));
+  }
+
   static List<Map<String, dynamic>> _decode(String? raw) {
     if (raw == null || raw.isEmpty) return [];
     try {
