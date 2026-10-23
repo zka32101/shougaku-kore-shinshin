@@ -1,4 +1,7 @@
+import 'package:flutter/services.dart';
+import '../../constants/virtue_constants.dart';
 import '../../providers/family_talk_provider.dart';
+import '../../utils/report_share_text.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -798,6 +801,33 @@ class _FamilyTalkCard extends ConsumerWidget {
                     ),
                   ),
               ],
+              const Divider(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  key: const Key('copy_report_text'),
+                  onPressed: () async {
+                    final text = buildReportShareText(
+                      year: year,
+                      month: month,
+                      storyCount: t.storyCount,
+                      themeCounts: t.themeCounts,
+                      prompts: t.prompts,
+                      themeLabel: VirtueConstants.getVirtueLabel,
+                    );
+                    await Clipboard.setData(ClipboardData(text: text));
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'コピーしました。メモやメッセージに貼って使えます（名前やひとことは含みません）'),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.copy, size: 18),
+                  label: const Text('この月のようすを コピー'),
+                ),
+              ),
             ],
           ),
         );
