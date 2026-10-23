@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shougaku_kore_doutoku/providers/auth_provider.dart';
 import 'package:shougaku_kore_doutoku/screens/home/home_screen.dart';
+import 'package:shougaku_kore_doutoku/screens/hub/guardian_hub_screen.dart';
+import 'package:shougaku_kore_doutoku/screens/hub/records_hub_screen.dart';
 import '../helpers/firebase_test_helper.dart';
 import '../helpers/hive_test_helper.dart';
 
@@ -49,24 +51,33 @@ void main() {
       expect(find.text('小学コレ！心身'), findsOneWidget);
     });
 
-    testWidgets('shows a menu card for every section', (tester) async {
+    testWidgets('ホームはシンプルなメニューだけが並ぶ', (tester) async {
       _setTallViewport(tester);
       await _pumpHome(tester);
 
       for (final title in const [
         'どうとく ストーリー',
-        'ランキング',
-        'ダッシュボード',
-        'キャラずかん',
-        'バッジ',
-        'ほごしゃ レポート',
-        'せってい',
         'たいいく・けんこう',
         'げいじゅつ',
-        'できたことチェック',
-        'きょうのきろく',
+        'キャラずかん',
+        'きろく',
+        'ほごしゃ',
+        'せってい',
       ]) {
         expect(find.text(title), findsOneWidget, reason: 'card "$title"');
+      }
+      // 「きろく」「ほごしゃ」の中に入れたものは、ホームには並べない
+      for (final title in const [
+        'ランキング',
+        'ダッシュボード',
+        'バッジ',
+        'できたことチェック',
+        'きょうのきろく',
+        'ほごしゃ レポート',
+        'たいいくのバッジ',
+        'たいいくの ほごしゃ',
+      ]) {
+        expect(find.text(title), findsNothing, reason: 'card "$title"');
       }
     });
 
@@ -79,17 +90,41 @@ void main() {
       expect(find.text('図工・音楽・家庭科'), findsOneWidget);
     });
 
-    testWidgets('体育・芸術の記録(バッジ・アルバム・ほごしゃ)がホームから開ける',
+    testWidgets('「きろく」にバッジ・ノート・アルバムなどがまとまっている',
         (tester) async {
       _setTallViewport(tester);
-      await _pumpHome(tester);
+      await tester.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: RecordsHubScreen()),
+      ));
+      await tester.pump(const Duration(seconds: 1));
 
-      for (final title in [
+      for (final title in const [
+        'バッジ',
+        'せいちょうノート',
+        'きょうのきろく',
+        'できたことチェック',
+        'ランキング',
         'たいいくのバッジ',
         'たいいくのアルバム',
-        'たいいくの ほごしゃ',
         'げいじゅつのバッジ',
-        'げいじゅつの ほごしゃ',
+      ]) {
+        expect(find.text(title), findsOneWidget, reason: 'card "$title"');
+      }
+    });
+
+    testWidgets('「ほごしゃ」にレポート・統計・見まもりがまとまっている',
+        (tester) async {
+      _setTallViewport(tester);
+      await tester.pumpWidget(const ProviderScope(
+        child: MaterialApp(home: GuardianHubScreen()),
+      ));
+      await tester.pump(const Duration(seconds: 1));
+
+      for (final title in const [
+        'ほごしゃ レポート',
+        'ダッシュボード',
+        'たいいくの みまもり',
+        'げいじゅつの みまもり',
       ]) {
         expect(find.text(title), findsOneWidget, reason: 'card "$title"');
       }
