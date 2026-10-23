@@ -1,3 +1,4 @@
+import '../../services/local_reflection_store.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../providers/local_avatar_provider.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,10 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
   final PageController _pageController = PageController();
   int _currentPage = 0;
   StoryChoice? _selectedChoice;
+
+  /// 「考えてみよう」：相手の気持ち（[kReflectionFeelings] のキー）とひとこと
+  String? _thinkFeeling;
+  String _thinkNote = '';
 
   /// Phase tracking: reading → choice → branching → reflection → complete
   String _currentPhase = AppConstants.phaseReading;
@@ -242,6 +247,21 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
       storyId: story.id,
       theme: story.theme,
     );
+    // 「考えてみよう」の答え（相手の気持ち・ひとこと）も端末内に残す。保護者レポートで使う
+    if (_selectedChoice != null) {
+      await LocalReflectionStore.record(
+        childId: widget.childId,
+        entry: ReflectionEntry(
+          storyId: story.id,
+          storyTitle: story.title,
+          theme: story.theme,
+          choiceId: _selectedChoice!.id,
+          feeling: _thinkFeeling,
+          note: _thinkNote,
+          at: DateTime.now(),
+        ),
+      );
+    }
     if (!mounted) return;
 
     // 子どもプロフィール（totalPoints）と進捗リストを無効化 → ホーム・成長画面で最新値を表示
@@ -366,6 +386,10 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
                               fadeAnim: _fadeAnim,
                               slideAnim: _slideAnim,
                               isCompleting: _completing,
+                              onThinkChanged: (feeling, note) {
+                                _thinkFeeling = feeling;
+                                _thinkNote = note;
+                              },
                               onComplete: _completing
                                   ? null
                                   : () => _complete(story),
@@ -866,6 +890,7 @@ class _ReflectionView extends StatelessWidget {
   final Animation<Offset> slideAnim;
   final VoidCallback? onComplete;
   final bool isCompleting;
+  final void Function(String? feeling, String note)? onThinkChanged;
 
   const _ReflectionView({
     required this.choice,
@@ -873,6 +898,7 @@ class _ReflectionView extends StatelessWidget {
     required this.slideAnim,
     required this.onComplete,
     this.isCompleting = false,
+    this.onThinkChanged,
   });
 
   @override
@@ -982,6 +1008,12 @@ class _ReflectionView extends StatelessWidget {
                 ),
               ),
 
+              const SizedBox(height: 20),
+
+              // 考えてみよう（相手の気持ち・ほかの選択）
+              if (onThinkChanged != null)
+                _ThinkCard(onChanged: onThinkChanged!),
+
               const SizedBox(height: 32),
 
               // 完了ボタン
@@ -1003,6 +1035,112 @@ class _ReflectionView extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// 「考えてみよう」：相手の気持ちを選び、ひとことを書く（どちらも書かなくてよい）
+class _ThinkCard extends StatefulWidget {
+  final void Function(String? feeling, String note) onChanged;
+  const _ThinkCard({required this.onChanged});
+
+  @override
+  State<_ThinkCard> createState() => _ThinkCardState();
+}
+
+class _ThinkCardState extends State<_ThinkCard> {
+  String? _feeling;
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _notify() => widget.onChanged(_feeling, _controller.text.trim());
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8F5E9),
+        borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+        border: Border.all(color: const Color(0xFF81C784)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Text('🤔', style: TextStyle(fontSize: AppStyles.fontSizeTitle)),
+              SizedBox(width: 8),
+              Text(
+                '考えてみよう',
+                style: TextStyle(
+                  fontSize: AppStyles.fontSizeMedium,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF2E7D32),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'この お話の あいては、どんな きもちだったかな？',
+            style: TextStyle(
+              fontSize: AppStyles.fontSizeBase,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final e in kReflectionFeelings.entries)
+                ChoiceChip(
+                  key: Key('think_feeling_${e.key}'),
+                  label: Text('${e.value.$1} ${e.value.$2}'),
+                  selected: _feeling == e.key,
+                  onSelected: (sel) {
+                    setState(() => _feeling = sel ? e.key : null);
+                    _notify();
+                  },
+                ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          const Text(
+            'ほかの せんたくを していたら、どうなったかな？ ひとことで かいてみよう（かかなくても いいよ）',
+            style: TextStyle(
+              fontSize: AppStyles.fontSizeBase,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextField(
+            key: const Key('think_note'),
+            controller: _controller,
+            maxLength: LocalReflectionStore.maxNoteLength,
+            maxLines: 2,
+            onChanged: (_) => _notify(),
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(),
+              hintText: '例：あやまったら ゆるしてくれたと おもう',
+            ),
+          ),
+          const Text(
+            '※ なまえや じゅうしょは かかないでね。この ひとことは、おうちの ひとだけが みられるよ。',
+            style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+          ),
+        ],
       ),
     );
   }
