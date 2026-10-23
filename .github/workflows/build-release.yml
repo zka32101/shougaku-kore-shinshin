@@ -59,6 +59,23 @@ jobs:
           echo "KEYSTORE_KEY_PASSWORD=${{ secrets.KEYSTORE_KEY_PASSWORD }}" >> $GITHUB_ENV
 
       # ========================================
+      # Firebase の設定（Secrets）が入っているか確認
+      # 空のままビルドすると、Firebase に接続できないアプリになってしまうため止める
+      # ========================================
+      - name: Check Firebase secrets
+        env:
+          FIREBASE_ANDROID_API_KEY: ${{ secrets.FIREBASE_ANDROID_API_KEY }}
+          FIREBASE_ANDROID_APP_ID: ${{ secrets.FIREBASE_ANDROID_APP_ID }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+        run: |
+          for v in FIREBASE_ANDROID_API_KEY FIREBASE_ANDROID_APP_ID FIREBASE_MESSAGING_SENDER_ID; do
+            if [ -z "${!v}" ]; then
+              echo "::error::GitHub Secrets の $v が未設定です"
+              exit 1
+            fi
+          done
+
+      # ========================================
       # Flutter 依存関係とコード生成
       # ========================================
       - name: Get Flutter dependencies
@@ -74,7 +91,11 @@ jobs:
       # Android リリースビルド
       # ========================================
       - name: Build APK Release
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release \
+          --dart-define=FIREBASE_ANDROID_API_KEY=${{ secrets.FIREBASE_ANDROID_API_KEY }} \
+          --dart-define=FIREBASE_ANDROID_APP_ID=${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+          --dart-define=FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/android/app/release-keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -82,7 +103,11 @@ jobs:
           KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
 
       - name: Build AAB Release
-        run: flutter build appbundle --release
+        run: |
+          flutter build appbundle --release \
+          --dart-define=FIREBASE_ANDROID_API_KEY=${{ secrets.FIREBASE_ANDROID_API_KEY }} \
+          --dart-define=FIREBASE_ANDROID_APP_ID=${{ secrets.FIREBASE_ANDROID_APP_ID }} \
+          --dart-define=FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/android/app/release-keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
