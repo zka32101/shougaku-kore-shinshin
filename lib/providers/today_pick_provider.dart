@@ -45,3 +45,20 @@ final revisitPickProvider = FutureProvider.autoDispose
   final list = await LocalReflectionStore.load(childId);
   return pickRevisit(reflections: list, now: DateTime.now());
 });
+
+/// 親子で選ぶ「きょうの候補」（先頭は [todayPickProvider] と同じお話）。
+final todayCandidatesProvider = Provider.autoDispose<List<TodayPick>>((ref) {
+  final child = ref.watch(selectedChildProvider).valueOrNull;
+  if (child == null) return const [];
+  final stories =
+      ref.watch(allLocalStoriesProvider).valueOrNull ?? const <Story>[];
+  final done =
+      ref.watch(localCompletedStoryIdsProvider(child.id)).valueOrNull ??
+          const <String>{};
+  return pickTodayCandidates(
+    stories: stories,
+    completedIds: done,
+    grade: child.grade,
+    date: DateTime.now(),
+  );
+});

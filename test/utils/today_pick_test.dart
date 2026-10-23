@@ -88,4 +88,24 @@ void main() {
             stories: const [], completedIds: const {}, grade: 1, date: day),
         isNull);
   });
+
+  test('親子で選ぶ候補：先頭はおすすめと同じで、重複せず最大3件', () {
+    final c = pickTodayCandidates(
+        stories: stories, completedIds: const {}, grade: 3, date: day);
+    final one = pickTodayStory(
+        stories: stories, completedIds: const {}, grade: 3, date: day)!;
+    expect(c.length, 3);
+    expect(c.first.story.id, one.story.id);
+    expect(c.map((e) => e.story.id).toSet().length, 3);
+  });
+
+  test('候補が少ないときはある分だけ。無ければ空', () {
+    final c = pickTodayCandidates(
+        stories: stories, completedIds: const {'c'}, grade: 3, date: day);
+    expect(c.length, 2);
+    expect(
+        pickTodayCandidates(
+            stories: const [], completedIds: const {}, grade: 3, date: day),
+        isEmpty);
+  });
 }

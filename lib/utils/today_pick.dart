@@ -23,7 +23,27 @@ TodayPick? pickTodayStory({
   required int grade,
   required DateTime date,
 }) {
-  if (stories.isEmpty) return null;
+  final list = pickTodayCandidates(
+    stories: stories,
+    completedIds: completedIds,
+    grade: grade,
+    date: date,
+    count: 1,
+  );
+  return list.isEmpty ? null : list.first;
+}
+
+/// 親子で選べるように、きょうの候補を最大 [count] 件つくる。
+///
+/// 先頭は [pickTodayStory] と同じお話。以降は同じ候補の中で順番に続く（重複しない）。
+List<TodayPick> pickTodayCandidates({
+  required List<Story> stories,
+  required Set<String> completedIds,
+  required int grade,
+  required DateTime date,
+  int count = 3,
+}) {
+  if (stories.isEmpty) return const [];
 
   final band = gradeBandOf(grade);
   var pool = [
@@ -43,5 +63,9 @@ TodayPick? pickTodayStory({
   final day = DateTime.utc(date.year, date.month, date.day)
       .difference(DateTime.utc(2020, 1, 1))
       .inDays;
-  return TodayPick(candidates[day % candidates.length], isReview: isReview);
+  final n = count < candidates.length ? count : candidates.length;
+  return [
+    for (var i = 0; i < n; i++)
+      TodayPick(candidates[(day + i) % candidates.length], isReview: isReview),
+  ];
 }
