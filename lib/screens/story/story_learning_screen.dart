@@ -331,9 +331,9 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
       error: (e, _) => Scaffold(
         body: Center(child: Text('データを読み込めませんでした。通信状態を確認して、もう一度ためしてね。')),
       ),
-      // 無料期間後は、プレミアム指定の物語だけロックする。
+      // 無料期間（14日）が終わったら、プレミアムに入るまで、すべての物語をロックする。
       data: (story) => AccessGuard(
-        requirePremium: story.isPremium,
+        requirePremium: true,
         child: _buildStory(context, story),
       ),
     );

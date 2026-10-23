@@ -1,4 +1,5 @@
 import '../drawing/free_drawing_screen.dart';
+import '../../widgets/premium_lock_view.dart' show PremiumGate;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
@@ -42,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
     if (cb != null) {
       cb(section);
     } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => fallback));
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => PremiumGate(child: fallback)));
     }
   }
 
