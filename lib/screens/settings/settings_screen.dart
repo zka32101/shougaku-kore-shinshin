@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, requireParentalGate;
+import '../../utils/guardian_gate.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/app_version_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -116,7 +117,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             leading: const Icon(Icons.person),
             title: const Text('お子様のプロフィール'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
+            onTap: () async {
+              if (!await confirmAdult(context,
+                  purpose: 'お子様のプロフィールを変えたり消したりする操作です。')) {
+                return;
+              }
+              if (!context.mounted) return;
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const ProfileManagementScreen(),
@@ -140,7 +146,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             title: const Text('ランキング設定'),
             subtitle: const Text('プライバシー設定'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
+            onTap: () async {
+              if (!await confirmAdult(context,
+                  purpose: 'ランキングでの公開のしかたを変える操作です。')) {
+                return;
+              }
+              if (!context.mounted) return;
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const RankingSettingsScreen(),
