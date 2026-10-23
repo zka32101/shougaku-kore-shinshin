@@ -393,6 +393,7 @@ class HomeButton extends ConsumerWidget {
   final double titleSize;
 
   const HomeButton({
+    super.key,
     required this.item,
     required this.height,
     required this.titleSize,
