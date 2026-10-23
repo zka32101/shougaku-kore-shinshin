@@ -118,6 +118,12 @@ class LocalReflectionStore {
     }
   }
 
+  /// この子どもの「考えてみよう」の記録をすべて消す。
+  static Future<void> clear(String childId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_key(childId));
+  }
+
   static List<ReflectionEntry> _decode(String? raw) {
     if (raw == null || raw.isEmpty) return [];
     try {
