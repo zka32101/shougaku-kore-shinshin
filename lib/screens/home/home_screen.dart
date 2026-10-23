@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_core/shared_core.dart' show requireParentalGate;
 import '../../constants/app_colors.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/today_pick_provider.dart';
 import '../../services/local_reflection_store.dart' show kReflectionFeelings;
-import '../growth/growth_note_screen.dart';
+import '../hub/guardian_hub_screen.dart';
+import '../hub/records_hub_screen.dart';
 import '../story/story_learning_screen.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
@@ -13,17 +15,11 @@ import '../../widgets/plan_card.dart';
 import '../../providers/user_profile_provider.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../utils/sound_effects_utils.dart';
-import '../ranking/ranking_screen.dart';
 import '../settings/settings_screen.dart';
 import '../library/library_screen.dart';
-import '../report/report_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
 import '../../features/geijutsu/geijutsu_app.dart' show GeijutsuModule;
-import '../badge/badge_showcase_screen.dart';
 import '../characters/character_collection_screen.dart';
-import '../dashboard/dashboard_screen.dart';
-import '../checklist/achievement_checklist_screen.dart';
-import '../checklist/daily_record_screen.dart';
 import 'package:shougaku_kore_doutoku/widgets/ukalab_emoji.dart';
 
 /// 下のナビゲーションバー／ホームのボタンから切り替えるセクション。
@@ -53,54 +49,36 @@ class HomeScreen extends ConsumerWidget {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => screen));
   }
 
+  /// 保護者向けのページは、大人であることを確認してから開く。
+  Future<void> _openGuardian(BuildContext context) async {
+    final ok = await requireParentalGate(
+      context,
+      description: '保護者のかた向けのページです。\n下の計算の答えを入力してください。',
+    );
+    if (!ok || !context.mounted) return;
+    _push(context, const GuardianHubScreen());
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final learn = <_HomeItem>[
-      _HomeItem('📖', 'どうとく ストーリー', '道徳の学習', const Color(0xFF1E88E5),
+    final learn = <HomeItem>[
+      HomeItem('📖', 'どうとく ストーリー', '道徳の学習', const Color(0xFF1E88E5),
           () => _open(context, HomeSection.doutoku, const LibraryScreen())),
-      _HomeItem('⛹️', 'たいいく・けんこう', 'スポーツ・防災・栄養', const Color(0xFFE64A19),
+      HomeItem('⛹️', 'たいいく・けんこう', 'スポーツ・防災・栄養', const Color(0xFFE64A19),
           () => _open(context, HomeSection.taiku, const TaikuModule())),
-      _HomeItem('🎨', 'げいじゅつ', '図工・音楽・家庭科', const Color(0xFFD81B60),
+      HomeItem('🎨', 'げいじゅつ', '図工・音楽・家庭科', const Color(0xFFD81B60),
           () => _open(context, HomeSection.geijutsu, const GeijutsuModule())),
     ];
-    final more = <_HomeItem>[
-      _HomeItem('🐾', 'キャラずかん', 'キャラを そだてよう', const Color(0xFF43A047),
+    final more = <HomeItem>[
+      HomeItem('🐾', 'キャラずかん', 'キャラを そだてよう', const Color(0xFF43A047),
           () => _open(context, HomeSection.characters,
               const CharacterCollectionScreen())),
-      _HomeItem('🎖️', 'バッジ', 'バッジを集める', const Color(0xFFF9A825),
-          () => _push(context, const BadgeShowcaseScreen())),
-      _HomeItem('📓', 'せいちょうノート', 'かんがえた ことを みかえそう', const Color(0xFF2E7D32),
-          () => _push(context, const GrowthNoteScreen())),
-      _HomeItem('🏆', 'ランキング', '成績を確認', const Color(0xFF8E24AA),
-          () => _push(context, const RankingScreen())),
-      _HomeItem('📊', 'ほごしゃ レポート', '成長を分析', const Color(0xFF00897B),
-          () => _push(context, const ReportScreen())),
-      _HomeItem('📈', 'ダッシュボード', '学習統計', const Color(0xFF3949AB),
-          () => _push(context, const DashboardScreen())),
-      _HomeItem('✅', 'できたことチェック', '成長を確認', const Color(0xFF6D4C41),
-          () => _push(context, const AchievementChecklistScreen())),
-      _HomeItem('📝', 'きょうのきろく', '日々の取り組み', const Color(0xFF546E7A),
-          () => _push(context, const DailyRecordScreen())),
-      _HomeItem('⚙️', 'せってい', 'アプリ設定', const Color(0xFF757575),
+      HomeItem('📚', 'きろく', 'バッジ・ノート・ランキング', const Color(0xFFF9A825),
+          () => _push(context, const RecordsHubScreen())),
+      HomeItem('👪', 'ほごしゃ', '見まもり・レポート', const Color(0xFF00897B),
+          () => _openGuardian(context)),
+      HomeItem('⚙️', 'せってい', 'アプリ設定', const Color(0xFF757575),
           () => _push(context, const SettingsScreen())),
-    ];
-    // 体育・芸術それぞれの記録（以前は各画面の上にあった専用メニュー）
-    final records = <_HomeItem>[
-      _HomeItem('🏅', 'たいいくのバッジ', 'たいいくで あつめた', const Color(0xFFE64A19),
-          () => _push(context,
-              const TaikuModule(initialRoute: '/badges', standalone: true))),
-      _HomeItem('📷', 'たいいくのアルバム', '体験のきろく', const Color(0xFFFF6D00),
-          () => _push(context,
-              const TaikuModule(initialRoute: '/album', standalone: true))),
-      _HomeItem('👪', 'たいいくの ほごしゃ', '見まもりページ', const Color(0xFF00838F),
-          () => _push(context,
-              const TaikuModule(initialRoute: '/parent', standalone: true))),
-      _HomeItem('⭐', 'げいじゅつのバッジ', 'げいじゅつで あつめた', const Color(0xFFD81B60),
-          () => _push(context,
-              const GeijutsuModule(initialRoute: '/badges', standalone: true))),
-      _HomeItem('👪', 'げいじゅつの ほごしゃ', '見まもりページ', const Color(0xFFAD1457),
-          () => _push(context,
-              const GeijutsuModule(initialRoute: '/parent', standalone: true))),
     ];
 
     return Scaffold(
@@ -128,15 +106,11 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)
-              _HomeButton(item: item, height: 96, titleSize: 22),
+              HomeButton(item: item, height: 96, titleSize: 22),
             const SizedBox(height: 12),
             const _SectionLabel('ひろげる・ふりかえる'),
             for (final item in more)
-              _HomeButton(item: item, height: 72, titleSize: 18),
-            const SizedBox(height: 12),
-            const _SectionLabel('たいいく・げいじゅつの きろく'),
-            for (final item in records)
-              _HomeButton(item: item, height: 72, titleSize: 18),
+              HomeButton(item: item, height: 72, titleSize: 18),
           ],
         ),
       ),
@@ -374,13 +348,14 @@ void _chooseStory(BuildContext context, WidgetRef ref, String childId) {
   );
 }
 
-class _HomeItem {
+/// ホームや「きろく」「ほごしゃ」の画面に並べるメニュー1件。
+class HomeItem {
   final String icon;
   final String title;
   final String subtitle;
   final Color color;
   final VoidCallback onTap;
-  const _HomeItem(this.icon, this.title, this.subtitle, this.color, this.onTap);
+  const HomeItem(this.icon, this.title, this.subtitle, this.color, this.onTap);
 }
 
 class _SectionLabel extends StatelessWidget {
@@ -411,12 +386,14 @@ class _SectionLabel extends StatelessWidget {
 }
 
 /// 横いっぱいの大きなボタン（絵 ＋ ラベル ＋ 説明）
-class _HomeButton extends ConsumerWidget {
-  final _HomeItem item;
+/// メニュー1件を表す大きなボタン。
+class HomeButton extends ConsumerWidget {
+  final HomeItem item;
   final double height;
   final double titleSize;
 
-  const _HomeButton({
+  const HomeButton({
+    super.key,
     required this.item,
     required this.height,
     required this.titleSize,
