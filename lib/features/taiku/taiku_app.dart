@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shougaku_kore_doutoku/widgets/module_tab_strip.dart';
 import 'package:shougaku_kore_doutoku/widgets/shell_route_observer.dart';
 import '../literacy_core/literacy_core.dart';
 import 'screens/album_screen.dart';
@@ -14,8 +13,6 @@ import 'screens/result_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/sport_encyclopedia_screen.dart';
-import 'providers/child_profiles_provider.dart';
-import 'providers/parent_diary_provider.dart';
 import 'providers/taiku_providers.dart' show activeTabProvider;
 
 /// 体験・体育コレ！のテーマカラー
@@ -80,7 +77,18 @@ class TaikuModule extends ConsumerStatefulWidget {
   /// アプリ全体の下部ナビを全画面ページで隠すための見張り役（任意）
   final ShellRouteObserver? observer;
 
-  const TaikuModule({super.key, this.observer});
+  /// 最初に開く画面。全体のホームから「バッジ」「アルバム」「保護者」を直接開くときに使う
+  final String initialRoute;
+
+  /// 全体のホームから push で開いたとき true。トップで戻ると呼び出し元へ戻る
+  final bool standalone;
+
+  const TaikuModule({
+    super.key,
+    this.observer,
+    this.initialRoute = '/',
+    this.standalone = false,
+  });
 
   @override
   ConsumerState<TaikuModule> createState() => _TaikuModuleState();
@@ -99,6 +107,8 @@ class _TaikuModuleState extends ConsumerState<TaikuModule> {
       '/settings': (_) => const SettingsScreen(),
       '/parent': (_) => const ParentDashboardScreen(),
       '/sports': (_) => const SportEncyclopediaScreen(),
+      '/badges': (_) => const BadgeScreen(),
+      '/album': (_) => const AlbumScreen(),
     };
     final builder = builders[settings.name];
     if (builder == null) return null;
@@ -112,10 +122,13 @@ class _TaikuModuleState extends ConsumerState<TaikuModule> {
       data: LiteracyTheme.buildFor(grade, subjectColor: TaikuColors.primary),
       // 体育モジュール内で戻れるうちは内側を pop、トップなら道徳側へ戻る
       child: NavigatorPopHandler(
-        onPopWithResult: (_) {}, // 戻る処理は MainShell が担当（二重 pop 防止）
+        // 通常は戻る処理を MainShell が担当（二重 pop 防止）。単独で開いたときだけ呼び出し元へ戻る
+        onPopWithResult: (_) {
+          if (widget.standalone) Navigator.of(context).maybePop();
+        },
         child: Navigator(
           key: _navKey,
-          initialRoute: '/',
+          initialRoute: widget.initialRoute,
           observers: [if (widget.observer != null) widget.observer!],
           onGenerateRoute: _onGenerateRoute,
         ),
@@ -131,64 +144,58 @@ class RootShell extends ConsumerStatefulWidget {
   ConsumerState<RootShell> createState() => _RootShellState();
 }
 
+/// 体育の入口。アプリ全体の下部ナビと重なる専用メニューは持たず、
+/// 「たいいく（ホーム）」と「まなぶ」だけを切り替える。
+/// バッジ・アルバム・保護者・設定は、アプリ全体のホームから開く。
 class _RootShellState extends ConsumerState<RootShell> {
   int _tab = 0;
 
   static const _screens = [
     HomeScreen(),
     LearnScreen(),
-    BadgeScreen(),
-    AlbumScreen(),
-    ParentDashboardScreen(),
-    SettingsScreen(),
   ];
+
+  void _setTab(int i) {
+    setState(() => _tab = i);
+    ref.read(activeTabProvider.notifier).state = i;
+  }
 
   @override
   Widget build(BuildContext context) {
-    const color = TaikuColors.primary;
-    final currentProfile = ref.watch(currentChildProfileProvider);
-    final unreadCount = currentProfile != null
-        ? ref.watch(unreadDiaryCountProvider(currentProfile.id))
-        : 0;
-
     // activeTabProvider からの外部タブ切り替え（ホーム画面の「まなぶ」ボタンなど）
     ref.listen(activeTabProvider, (_, next) {
-      if (next != _tab) setState(() => _tab = next);
+      if (next != _tab && next < _screens.length) setState(() => _tab = next);
     });
 
-    // ホーム以外のタブでシステムの戻るを押したら、アプリを抜けずにホームタブへ戻す
+    // まなぶ画面でシステムの戻るを押したら、アプリを抜けずに体育ホームへ戻す
     return PopScope(
       canPop: _tab == 0,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop && _tab != 0) {
-          setState(() => _tab = 0);
-          ref.read(activeTabProvider.notifier).state = 0;
-        }
+        if (!didPop && _tab != 0) _setTab(0);
       },
       child: Scaffold(
-        // アプリ全体の下部ナビと二重にならないよう、内側の切り替えは画面上部に置く
         body: Column(
           children: [
-            ModuleTabStrip(
-              color: color,
-              index: _tab,
-              onTap: (i) {
-                setState(() => _tab = i);
-                ref.read(activeTabProvider.notifier).state = i;
-              },
-              tabs: [
-                const ModuleTab(Icons.directions_run, 'たいいく'),
-                const ModuleTab(Icons.menu_book, 'まなぶ'),
-                const ModuleTab(Icons.emoji_events, 'バッジ'),
-                const ModuleTab(Icons.photo_library, 'きろく'),
-                ModuleTab(Icons.family_restroom, '保護者', badge: unreadCount),
-                const ModuleTab(Icons.settings, '設定'),
-              ],
-            ),
+            if (_tab != 0)
+              Material(
+                color: Colors.white,
+                elevation: 2,
+                child: SafeArea(
+                  bottom: false,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: () => _setTab(0),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('たいいくへ もどる'),
+                    ),
+                  ),
+                ),
+              ),
             Expanded(
               child: MediaQuery.removePadding(
                 context: context,
-                removeTop: true,
+                removeTop: _tab != 0,
                 child: IndexedStack(index: _tab, children: _screens),
               ),
             ),

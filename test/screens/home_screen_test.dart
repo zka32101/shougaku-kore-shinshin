@@ -79,6 +79,22 @@ void main() {
       expect(find.text('図工・音楽・家庭科'), findsOneWidget);
     });
 
+    testWidgets('体育・芸術の記録(バッジ・アルバム・ほごしゃ)がホームから開ける',
+        (tester) async {
+      _setTallViewport(tester);
+      await _pumpHome(tester);
+
+      for (final title in [
+        'たいいくのバッジ',
+        'たいいくのアルバム',
+        'たいいくの ほごしゃ',
+        'げいじゅつのバッジ',
+        'げいじゅつの ほごしゃ',
+      ]) {
+        expect(find.text(title), findsOneWidget, reason: 'card "$title"');
+      }
+    });
+
     testWidgets('has no leftover stub cards (piano / drawing / colors)',
         (tester) async {
       _setTallViewport(tester);

@@ -112,9 +112,14 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
-                    itemCount: activities.length,
+                    itemCount: activities.length + 1,
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, index) {
+                      // 末尾：いろいろな体験があることの説明（活動カードの位置を動かさない）
+                      if (index == activities.length) {
+                        return _ExperienceIntro(color: color);
+                      }
+                      final i = index;
                       final activity = activities[i];
                       final isDone = _done.contains(activity.id);
                       return _ActivityCard(
@@ -224,6 +229,9 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
     await prefs.remove(_pendingKey);
     if (file == null) return;
 
+    if (!context.mounted) return;
+    final note = await _askNote(context, activity.title);
+
     final memory = ActivityMemory(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       activityId: activity.id,
@@ -232,6 +240,7 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
       relatedStage: widget.stage,
       completedAt: DateTime.now(),
       imagePath: file.path,
+      note: note,
     );
 
     await ref.read(albumProvider.notifier).addMemory(memory);
@@ -244,6 +253,93 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
         ),
       );
     }
+  }
+}
+
+/// 体験のひとこと（やったこと・わかったこと）を書いてもらう。書かなくてもよい。
+Future<String?> _askNote(BuildContext context, String title) async {
+  final controller = TextEditingController();
+  final result = await showDialog<String>(
+    context: context,
+    builder: (dctx) => AlertDialog(
+      title: const Text('✏️ ひとこと かこう'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('「$title」で やったこと・わかったことを\n書いておくと、じぶんの 実績になるよ。',
+              style: const TextStyle(fontSize: 13)),
+          const SizedBox(height: 10),
+          TextField(
+            controller: controller,
+            maxLength: 100,
+            maxLines: 3,
+            decoration: const InputDecoration(
+              hintText: '例：はじめて 10回 できた！',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const Text('※ 名前や住所などは 書かないでね',
+              style: TextStyle(fontSize: 11, color: Colors.grey)),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dctx).pop(),
+          child: const Text('書かない'),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(dctx).pop(controller.text.trim()),
+          child: const Text('ほぞん'),
+        ),
+      ],
+    ),
+  );
+  controller.dispose();
+  return (result == null || result.isEmpty) ? null : result;
+}
+
+/// 「いろいろな体験がある」ことと、記録の残し方の説明（一覧の末尾に出す）
+class _ExperienceIntro extends StatelessWidget {
+  final Color color;
+  const _ExperienceIntro({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.explore, color: color, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                'いろいろな 体験が あるよ',
+                style: TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.bold, color: color),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          const Text(
+            '体験は、本を読むだけではわからないことを、自分の体と心でたしかめることです。'
+            '体を動かす・つくる・人から話を聞く・まもる・おてつだいをする、など、いろいろな種類があります。'
+            'どれも「やってみた」ことが、あなたの力になります。できそうなものからえらんでね。\n'
+            'やったら、写真とひとことを「たいいくのアルバム」にのこそう。'
+            '自分がどんな体験をしてきたか、あとで見かえせる実績になります。',
+            style: TextStyle(fontSize: 12.5, height: 1.7),
+          ),
+        ],
+      ),
+    );
   }
 }
 

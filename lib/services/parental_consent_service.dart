@@ -96,18 +96,99 @@ class ParentalConsentService {
         'consentedToPrivacy': false,
         'consentedToAnalytics': false,
         'revokedAt': FieldValue.serverTimestamp(),
+        // 個人情報の最小化: 撤回後は氏名・メールを保持しない
+        'childName': FieldValue.delete(),
+        'parentEmail': FieldValue.delete(),
       });
 
       await _logConsentAction(parentUserId, 'revoked', {});
 
-      // TODO: Implement data deletion workflow
-      // - Delete user profile
-      // - Delete child profile
-      // - Delete progress data
-      // - Delete ranking entries
-      // - Delete analytics logs
+      await deleteUserData(parentUserId);
     } catch (e) {
       throw Exception('Failed to revoke consent: $e');
+    }
+  }
+
+  /// users/{uid} 配下のサブコレクション（クライアントからは列挙できないため明示）
+  static const _userSubcollections = [
+    'children',
+    'selections',
+    'prefs',
+    'settings',
+    'subscription',
+    'progress',
+    'data',
+    'compositions',
+    'avatar_purchases',
+  ];
+
+  /// children/{childId} 配下のサブコレクション
+  static const _childSubcollections = ['stats', 'questHistory'];
+
+  /// ランキングのコレクションパス（RankingService と同一）
+  static const _rankingCollections = [
+    'rankings/global/total_points',
+    'rankings/global/monthly_points',
+    'rankings/virtues/compassion',
+    'rankings/virtues/honesty',
+    'rankings/virtues/responsibility',
+    'rankings/virtues/courage',
+    'rankings/virtues/respect',
+    'rankings/virtues/cooperation',
+  ];
+
+  /// 親ユーザーと子どもに紐づく全データを削除（COPPA: 同意撤回時）
+  /// 同意記録本体と監査ログは法的証跡として残す（個人情報は含まない）。
+  /// 冪等なので、途中で失敗しても再実行できる。
+  Future<void> deleteUserData(String parentUserId) async {
+    final userRef = _firestore.collection('users').doc(parentUserId);
+
+    // 子どもIDを収集
+    final childIds = <String>{};
+    final profiles = await _firestore
+        .collection('child_profiles')
+        .where('parentId', isEqualTo: parentUserId)
+        .get();
+    childIds.addAll(profiles.docs.map((d) => d.id));
+    final children = await userRef.collection('children').get();
+    childIds.addAll(children.docs.map((d) => d.id));
+
+    for (final childId in childIds) {
+      for (final path in _rankingCollections) {
+        await _deleteWhere(
+            _firestore.collection(path).where('childId', isEqualTo: childId));
+      }
+      await _deleteWhere(_firestore
+          .collection('quiz_sessions')
+          .where('childId', isEqualTo: childId));
+      for (final sub in _childSubcollections) {
+        await _deleteWhere(
+            userRef.collection('children').doc(childId).collection(sub));
+      }
+    }
+
+    await _deleteWhere(_firestore
+        .collection('child_profiles')
+        .where('parentId', isEqualTo: parentUserId));
+
+    for (final sub in _userSubcollections) {
+      await _deleteWhere(userRef.collection(sub));
+    }
+    await userRef.delete();
+  }
+
+  /// クエリに一致するドキュメントを分割バッチで削除
+  Future<void> _deleteWhere(Query<Map<String, dynamic>> query) async {
+    const batchSize = 400;
+    while (true) {
+      final snap = await query.limit(batchSize).get();
+      if (snap.docs.isEmpty) return;
+      final batch = _firestore.batch();
+      for (final doc in snap.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+      if (snap.docs.length < batchSize) return;
     }
   }
 
@@ -184,8 +265,8 @@ class ParentalConsentRecord {
   factory ParentalConsentRecord.fromJson(Map<String, dynamic> json) {
     return ParentalConsentRecord(
       parentUserId: json['parentUserId'] as String,
-      childName: json['childName'] as String,
-      parentEmail: json['parentEmail'] as String,
+      childName: json['childName'] as String? ?? '',
+      parentEmail: json['parentEmail'] as String? ?? '',
       consentedToTerms: json['consentedToTerms'] as bool? ?? false,
       consentedToPrivacy: json['consentedToPrivacy'] as bool? ?? false,
       consentedToAnalytics: json['consentedToAnalytics'] as bool? ?? false,
