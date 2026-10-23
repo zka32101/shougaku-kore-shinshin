@@ -29,6 +29,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
   late TabController _tabController;
   String? _selectedTheme;
   GradeBand? _selectedBand;
+  bool _hideCompleted = false;
 
   @override
   void initState() {
@@ -73,6 +74,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
             _AllStoriesTab(
               selectedTheme: _selectedTheme,
               selectedBand: _selectedBand,
+              hideCompleted: _hideCompleted,
+              onHideCompletedChanged: (v) =>
+                  setState(() => _hideCompleted = v),
               onThemeChanged: (t) => setState(() => _selectedTheme = t),
               onBandChanged: (b) => setState(() => _selectedBand = b),
             ),
@@ -88,11 +92,15 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
 class _AllStoriesTab extends ConsumerWidget {
   final String? selectedTheme;
   final GradeBand? selectedBand;
+  final bool hideCompleted;
+  final ValueChanged<bool> onHideCompletedChanged;
   final ValueChanged<String?> onThemeChanged;
   final ValueChanged<GradeBand?> onBandChanged;
   const _AllStoriesTab({
     required this.selectedTheme,
     required this.selectedBand,
+    required this.hideCompleted,
+    required this.onHideCompletedChanged,
     required this.onThemeChanged,
     required this.onBandChanged,
   });
@@ -135,6 +143,7 @@ class _AllStoriesTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final storiesAsync = ref.watch(allLocalStoriesProvider);
+    final completedIds = ref.watch(libraryCompletedIdsProvider);
     return Column(
       children: [
         _chipRow([
@@ -146,6 +155,10 @@ class _AllStoriesTab extends ConsumerWidget {
           for (final t in _themes)
             _chip(t.$1, t.$2 == selectedTheme, () => onThemeChanged(t.$2)),
         ]),
+        _chipRow([
+          _chip('クリアしたお話をのぞく', hideCompleted,
+              () => onHideCompletedChanged(!hideCompleted)),
+        ]),
         Expanded(
           child: storiesAsync.when(
             loading: () => const Center(
@@ -156,10 +169,11 @@ class _AllStoriesTab extends ConsumerWidget {
                 all,
                 theme: selectedTheme,
                 band: selectedBand,
+                hideIds: hideCompleted ? completedIds : const {},
               );
               return stories.isEmpty
                   ? const _EmptyView(message: 'この条件のお話はまだないよ')
-                  : _StoryList(stories: stories);
+                  : _StoryList(stories: stories, completedIds: completedIds);
             },
           ),
         ),
@@ -168,15 +182,25 @@ class _AllStoriesTab extends ConsumerWidget {
   }
 }
 
+/// 選択中の子どもがクリア済みのストーリーID。未選択・読み込み中は空。
+final libraryCompletedIdsProvider = Provider.autoDispose<Set<String>>((ref) {
+  final child = ref.watch(selectedChildProvider).valueOrNull;
+  if (child == null) return const {};
+  final done = ref.watch(completedStoriesProvider(child.id)).valueOrNull;
+  return {for (final s in done ?? const <Story>[]) s.id};
+});
+
 /// 学年帯・テーマでストーリーを絞り込む(学年→テーマ順の並び)。
 List<Story> filterStories(
   List<Story> all, {
   String? theme,
   GradeBand? band,
+  Set<String> hideIds = const {},
 }) {
   final list = [
     for (final s in all)
-      if ((theme == null || s.theme == theme) &&
+      if (!hideIds.contains(s.id) &&
+          (theme == null || s.theme == theme) &&
           (band == null || gradeBandOf(s.gradeLevel) == band))
         s,
   ];
@@ -330,7 +354,8 @@ class _CompletedStoryCard extends StatelessWidget {
 
 class _StoryList extends ConsumerWidget {
   final List<Story> stories;
-  const _StoryList({required this.stories});
+  final Set<String> completedIds;
+  const _StoryList({required this.stories, this.completedIds = const {}});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -344,6 +369,7 @@ class _StoryList extends ConsumerWidget {
         delay: Duration(milliseconds: 100 + (i * 75)),
         child: _LibraryStoryCard(
           story: stories[i],
+          completed: completedIds.contains(stories[i].id),
           onTap: () => childAsync.whenData((child) {
             if (child == null) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -364,7 +390,12 @@ class _StoryList extends ConsumerWidget {
 class _LibraryStoryCard extends StatefulWidget {
   final Story story;
   final VoidCallback onTap;
-  const _LibraryStoryCard({required this.story, required this.onTap});
+  final bool completed;
+  const _LibraryStoryCard({
+    required this.story,
+    required this.onTap,
+    this.completed = false,
+  });
 
   static const _themeColors = <String, Color>{
     'kindness': Color(0xFF9B59B6), 'honesty': Color(0xFFF1C40F),
@@ -477,6 +508,11 @@ class _LibraryStoryCardState extends State<_LibraryStoryCard> with SingleTickerP
                   ],
                 ),
               ),
+              if (widget.completed)
+                Padding(
+                  padding: const EdgeInsets.only(right: 4),
+                  child: Icon(Icons.check_circle, color: color, size: 22),
+                ),
               const Icon(Icons.chevron_right, color: _textSecondary),
             ],
           ),
