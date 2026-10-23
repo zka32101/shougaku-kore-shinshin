@@ -115,9 +115,11 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                     itemCount: activities.length + 1,
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
                     itemBuilder: (context, index) {
-                      // 先頭：いろいろな体験があることの説明（一緒にスクロールする）
-                      if (index == 0) return _ExperienceIntro(color: color);
-                      final i = index - 1;
+                      // 末尾：いろいろな体験があることの説明（活動カードの位置を動かさない）
+                      if (index == activities.length) {
+                        return _ExperienceIntro(color: color);
+                      }
+                      final i = index;
                       final activity = activities[i];
                       final isDone = _done.contains(activity.id);
                       return _ActivityCard(
@@ -297,7 +299,7 @@ Future<String?> _askNote(BuildContext context, String title) async {
   return (result == null || result.isEmpty) ? null : result;
 }
 
-/// 「いろいろな体験がある」ことと、記録の残し方の説明（一覧の先頭に出す）
+/// 「いろいろな体験がある」ことと、記録の残し方の説明（一覧の末尾に出す）
 class _ExperienceIntro extends StatelessWidget {
   final Color color;
   const _ExperienceIntro({required this.color});
