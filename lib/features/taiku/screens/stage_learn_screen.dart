@@ -1,5 +1,7 @@
 import '../data/question_images.dart';
+import '../data/sport_encyclopedia.dart';
 import '../data/stage_why.dart';
+import 'sport_encyclopedia_screen.dart' show SportDetailScreen;
 import 'package:flutter/material.dart';
 import 'package:shougaku_kore_doutoku/widgets/furigana_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -887,6 +889,9 @@ class _HighlightsTab extends StatelessWidget {
             const SizedBox(height: 16),
           ],
 
+          // このステージに出てくるスポーツの、くわしい説明（スポーツ図鑑）
+          _RelatedSportsCard(stageNum: stageNum, color: color, isLow: isLow),
+
           // SNS・ネットの注意点（関係するステージだけ）
           if (kSnsCautionStages.contains(stageNum)) ...[
             _SnsCautionCard(isLow: isLow),
@@ -1266,6 +1271,81 @@ class _CheckListCard extends StatelessWidget {
                   ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// このステージに出てくるスポーツを、スポーツ図鑑のくわしい説明（別画面）へつなぐカード
+class _RelatedSportsCard extends ConsumerWidget {
+  final int stageNum;
+  final Color color;
+  final bool isLow;
+
+  const _RelatedSportsCard({
+    required this.stageNum,
+    required this.color,
+    required this.isLow,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sports =
+        allSports.where((e) => e.relatedStage == stageNum).toList();
+    if (sports.isEmpty) return const SizedBox.shrink();
+    final grade = ref.watch(gradeLevelProvider);
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withValues(alpha: 0.4), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionTitle(
+            icon: Icons.menu_book,
+            label: isLow ? 'スポーツを もっと しろう' : 'スポーツをくわしく知ろう',
+            color: color,
+          ),
+          const SizedBox(height: 4),
+          Text(
+            isLow
+                ? 'おして みてね。ルールや はじまりが わかるよ。'
+                : 'タップすると、ルール・成り立ち・身につく力が読めます。',
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final sport in sports)
+                ActionChip(
+                  avatar: UkalabEmoji(sport.emoji, size: 18),
+                  label: Text(sport.name),
+                  backgroundColor: Colors.white,
+                  side: BorderSide(color: color.withValues(alpha: 0.5)),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) =>
+                          SportDetailScreen(sport: sport, grade: grade),
+                    ),
+                  ),
+                ),
+              ActionChip(
+                avatar: const Icon(Icons.apps, size: 18),
+                label: Text(isLow ? 'ぜんぶ みる' : 'スポーツ図鑑をひらく'),
+                backgroundColor: Colors.white,
+                side: BorderSide(color: color.withValues(alpha: 0.5)),
+                onPressed: () => Navigator.of(context).pushNamed('/sports'),
+              ),
+            ],
           ),
         ],
       ),
