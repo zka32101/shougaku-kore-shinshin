@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shougaku_kore_doutoku/widgets/module_tab_strip.dart';
 import 'package:shougaku_kore_doutoku/widgets/shell_route_observer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/app_providers.dart';
@@ -32,7 +31,18 @@ class GeijutsuModule extends StatefulWidget {
   /// アプリ全体の下部ナビを全画面ページで隠すための見張り役（任意）
   final ShellRouteObserver? observer;
 
-  const GeijutsuModule({super.key, this.observer});
+  /// 最初に開く画面。全体のホームから「バッジ」「保護者」を直接開くときに使う
+  final String initialRoute;
+
+  /// 全体のホームから push で開いたとき true。トップで戻ると呼び出し元へ戻る
+  final bool standalone;
+
+  const GeijutsuModule({
+    super.key,
+    this.observer,
+    this.initialRoute = '/',
+    this.standalone = false,
+  });
 
   @override
   State<GeijutsuModule> createState() => _GeijutsuModuleState();
@@ -106,10 +116,13 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
           data: buildAppTheme(),
           // 芸術モジュール内で戻れるうちは内側を pop、トップなら心身側へ戻る
           child: NavigatorPopHandler(
-            onPopWithResult: (_) {}, // 戻る処理は MainShell が担当（二重 pop 防止）
+            // 通常は戻る処理を MainShell が担当（二重 pop 防止）。単独で開いたときだけ呼び出し元へ戻る
+            onPopWithResult: (_) {
+              if (widget.standalone) Navigator.of(context).maybePop();
+            },
             child: Navigator(
               key: _navKey,
-              initialRoute: '/', // '/home' だと '/' と二重に積まれるため '/' を直接ホームにする
+              initialRoute: widget.initialRoute, // 既定は '/'（'/home' だと '/' と二重に積まれるため）
               observers: [if (widget.observer != null) widget.observer!],
               onGenerateRoute: _onGenerateRoute,
             ),
@@ -120,50 +133,11 @@ class _GeijutsuModuleState extends State<GeijutsuModule> {
   }
 }
 
-class RootShell extends ConsumerStatefulWidget {
+/// 芸術の入口。アプリ全体の下部ナビと重なる専用メニューは持たない。
+/// バッジ・保護者・設定は、アプリ全体のホームから開く。
+class RootShell extends ConsumerWidget {
   const RootShell({super.key});
 
   @override
-  ConsumerState<RootShell> createState() => _RootShellState();
-}
-
-class _RootShellState extends ConsumerState<RootShell> {
-  int _tab = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    // アプリ全体の下部ナビと二重にならないよう、内側の切り替えは画面上部に置く
-    return Scaffold(
-      body: Column(
-        children: [
-          ModuleTabStrip(
-            color: const Color(0xFFD81B60),
-            index: _tab,
-            onTap: (i) => setState(() => _tab = i),
-            tabs: const [
-              ModuleTab(Icons.palette, 'げいじゅつ'),
-              ModuleTab(Icons.star, 'バッジ'),
-              ModuleTab(Icons.family_restroom, '保護者'),
-              ModuleTab(Icons.settings, '設定'),
-            ],
-          ),
-          Expanded(
-            child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child: IndexedStack(
-                index: _tab,
-                children: const [
-                  HomeScreen(),
-                  BadgeScreen(),
-                  ParentDashboardScreen(),
-                  SettingsScreen(),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context, WidgetRef ref) => const HomeScreen();
 }

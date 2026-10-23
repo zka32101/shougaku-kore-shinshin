@@ -77,6 +77,24 @@ class HomeScreen extends ConsumerWidget {
       _HomeItem('⚙️', 'せってい', 'アプリ設定', const Color(0xFF757575),
           () => _push(context, const SettingsScreen())),
     ];
+    // 体育・芸術それぞれの記録（以前は各画面の上にあった専用メニュー）
+    final records = <_HomeItem>[
+      _HomeItem('🏅', 'たいいくのバッジ', 'スポーツ・けんこう', const Color(0xFFE64A19),
+          () => _push(context,
+              const TaikuModule(initialRoute: '/badges', standalone: true))),
+      _HomeItem('📷', 'たいいくのアルバム', '体験のきろく', const Color(0xFFFF6D00),
+          () => _push(context,
+              const TaikuModule(initialRoute: '/album', standalone: true))),
+      _HomeItem('👪', 'たいいくの ほごしゃ', '見まもりページ', const Color(0xFF00838F),
+          () => _push(context,
+              const TaikuModule(initialRoute: '/parent', standalone: true))),
+      _HomeItem('⭐', 'げいじゅつのバッジ', '図工・音楽・家庭科', const Color(0xFFD81B60),
+          () => _push(context,
+              const GeijutsuModule(initialRoute: '/badges', standalone: true))),
+      _HomeItem('👪', 'げいじゅつの ほごしゃ', '見まもりページ', const Color(0xFFAD1457),
+          () => _push(context,
+              const GeijutsuModule(initialRoute: '/parent', standalone: true))),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -100,6 +118,10 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             const _SectionLabel('ひろげる・ふりかえる'),
             for (final item in more)
+              _HomeButton(item: item, height: 72, titleSize: 18),
+            const SizedBox(height: 12),
+            const _SectionLabel('たいいく・げいじゅつの きろく'),
+            for (final item in records)
               _HomeButton(item: item, height: 72, titleSize: 18),
           ],
         ),
