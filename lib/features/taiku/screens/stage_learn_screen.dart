@@ -842,6 +842,36 @@ class _HighlightsTab extends StatelessWidget {
           // なぜ大切なの？
           _WhyCard(stageNum: stageNum, color: color, isLow: isLow),
 
+          // これ、犯罪かも？／これ、相手の心をきずつけるかも？（関係するステージだけ）
+          if (kCrimeCheckStages.contains(stageNum)) ...[
+            _CheckListCard(
+              isLow: isLow,
+              title: isLow ? 'これ、はんざいかも？' : 'これ、犯罪かも？',
+              note: isLow
+                  ? 'こどもでも「しらなかった」では すまないことが あるよ。おして みてね。'
+                  : '子どもでも「知らなかった」では済まないことがあります。タップして理由を確認しましょう。迷ったら、必ず大人に相談してください。',
+              icon: Icons.gavel,
+              color: const Color(0xFF4E342E),
+              bg: const Color(0xFFEFEBE9),
+              items: kCrimeChecks,
+            ),
+            const SizedBox(height: 16),
+          ],
+          if (kHeartCheckStages.contains(stageNum)) ...[
+            _CheckListCard(
+              isLow: isLow,
+              title: isLow ? 'これ、あいての こころを きずつけるかも？' : 'これ、相手の心を傷つけるかも？',
+              note: isLow
+                  ? 'わるぎが なくても、あいては かなしく なることが あるよ。おして みてね。'
+                  : '悪気がなくても、相手を傷つけてしまうことがあります。タップして、どうすればよいか確認しましょう。',
+              icon: Icons.favorite_border,
+              color: const Color(0xFFAD1457),
+              bg: const Color(0xFFFCE4EC),
+              items: kHeartChecks,
+            ),
+            const SizedBox(height: 16),
+          ],
+
           // SNS・ネットの注意点（関係するステージだけ）
           if (kSnsCautionStages.contains(stageNum)) ...[
             _SnsCautionCard(isLow: isLow),
@@ -1126,6 +1156,98 @@ class _WhyCard extends StatelessWidget {
               fontSize: isLow ? 14 : 13,
               color: Colors.grey.shade900,
               height: 1.75,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 「これ、犯罪かも？」「これ、相手の心を傷つけるかも？」のチェックリスト。
+/// 各項目をタップすると、理由とどうすればよいかが開く。
+class _CheckListCard extends StatelessWidget {
+  final bool isLow;
+  final String title;
+  final String note;
+  final IconData icon;
+  final Color color;
+  final Color bg;
+  final List<CheckItem> items;
+
+  const _CheckListCard({
+    required this.isLow,
+    required this.title,
+    required this.note,
+    required this.icon,
+    required this.color,
+    required this.bg,
+    required this.items,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: color.withValues(alpha: 0.5), width: 1.5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SectionTitle(icon: icon, label: title, color: color),
+          const SizedBox(height: 6),
+          FuriganaText(
+            note,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade800,
+              height: 1.6,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: Column(
+              children: [
+                for (final item in items)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ExpansionTile(
+                      tilePadding: const EdgeInsets.symmetric(horizontal: 10),
+                      childrenPadding:
+                          const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      dense: true,
+                      leading: Icon(Icons.help_outline, color: color, size: 20),
+                      title: FuriganaText(
+                        isLow ? item.lowAction : item.highAction,
+                        style: TextStyle(
+                          fontSize: isLow ? 13.5 : 12.5,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade900,
+                          height: 1.5,
+                        ),
+                      ),
+                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FuriganaText(
+                          isLow ? item.lowWhy : item.highWhy,
+                          style: TextStyle(
+                            fontSize: isLow ? 13 : 12.5,
+                            color: Colors.grey.shade900,
+                            height: 1.7,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ),
           ),
         ],

@@ -38,4 +38,19 @@ void main() {
       }
     }
   });
+
+  test('「これ犯罪かも？」「相手の心を傷つけるかも？」の項目と対象ステージ', () {
+    for (final list in [kCrimeChecks, kHeartChecks]) {
+      expect(list.length, greaterThanOrEqualTo(6));
+      for (final c in list) {
+        expect(c.lowAction.trim(), isNotEmpty);
+        expect(c.highAction.trim(), isNotEmpty);
+        expect(c.lowWhy.trim(), isNotEmpty);
+        expect(c.highWhy.trim(), isNotEmpty);
+      }
+    }
+    for (final s in {...kCrimeCheckStages, ...kHeartCheckStages}) {
+      expect(s, inInclusiveRange(1, 35));
+    }
+  });
 }
