@@ -67,7 +67,7 @@ List<FamilyPrompt> buildFamilyPrompts({
 
   // 1) お子さんが答えた「相手の気持ち」から、理由をたずねる問い
   for (final r in reflections) {
-    if (result.length >= 1) break;
+    if (result.isNotEmpty) break;
     final f = r.feeling == null ? null : kReflectionFeelings[r.feeling!];
     if (f == null || r.storyTitle.isEmpty) continue;
     result.add(FamilyPrompt(
