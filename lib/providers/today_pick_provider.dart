@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/story.dart';
 import '../services/local_completion_store.dart';
+import '../services/local_reflection_store.dart';
+import '../utils/revisit_pick.dart';
 import '../utils/today_pick.dart';
 import 'child_provider.dart';
 import 'story_provider.dart';
@@ -35,4 +37,11 @@ final todayPickProvider = Provider.autoDispose<TodayPick?>((ref) {
     grade: child.grade,
     date: DateTime.now(),
   );
+});
+
+/// 1週間以上前に「考えてみよう」を書いたお話から、もう一度考える1件。なければ null。
+final revisitPickProvider = FutureProvider.autoDispose
+    .family<RevisitPick?, String>((ref, childId) async {
+  final list = await LocalReflectionStore.load(childId);
+  return pickRevisit(reflections: list, now: DateTime.now());
 });

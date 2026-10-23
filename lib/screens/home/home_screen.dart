@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
 import '../../providers/child_provider.dart';
 import '../../providers/today_pick_provider.dart';
+import '../../services/local_reflection_store.dart' show kReflectionFeelings;
 import '../growth/growth_note_screen.dart';
 import '../story/story_learning_screen.dart';
 import '../../constants/app_styles.dart';
@@ -123,6 +124,7 @@ class HomeScreen extends ConsumerWidget {
                   ? null
                   : () => onSelectSection!(HomeSection.taiku),
             ),
+            const _RevisitCard(),
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)
@@ -230,6 +232,85 @@ class _TodayPickCard extends ConsumerWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// 「もういちど かんがえてみよう」：1週間以上前に考えたお話を、もう一度すすめる。
+class _RevisitCard extends ConsumerWidget {
+  const _RevisitCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final child = ref.watch(selectedChildProvider).valueOrNull;
+    if (child == null) return const SizedBox.shrink();
+    final pick = ref.watch(revisitPickProvider(child.id)).valueOrNull;
+    if (pick == null) return const SizedBox.shrink();
+    final feeling = pick.entry.feeling == null
+        ? null
+        : kReflectionFeelings[pick.entry.feeling!];
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Material(
+        color: const Color(0xFFE8F5E9),
+        borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+        child: InkWell(
+          key: const Key('revisit_card'),
+          borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => StoryLearningScreen(
+                storyId: pick.entry.storyId,
+                childId: child.id,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                const Text('🔁', style: TextStyle(fontSize: 26)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'もういちど かんがえてみよう',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2E7D32),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '「${pick.entry.storyTitle}」',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      Text(
+                        feeling == null
+                            ? '${pick.daysAgo}にちまえに かんがえたよ。いまは どう おもう？'
+                            : '${pick.daysAgo}にちまえは「${feeling.$2}」${feeling.$1}と おもったよ。いまは どう？',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(Icons.chevron_right, color: Color(0xFF2E7D32)),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
