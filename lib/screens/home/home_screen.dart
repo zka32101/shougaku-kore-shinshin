@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../constants/app_colors.dart';
+import '../../providers/child_provider.dart';
+import '../../providers/today_pick_provider.dart';
+import '../story/story_learning_screen.dart';
 import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
 import '../../widgets/profile_name_card.dart';
@@ -111,6 +114,12 @@ class HomeScreen extends ConsumerWidget {
             AvatarPanel(userName: ref.watch(displayNameProvider)),
             const ProfileNameCard(),
             const PlanCard(),
+            const SizedBox(height: 12),
+            _TodayPickCard(
+              onOpenTaiku: onSelectSection == null
+                  ? null
+                  : () => onSelectSection!(HomeSection.taiku),
+            ),
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)
@@ -125,6 +134,99 @@ class HomeScreen extends ConsumerWidget {
               _HomeButton(item: item, height: 72, titleSize: 18),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// 「きょうのおすすめ」：その日に読むお話を1つ出す。タップでそのまま読み始められる。
+class _TodayPickCard extends ConsumerWidget {
+  final VoidCallback? onOpenTaiku;
+  const _TodayPickCard({this.onOpenTaiku});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pick = ref.watch(todayPickProvider);
+    final child = ref.watch(selectedChildProvider).valueOrNull;
+    if (pick == null || child == null) return const SizedBox.shrink();
+
+    const color = Color(0xFFF9A825);
+    return Container(
+      key: const Key('today_pick_card'),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF8E1),
+        borderRadius: BorderRadius.circular(AppStyles.radiusMedium),
+        border: Border.all(color: color.withValues(alpha: 0.6), width: 2),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            pick.isReview ? '⭐ きょうの ふくしゅう' : '⭐ きょうの おすすめ',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFE65100),
+            ),
+          ),
+          const SizedBox(height: 8),
+          InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => StoryLearningScreen(
+                  storyId: pick.story.id,
+                  childId: child.id,
+                ),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Row(
+                children: [
+                  const Icon(Icons.menu_book, color: color, size: 28),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          pick.story.title,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        if ((pick.story.description ?? '').isNotEmpty)
+                          Text(
+                            pick.story.description!,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: color),
+                ],
+              ),
+            ),
+          ),
+          if (onOpenTaiku != null) ...[
+            const Divider(height: 16),
+            TextButton.icon(
+              key: const Key('today_pick_taiku'),
+              onPressed: onOpenTaiku,
+              icon: const Icon(Icons.directions_run, size: 18),
+              label: const Text('たいいくの まなびも やってみよう'),
+            ),
+          ],
+        ],
       ),
     );
   }
