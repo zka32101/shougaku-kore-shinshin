@@ -872,6 +872,21 @@ class _HighlightsTab extends StatelessWidget {
             const SizedBox(height: 16),
           ],
 
+          if (kQuestionAdultStages.contains(stageNum)) ...[
+            _CheckListCard(
+              isLow: isLow,
+              title: isLow ? 'おとなの いうことも、まちがっているかも？' : '大人の言うことも、間違っているかも？',
+              note: isLow
+                  ? 'おとなも まちがえることが あるよ。うたがうのは はんたいすることじゃなくて、「どうして？」と きいて、じぶんで たしかめることだよ。'
+                  : '先生や親も、間違えたり、古い知識のままだったりすることがあります。疑うとは、反対することではなく「なぜ？」と聞き、自分で確かめることです。ただし、命に関わる決まりは、まず守りましょう。',
+              icon: Icons.psychology_alt,
+              color: const Color(0xFF1565C0),
+              bg: const Color(0xFFE3F2FD),
+              items: kQuestionAdultChecks,
+            ),
+            const SizedBox(height: 16),
+          ],
+
           // SNS・ネットの注意点（関係するステージだけ）
           if (kSnsCautionStages.contains(stageNum)) ...[
             _SnsCautionCard(isLow: isLow),
