@@ -1,3 +1,4 @@
+import '../../providers/today_pick_provider.dart' show localCompletedStoryIdsProvider;
 import '../../services/local_reflection_store.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../providers/local_avatar_provider.dart';
@@ -267,6 +268,7 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
     // 子どもプロフィール（totalPoints）と進捗リストを無効化 → ホーム・成長画面で最新値を表示
     ref.invalidate(childProfileProvider(widget.childId));
     ref.invalidate(userProgressProvider(widget.childId));
+    ref.invalidate(localCompletedStoryIdsProvider(widget.childId)); // ホームのおすすめを更新
 
     AnalyticsService().logStoryCompleted(
       storyId: story.id,
