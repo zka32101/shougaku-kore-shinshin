@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
 import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, requireParentalGate;
+import '../../utils/guardian_gate.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/app_version_provider.dart';
 import '../../providers/auth_provider.dart';
@@ -14,6 +15,7 @@ import '../../widgets/profile_edit_dialog.dart';
 import '../../providers/user_profile_provider.dart';
 import '../ranking/ranking_settings_screen.dart';
 import 'help_screen.dart';
+import 'module_data_reset_section.dart';
 import 'privacy_policy_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -119,7 +121,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             leading: const Icon(Icons.person),
             title: const Text('お子様のプロフィール'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
+            onTap: () async {
+              if (!await confirmAdult(context,
+                  purpose: 'お子様のプロフィールを変えたり消したりする操作です。')) {
+                return;
+              }
+              if (!context.mounted) return;
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const ProfileManagementScreen(),
@@ -143,7 +150,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             title: const Text('ランキング設定'),
             subtitle: const Text('プライバシー設定'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
+            onTap: () async {
+              if (!await confirmAdult(context,
+                  purpose: 'ランキングでの公開のしかたを変える操作です。')) {
+                return;
+              }
+              if (!context.mounted) return;
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const RankingSettingsScreen(),
@@ -151,6 +163,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               );
             },
           ),
+
+          // ─── たいいく／げいじゅつのデータ管理 ───
+          const ModuleDataResetSection(),
 
           // ─── 通知設定セクション ───
           const SizedBox(height: 8),

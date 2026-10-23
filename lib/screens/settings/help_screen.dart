@@ -148,8 +148,9 @@ class HelpScreen extends StatelessWidget {
           _FaqTile(
             question: 'アカウントを削除したい場合は？',
             answer:
-                '現在はアプリ内でのアカウント削除機能は準備中です。'
-                '削除をご希望の場合は、アプリについて欄のサポートメールよりご連絡ください。',
+                'この端末に保存されているどうとくの記録は、「設定」→「データの管理」→'
+                '「このアプリが覚えていること」から、保護者の確認のうえ消せます。'
+                'アカウントとサーバー上のデータの削除は、アプリについて欄のサポートメールよりご連絡ください。',
             iconPath: 'assets/images/icons/help_icon_account_deletion.png',
           ),
 

@@ -37,5 +37,11 @@ void main() {
         filterStories(all, theme: 'kindness', band: GradeBand.high)
             .map((e) => e.id),
         ['a']);
+    // クリア済みを除く
+    expect(filterStories(all, hideIds: {'b', 'a'}).map((e) => e.id), ['c']);
+    expect(
+        filterStories(all, theme: 'kindness', hideIds: {'c'})
+            .map((e) => e.id),
+        ['a']);
   });
 }

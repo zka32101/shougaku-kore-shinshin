@@ -2447,12 +2447,12 @@ const stage11Questions = <TaikuQuestion>[
     gradeLevel: GradeLevel.high,
     contentType: ContentLiteracyType.critical,
     difficultyRank: 1,
-    questionText: 'WHO（世界保健機関）が定義する「健康」として最も適切なものはどれですか？',
+    questionText: '世界の国々が集まる国際的な組織が考える「健康」として、最も適切なものはどれですか？',
     choices: ['身体・精神・社会的に完全に良好な状態', '病気がないこと', '運動ができること', 'BMIが標準範囲内であること'],
     correctIndex: 0,
     feedbackCorrect: '正解！健康は体だけでなく、心と社会的なつながりも含むんだよ！',
-    feedbackIncorrect: 'もう一回！WHOの健康の定義は「病気がない」だけじゃないよ。',
-    explanationDetail: 'WHO健康の定義（1948年）：「健康とは、身体的・精神的・社会的に完全に良好な状態であり、単に疾病または病弱がないことではない」',
+    feedbackIncorrect: 'もう一回！「健康」は「病気がない」だけじゃないよ。',
+    explanationDetail: '世界の国々が集まる国際的な組織は、1948年に「健康とは、体も心も、人とのつながりも、すべてよい状態のこと。病気や弱いところがないだけではない」と考えを示しました。',
     theme: 'career',
   ),
   TaikuQuestion(
@@ -2595,7 +2595,7 @@ const stage11Questions = <TaikuQuestion>[
     feedbackIncorrect: 'もう一回！「ライフ（人生）スキル（技術）」とはどんな能力？',
     hasVisualSupport: true,
     hintText: '人生を豊かにする総合的な能力',
-    explanationDetail: 'ライフスキル（WHO定義）：意思決定・問題解決・創造的思考・批判的思考・コミュニケーション・共感・感情コントロール・ストレス対処などの能力。スポーツは失敗からの回復・仲間との協働・目標設定などを通じてこれらを自然に育てます。',
+    explanationDetail: 'ライフスキル（生きるための力）：自分で決める・問題を解く・新しく考える・よく考えて判断する・気持ちを伝える・相手の気持ちを思いやる・感情をコントロールする・ストレスに対処するなどの力。スポーツは失敗からの回復・仲間との協働・目標設定などを通じてこれらを自然に育てます。',
     theme: 'career',
   ),
   TaikuQuestion(
@@ -2625,7 +2625,7 @@ const stage11Questions = <TaikuQuestion>[
     feedbackCorrect: '正解！健康的な老後は今の生活習慣で決まる！今が投資の時間！',
     feedbackIncorrect: 'もう一回！老年期も元気で活躍するための最大の秘訣は何年も前からの準備！',
     hintText: '今の習慣が将来の健康をつくる',
-    explanationDetail: 'WHO「アクティブ・エイジング」政策：身体的活動・社会参加・健康への継続的関与が老年期の生活の質を決定します。骨密度・筋肉量は若年期のピーク値に依存するため、小学生の今が将来の健康への最大の投資期です。',
+    explanationDetail: 'いつまでも元気に暮らすための考え方：体を動かすこと・人とかかわること・健康を気づかい続けることが、年をとってからの暮らしの良さを決めます。骨密度・筋肉量は若年期のピーク値に依存するため、小学生の今が将来の健康への最大の投資期です。',
     theme: 'career',
   ),
   TaikuQuestion(
@@ -2904,7 +2904,7 @@ const stage13Questions = <TaikuQuestion>[
     feedbackCorrect: 'せいかい！よく しっていたね！',
     feedbackIncorrect: 'ざんねん！かいせつを よんで たしかめよう！',
     theme: 'health',
-    explanationDetail: 'WHO（世界保健機関）によると、6〜12歳の子どもは1日9〜11時間の睡眠が推奨されています。十分な睡眠は成長ホルモンの分泌・記憶の定着・免疫力の維持に欠かせません。',
+    explanationDetail: '世界の国々が集まる国際的な組織などによると、6〜12歳の子どもは1日9〜11時間の睡眠がすすめられています。十分な睡眠は成長ホルモンの分泌・記憶の定着・免疫力の維持に欠かせません。',
   ),
   TaikuQuestion(
     id: 'tai_13_2',
@@ -3596,7 +3596,7 @@ const stage15Questions = <TaikuQuestion>[
     feedbackCorrect: 'せいかい！すばらしい！',
     feedbackIncorrect: 'ざんねん！解説を読んでしっかり確認しよう！',
     theme: 'health',
-    explanationDetail: '生活習慣病の80%は健康的な生活習慣で予防可能といわれる。「健康的な食事・適度な運動・禁煙・節酒・ストレス管理・定期検診」がWHOが推奨する6つの習慣。小学生の今から取り組むことが最大の予防になる。',
+    explanationDetail: '生活習慣病の80%は健康的な生活習慣で予防可能といわれる。「バランスのよい食事・ほどよい運動・たばこを吸わない・お酒を飲みすぎない・ストレスをためない・定期的な健康診断」が、世界の国々が集まる国際的な組織がすすめる6つの習慣。小学生の今から取り組むことが最大の予防になる。',
   ),
   TaikuQuestion(
     id: 'tai_15_8',
@@ -3634,7 +3634,7 @@ const stage15Questions = <TaikuQuestion>[
     feedbackCorrect: 'せいかい！すばらしい！',
     feedbackIncorrect: 'ざんねん！解説を読んでしっかり確認しよう！',
     theme: 'health',
-    explanationDetail: 'フッ素（フッ化物）は歯のエナメル質のハイドロキシアパタイトをフルオロアパタイトに変換し、酸に対する耐性を高める。再石灰化（溶けかけた歯の回復）を促進する効果もある。WHO・厚生労働省が推奨する予防法。',
+    explanationDetail: 'フッ素（フッ化物）は、歯の表面をむし歯の菌が出す酸に強い状態に変える。再石灰化（溶けかけた歯がもとにもどること）を助ける効果もある。世界の国々が集まる国際的な組織や厚生労働省もすすめるむし歯予防の方法。',
   ),
   TaikuQuestion(
     id: 'tai_15_10',
@@ -3653,7 +3653,7 @@ const stage15Questions = <TaikuQuestion>[
     feedbackCorrect: 'せいかい！すばらしい！',
     feedbackIncorrect: 'ざんねん！解説を読んでしっかり確認しよう！',
     theme: 'health',
-    explanationDetail: 'WHO（世界保健機関）は「ゲーム障害」を疾病分類に追加（2019年）。スクリーンタイムの過剰は睡眠の質の低下・近視進行・身体活動不足・社会的スキルの低下・依存症リスクなど多面的な健康問題を引き起こす。',
+    explanationDetail: '世界の国々が集まる国際的な組織は、2019年に、ゲームをやめられなくなる状態を「ゲーム障害」という病気の一つとして認めた。スクリーンタイムの過剰は睡眠の質の低下・近視進行・身体活動不足・社会的スキルの低下・依存症リスクなど多面的な健康問題を引き起こす。',
   ),
   TaikuQuestion(
     id: 'tai_15_11',

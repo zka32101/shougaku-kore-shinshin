@@ -6,6 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:shougaku_kore_doutoku/providers/auth_provider.dart';
+import 'package:shougaku_kore_doutoku/screens/profile/profile_management_screen.dart';
+import 'package:shougaku_kore_doutoku/screens/ranking/ranking_settings_screen.dart';
 import 'package:shougaku_kore_doutoku/screens/settings/settings_screen.dart';
 import '../helpers/fake_path_provider.dart';
 import '../helpers/hive_test_helper.dart';
@@ -76,6 +78,20 @@ void main() {
       await tester.pumpWidget(_wrap());
       await tester.pumpAndSettle();
       expect(find.text('お子様のプロフィール'), findsOneWidget);
+    });
+
+    testWidgets('保護者向けの設定は、大人確認なしでは開かない', (tester) async {
+      _setTallViewport(tester);
+      await tester.pumpWidget(_wrap());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('お子様のプロフィール'));
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(ProfileManagementScreen), findsNothing);
+
+      await tester.tap(find.text('ランキング設定'));
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(RankingSettingsScreen), findsNothing);
     });
 
     testWidgets('shows 通知 section header', (tester) async {

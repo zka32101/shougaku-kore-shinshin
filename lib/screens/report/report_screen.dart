@@ -1,3 +1,7 @@
+import 'package:flutter/services.dart';
+import '../../constants/virtue_constants.dart';
+import '../../providers/family_talk_provider.dart';
+import '../../utils/report_share_text.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,6 +112,17 @@ class _ReportScreenState extends ConsumerState<ReportScreen> {
                     )
                     : _ReportContent(report: report),
               ),
+            ),
+          ),
+        ),
+        // おうちで話してみよう（レポートが無い月でも出す。端末内のデータだけを使う）
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+            child: _FamilyTalkCard(
+              childId: childId,
+              year: _selectedYear,
+              month: _selectedMonth,
             ),
           ),
         ),
@@ -678,6 +693,145 @@ class _ErrorCard extends StatelessWidget {
           Expanded(child: Text(error, style: const TextStyle(color: Color(0xFFE74C3C)))),
         ],
       ),
+    );
+  }
+}
+
+/// 保護者向け：おうちで話してみよう（問い3つと、お子さんの「考えてみよう」のひとこと）
+class _FamilyTalkCard extends ConsumerWidget {
+  final String childId;
+  final int year;
+  final int month;
+  const _FamilyTalkCard({
+    required this.childId,
+    required this.year,
+    required this.month,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final talk = ref.watch(
+        familyTalkProvider((childId: childId, year: year, month: month)));
+    return talk.when(
+      loading: () => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
+      data: (t) {
+        if (t.prompts.isEmpty) return const SizedBox.shrink();
+        return Container(
+          key: const Key('family_talk_card'),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFF8E1),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: const Color(0xFFFFB300).withAlpha(120)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(children: [
+                Text('🗣️', style: TextStyle(fontSize: 20)),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'おうちで話してみよう',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFE65100),
+                    ),
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 6),
+              const Text(
+                '正しい答えを求めず、「どうして？」と聞いて、まず受け止めてあげてください。'
+                '大人の考えと違っても大丈夫です。お子さん自身が考えることが大切です。',
+                style: TextStyle(fontSize: 12, color: _textSecondary, height: 1.6),
+              ),
+              const SizedBox(height: 12),
+              for (var i = 0; i < t.prompts.length; i++)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 22,
+                        height: 22,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFFFB300),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text('${i + 1}',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          t.prompts[i].question,
+                          style: const TextStyle(
+                              fontSize: 14, color: _textPrimary, height: 1.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              if (t.notes.isNotEmpty) ...[
+                const Divider(),
+                const SizedBox(height: 4),
+                const Text(
+                  'お子さんの「考えてみよう」のひとこと',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: _textPrimary),
+                ),
+                const SizedBox(height: 6),
+                for (final n in t.notes)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text(
+                      '「${n.storyTitle}」\n${n.note}',
+                      style: const TextStyle(
+                          fontSize: 13, color: _textPrimary, height: 1.5),
+                    ),
+                  ),
+              ],
+              const Divider(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  key: const Key('copy_report_text'),
+                  onPressed: () async {
+                    final text = buildReportShareText(
+                      year: year,
+                      month: month,
+                      storyCount: t.storyCount,
+                      themeCounts: t.themeCounts,
+                      prompts: t.prompts,
+                      themeLabel: VirtueConstants.getVirtueLabel,
+                    );
+                    await Clipboard.setData(ClipboardData(text: text));
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'コピーしました。メモやメッセージに貼って使えます（名前やひとことは含みません）'),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.copy, size: 18),
+                  label: const Text('この月のようすを コピー'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -157,6 +157,10 @@ jobs:
     name: Container Security Scan
     runs-on: ubuntu-latest
     if: contains(github.event_name, 'push') || contains(github.event_name, 'schedule')
+    # SARIF を GitHub Security にアップロードするために必要
+    permissions:
+      contents: read
+      security-events: write
 
     steps:
       - uses: actions/checkout@v4
@@ -175,7 +179,7 @@ jobs:
         if: steps.dockerfile.outputs.exists == 'true'
         run: |
           if [ -f "backend/Dockerfile" ]; then
-            docker build -t shougaku-kore:test -f backend/Dockerfile .
+            docker build -t shougaku-kore:test -f backend/Dockerfile backend
           elif [ -f "Dockerfile" ]; then
             docker build -t shougaku-kore:test .
           fi
@@ -191,7 +195,7 @@ jobs:
 
       - name: Upload Trivy Results to GitHub Security
         if: steps.dockerfile.outputs.exists == 'true'
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
 

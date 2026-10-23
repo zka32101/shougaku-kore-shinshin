@@ -405,6 +405,42 @@ class SportDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
+                  // くわしいルール
+                  if (sport.detailedRules.isNotEmpty) ...[
+                    _Section(
+                      emoji: '📏',
+                      title: isLow ? 'くわしい ルール' : 'くわしいルール',
+                      isLow: isLow,
+                      child: Column(
+                        children: sport.detailedRules
+                            .asMap()
+                            .entries
+                            .map((e) => _RuleRow(
+                                  index: e.key + 1,
+                                  rule: e.value,
+                                  isLow: isLow,
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // いろいろなあそびかた
+                  if (sport.playStyles.isNotEmpty) ...[
+                    _Section(
+                      emoji: '🎲',
+                      title: isLow ? 'いろいろな あそびかた' : 'いろいろな遊び方・ルール',
+                      isLow: isLow,
+                      child: Column(
+                        children: sport.playStyles
+                            .map((p) => _PlayStyleCard(style: p, isLow: isLow))
+                            .toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
                   // 成り立ち
                   _Section(
                     emoji: '🏛️',
@@ -640,6 +676,46 @@ class _Section extends StatelessWidget {
 }
 
 // ─── スキルチップ ───
+
+/// 「いろいろな遊び方」の1項目：名前と、どんな遊びか
+class _PlayStyleCard extends StatelessWidget {
+  final PlayStyle style;
+  final bool isLow;
+
+  const _PlayStyleCard({required this.style, required this.isLow});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: TaikuColors.sports.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: TaikuColors.sports.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            style.name,
+            style: TextStyle(
+              fontSize: isLow ? 15 : 14,
+              fontWeight: FontWeight.bold,
+              color: TaikuColors.sports,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            style.how,
+            style: TextStyle(fontSize: isLow ? 14 : 13, height: 1.6),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class _SkillChip extends StatelessWidget {
   final String label;
