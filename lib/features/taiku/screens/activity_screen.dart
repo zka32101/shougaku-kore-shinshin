@@ -304,15 +304,18 @@ class _ExperienceIntro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.08),
+    // ListTile(ExpansionTile)の下地は Material にする（DecoratedBox だと波紋が隠れ、デバッグで警告になる）
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Material(
+      color: color.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
+        side: BorderSide(color: color.withValues(alpha: 0.3)),
       ),
+      clipBehavior: Clip.antiAlias,
+      child: Padding(
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
@@ -344,6 +347,8 @@ class _ExperienceIntro extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      ),
       ),
     );
   }

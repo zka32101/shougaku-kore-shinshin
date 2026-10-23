@@ -1228,12 +1228,13 @@ class _CheckListCard extends StatelessWidget {
             child: Column(
               children: [
                 for (final item in items)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    // ListTile(ExpansionTile)の下地は Material にする
+                    child: Material(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    clipBehavior: Clip.antiAlias,
                     child: ExpansionTile(
                       tilePadding: const EdgeInsets.symmetric(horizontal: 10),
                       childrenPadding:
@@ -1260,6 +1261,7 @@ class _CheckListCard extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
                     ),
                   ),
               ],
