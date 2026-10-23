@@ -100,9 +100,6 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
             availableDifficulties: availableDifficulties,
           ),
 
-          // いろいろな体験があることの説明
-          _ExperienceIntro(color: color),
-
           // 活動リスト
           Expanded(
             child: activities.isEmpty
@@ -115,9 +112,12 @@ class _ActivityScreenState extends ConsumerState<ActivityScreen> {
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.all(16),
-                    itemCount: activities.length,
+                    itemCount: activities.length + 1,
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, index) {
+                      // 先頭：いろいろな体験があることの説明（一緒にスクロールする）
+                      if (index == 0) return _ExperienceIntro(color: color);
+                      final i = index - 1;
                       final activity = activities[i];
                       final isDone = _done.contains(activity.id);
                       return _ActivityCard(
@@ -297,58 +297,45 @@ Future<String?> _askNote(BuildContext context, String title) async {
   return (result == null || result.isEmpty) ? null : result;
 }
 
-/// 「いろいろな体験がある」ことと、記録の残し方の説明
+/// 「いろいろな体験がある」ことと、記録の残し方の説明（一覧の先頭に出す）
 class _ExperienceIntro extends StatelessWidget {
   final Color color;
   const _ExperienceIntro({required this.color});
 
   @override
   Widget build(BuildContext context) {
-    // ListTile(ExpansionTile)の下地は Material にする（DecoratedBox だと波紋が隠れ、デバッグで警告になる）
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-      child: Material(
-      color: color.withValues(alpha: 0.08),
-      shape: RoundedRectangleBorder(
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.08),
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: color.withValues(alpha: 0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
-      clipBehavior: Clip.antiAlias,
-      child: Padding(
-      padding: const EdgeInsets.fromLTRB(12, 4, 12, 4),
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          tilePadding: EdgeInsets.zero,
-          childrenPadding: const EdgeInsets.only(bottom: 10),
-          dense: true,
-          leading: Icon(Icons.explore, color: color),
-          title: Text(
-            'いろいろな 体験が あるよ',
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.bold, color: color),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.explore, color: color, size: 18),
+              const SizedBox(width: 6),
+              Text(
+                'いろいろな 体験が あるよ',
+                style: TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.bold, color: color),
+              ),
+            ],
           ),
-          subtitle: const Text('体験って なに？ どうやって のこすの？',
-              style: TextStyle(fontSize: 11)),
-          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              '体験は、本を読むだけではわからないことを、じぶんの体と心でたしかめることです。\n'
-              '・体を動かす体験（スポーツ・ストレッチ）\n'
-              '・つくる体験（料理・工作・絵・音楽）\n'
-              '・人から聞く体験（家の人や、仕事をしている人にインタビュー）\n'
-              '・まもる体験（避難の道を歩く・防災グッズをそろえる）\n'
-              '・おてつだいや地いきの体験（家事・そうじ・ボランティア）\n\n'
-              'どれも「やってみた」ことが、あなたの力になります。むずかしく考えず、'
-              'できそうなものからえらんでね。\n\n'
-              'やったら、写真とひとことを「たいいくのアルバム」にのこそう。'
-              '自分がどんな体験をしてきたか、あとで見かえせる実績になります。',
-              style: TextStyle(fontSize: 12.5, height: 1.7),
-            ),
-          ],
-        ),
-      ),
-      ),
+          const SizedBox(height: 6),
+          const Text(
+            '体験は、本を読むだけではわからないことを、自分の体と心でたしかめることです。'
+            '体を動かす・つくる・人から話を聞く・まもる・おてつだいをする、など、いろいろな種類があります。'
+            'どれも「やってみた」ことが、あなたの力になります。できそうなものからえらんでね。\n'
+            'やったら、写真とひとことを「たいいくのアルバム」にのこそう。'
+            '自分がどんな体験をしてきたか、あとで見かえせる実績になります。',
+            style: TextStyle(fontSize: 12.5, height: 1.7),
+          ),
+        ],
       ),
     );
   }
