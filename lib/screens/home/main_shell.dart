@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/taiku/providers/album_provider.dart';
 import '../../features/taiku/screens/activity_screen.dart' show recoverLostPhotoMemory;
+import 'package:shared_core/shared_core.dart'
+    show ScreenTimeLimitReachedWidget, screenTimeProvider;
+import '../../theme/app_theme.dart' show kPrimaryColor;
 import '../characters/character_collection_screen.dart';
 import '../library/library_screen.dart';
 import '../../features/taiku/taiku_app.dart' show TaikuModule;
@@ -18,17 +21,17 @@ import 'shell_navigation.dart';
 ///
 /// 各タブの画面は最初に開いたときに作る（起動を重くしない）。
 /// 切り替えても各タブの状態は保たれる（IndexedStack）。
-class MainShell extends StatefulWidget {
+class MainShell extends ConsumerStatefulWidget {
   /// テストで重い画面を差し替えるための引数（省略時は本物の画面）。
   final Map<HomeSection, WidgetBuilder>? tabBuilders;
 
   const MainShell({super.key, this.tabBuilders});
 
   @override
-  State<MainShell> createState() => _MainShellState();
+  ConsumerState<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends ConsumerState<MainShell> {
   HomeSection _current = HomeSection.home;
   final Set<HomeSection> _visited = {HomeSection.home};
   // 体育・芸術の内側で全画面ページ（クイズ・結果・描画・撮影など）が開いている間は下部ナビを隠す
@@ -123,9 +126,17 @@ class _MainShellState extends State<MainShell> {
 
   @override
   Widget build(BuildContext context) {
+    // テスト用に画面を差し替えた場合(tabBuilders)は、利用時間制限・演出ホストを付けない
+    if (widget.tabBuilders == null) {
+      // 利用時間制限: 1日の上限に達していれば、タブ操作より優先して全画面で止める。
+      // watch で、1分ごとの加算・保護者による一時解除を反映する。
+      ref.watch(screenTimeProvider);
+      if (ref.read(screenTimeProvider.notifier).isLimitReached) {
+        return const ScreenTimeLimitReachedWidget(primaryColor: kPrimaryColor);
+      }
+    }
     final obs = _obsFor(_current);
     final shell = _buildShell(obs);
-    // テスト用に画面を差し替えた場合(tabBuilders)は演出ホストを付けない
     if (widget.tabBuilders != null) return shell;
     return BadgeCelebrationHost(recheck: _badgeRecheck, child: shell);
   }

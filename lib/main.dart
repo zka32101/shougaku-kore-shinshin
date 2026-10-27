@@ -18,6 +18,8 @@ import 'screens/dashboard/dashboard_screen.dart';
 import 'services/hive_service.dart';
 import 'services/logger_service.dart';
 import 'theme/app_theme.dart';
+import 'package:shared_core/shared_core.dart' show screenTimeProvider;
+import 'providers/screen_time_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/premium_provider.dart';
 import 'services/shinshin_purchase_service.dart';
@@ -91,8 +93,9 @@ void main() async {
   } catch (_) {}
 
   runApp(
-    const ProviderScope(
-      child: ShougakuKoreDoutokuApp(),
+    ProviderScope(
+      overrides: [screenTimeProvider.overrideWith(ScreenTimeNotifier.new)],
+      child: const ShougakuKoreDoutokuApp(),
     ),
   );
 }
