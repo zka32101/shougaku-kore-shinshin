@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cross_promo_kit/cross_promo_kit.dart' show CrossPromoSection;
-import 'package:shared_core/shared_core.dart' show AnalyticsDashboard, requireParentalGate;
+import 'package:shared_core/shared_core.dart'
+    show AnalyticsDashboard, ScreenTimeSettingsWidget, requireParentalGate;
+import '../../theme/app_theme.dart' show kPrimaryColor;
 import '../../utils/guardian_gate.dart';
 import '../../providers/audio_provider.dart';
 import '../../providers/app_version_provider.dart';
@@ -17,6 +19,24 @@ import '../ranking/ranking_settings_screen.dart';
 import 'help_screen.dart';
 import 'module_data_reset_section.dart';
 import 'privacy_policy_screen.dart';
+
+/// 利用時間制限の設定画面を開く前に、保護者ゲートで確認する。
+Future<void> _openScreenTimeSettings(BuildContext context) async {
+  final passedGate = await requireParentalGate(
+    context,
+    title: '保護者確認',
+    description: '利用時間の設定変更には、保護者の確認が必要です。',
+  );
+  if (!passedGate || !context.mounted) return;
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: const Text('利用時間の設定')),
+        body: const ScreenTimeSettingsWidget(primaryColor: kPrimaryColor),
+      ),
+    ),
+  );
+}
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -276,6 +296,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
             ),
           ),
           const SizedBox(height: 12),
+          ListTile(
+            leading: const Icon(Icons.timer),
+            title: const Text('利用時間を設定する'),
+            subtitle: const Text('1日の利用時間に上限を設定できます（保護者向け）'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => _openScreenTimeSettings(context),
+          ),
+          const Divider(height: 0),
           ListTile(
             leading: const Icon(Icons.help),
             title: const Text('ヘルプ'),
