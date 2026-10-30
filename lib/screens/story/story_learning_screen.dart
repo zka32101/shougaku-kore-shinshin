@@ -24,6 +24,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_styles.dart';
 import '../../constants/app_constants.dart';
 import 'story_result_screen.dart';
+import '../../services/retention_hooks.dart' show onStoryCompleted;
 import '../../widgets/animated_option_card.dart';
 import '../../widgets/access_guard.dart';
 
@@ -243,6 +244,9 @@ class _StoryLearningScreenState extends ConsumerState<StoryLearningScreen>
 
     // ストーリーを読み終えるたびにコインがもらえる（アバター購入に使う）
     ref.read(localAvatarProvider.notifier).earnCoins(AppConstants.coinsPerStory);
+
+    // 定着率施策（週次チャレンジ・学習日の記録・リマインダー再予約）。失敗しても続行
+    await onStoryCompleted(ref, context: context);
 
     // 端末内にも完了を記録（サーバーに繋がらなくてもバッジ判定できるように）
     await LocalCompletionStore.record(

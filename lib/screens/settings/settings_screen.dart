@@ -19,6 +19,8 @@ import '../ranking/ranking_settings_screen.dart';
 import 'help_screen.dart';
 import 'module_data_reset_section.dart';
 import 'privacy_policy_screen.dart';
+import 'reminder_switch.dart';
+import 'study_window_tile.dart';
 
 /// 利用時間制限の設定画面を開く前に、保護者ゲートで確認する。
 Future<void> _openScreenTimeSettings(BuildContext context) async {
@@ -234,6 +236,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> with TickerProv
               ),
             ),
           ],
+          // 学習のおしらせ（端末のローカル通知）と勉強の時間帯。ON にする操作は保護者ゲート付き
+          const ReminderSwitchTile(),
+          const StudyWindowTile(),
 
           // 音声設定セクション
           const SizedBox(height: 24),
