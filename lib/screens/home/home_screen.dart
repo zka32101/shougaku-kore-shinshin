@@ -14,6 +14,7 @@ import '../../constants/app_styles.dart';
 import '../../widgets/avatar_display_widget.dart';
 import '../../widgets/profile_name_card.dart';
 import '../../widgets/plan_card.dart';
+import '../../widgets/retention_section.dart';
 import '../../providers/user_profile_provider.dart';
 import '../../features/shop/decor/decor_scope.dart';
 import '../../utils/sound_effects_utils.dart';
@@ -104,6 +105,8 @@ class HomeScreen extends ConsumerWidget {
                   : () => onSelectSection!(HomeSection.taiku),
             ),
             const _RevisitCard(),
+            const SizedBox(height: 12),
+            const RetentionSection(),
             const SizedBox(height: 20),
             const _SectionLabel('まなぶ'),
             for (final item in learn)

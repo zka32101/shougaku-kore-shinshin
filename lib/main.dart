@@ -23,6 +23,8 @@ import 'providers/screen_time_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/premium_provider.dart';
 import 'services/shinshin_purchase_service.dart';
+import 'services/coin_bridge.dart';
+import 'services/retention_hooks.dart';
 import 'widgets/startup_splash.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -92,9 +94,19 @@ void main() async {
     await ShinshinPurchaseService.instance.initialize();
   } catch (_) {}
 
+  final container = ProviderContainer(
+    overrides: [
+      screenTimeProvider.overrideWith(ScreenTimeNotifier.new),
+      // 定着率施策のコインを、アバター購入に使うコインと同じ財布につなぐ
+      coinBridgeOverride,
+    ],
+  );
+  // 定着率施策（初回7日間・週次チャレンジ・通知計画）の保存データを読み込む
+  await initRetention(container);
+
   runApp(
-    ProviderScope(
-      overrides: [screenTimeProvider.overrideWith(ScreenTimeNotifier.new)],
+    UncontrolledProviderScope(
+      container: container,
       child: const ShougakuKoreDoutokuApp(),
     ),
   );
